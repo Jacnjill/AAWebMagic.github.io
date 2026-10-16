@@ -34,7 +34,9 @@
       openWhatsApp(opts.message);
       status(opts.status, 'WhatsApp should open with your message. Please press send there. We have not stored this on a form tool.');
     } else {
-      status(opts.status, 'Thank you. Your enquiry has been sent. We will reply during our contact hours. Nothing is booked yet.');
+      status(opts.status, TNT.showContactHours
+        ? 'Thank you. Your enquiry has been sent. We will reply during our contact hours. Nothing is booked yet.'
+        : 'Thank you. Your enquiry has been sent. Nothing is booked yet.');
     }
     TNTConsent.lead({ method: hubspotOk ? 'email' : 'whatsapp', trip_type: opts.tripType || '' });
     if (opts.guide) TNTConsent.event('guide_download', { guide: 'Turkey on a Budget 2027' });
@@ -71,6 +73,10 @@
     ev.preventDefault();
     var kind = form.getAttribute('data-form');
     var box = form.querySelector('[data-status]');
+    if ((kind === 'contact' || kind === 'enquiry') && !(form.enquiryConsent && form.enquiryConsent.checked)) {
+      status(box, 'Tick the box to agree to Trip N Travel contacting you about this enquiry.');
+      return;
+    }
     if (kind === 'guide' && form.guideConsent && !form.guideConsent.checked) {
       status(box, 'Tick the box if you want the guide when it is ready.');
       return;

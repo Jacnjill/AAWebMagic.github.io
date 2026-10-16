@@ -108,10 +108,10 @@ a:hover { color: var(--accent-dark); }
   background: var(--soft);
   padding: 0.55rem 0;
 }
-.contact-bar p { margin: 0; display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; }
+.contact-bar p { margin: 0; display: flex; flex-wrap: nowrap; gap: 0.75rem 1rem; }
 .contact-bar a { font-weight: 700; display: inline-block; padding: 0.35rem 0; }
 
-.hero { padding: 2.4rem 0 1.2rem; }
+.hero { padding: 1.35rem 0 0.8rem; }
 .hero-actions, .cta-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0; }
 
 .btn, button.btn {
@@ -243,25 +243,32 @@ body.modal-open { overflow: hidden; }
 
 .cookie {
   position: fixed;
-  left: 8px;
-  right: 8px;
-  bottom: 92px;
-  z-index: 50;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 70;
+  width: auto;
+  max-height: min(70vh, 22rem);
+  overflow: auto;
   background: #fff;
   color: var(--text);
-  border: 2px solid var(--text);
-  border-radius: var(--radius);
-  padding: 1rem;
-  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.12);
+  border: 0;
+  border-top: 2px solid var(--text);
+  border-radius: 16px 16px 0 0;
+  padding: 0.65rem 0.85rem calc(0.7rem + env(safe-area-inset-bottom));
+  box-shadow: 0 -8px 24px rgba(17, 24, 39, 0.16);
 }
+.cookie p { margin: 0.2rem 0 0.45rem; }
+body.has-cookie { padding-bottom: 11.5rem; }
+body.has-cookie .mobile-bar { display: none; }
 .cookie-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.cookie-actions .btn { flex: 1 1 8rem; font-size: 1rem; background: #fff; color: var(--text); border-color: var(--text); }
+.cookie-actions .btn { flex: 1 1 6.5rem; font-size: 1rem; min-height: 44px; padding: 0.35rem 0.5rem; background: #fff; color: var(--text); border-color: var(--text); }
 .cookie-actions .btn:hover { background: var(--soft); color: var(--text); }
 
 .modal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 60;
+  z-index: 80;
   background: rgba(17, 24, 39, 0.55);
   display: flex;
   align-items: stretch;
@@ -299,6 +306,8 @@ body.modal-open { overflow: hidden; }
 
 @media (min-width: 768px) {
   body { padding-bottom: 0; }
+  body.has-cookie { padding-bottom: 0; }
+  .hero { padding: 2.4rem 0 1.2rem; }
   .nav-toggle { display: none; }
   .header-inner { position: static; }
   #site-nav, #site-nav.is-open {
@@ -328,7 +337,16 @@ body.modal-open { overflow: hidden; }
     max-width: 36rem;
     border-radius: 18px;
   }
-  .cookie { left: auto; width: min(440px, calc(100% - 32px)); right: 16px; bottom: 16px; }
+  .cookie {
+    left: auto;
+    width: min(28rem, calc(100% - 32px));
+    right: 16px;
+    bottom: 16px;
+    border: 2px solid var(--text);
+    border-radius: 16px;
+    padding: 0.75rem 0.9rem;
+  }
+  body.has-cookie .wa-float { left: 20px; right: auto; }
   .split { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 1.2rem; align-items: start; }
 }
 

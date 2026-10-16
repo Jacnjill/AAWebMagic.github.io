@@ -95,4 +95,106 @@ for (const name of ['privacy.html', 'cookies.html', 'terms.html', 'protection.ht
 }
 assert.ok(textOf(path.join(root, 'protection.html')).includes('Financial protection details coming soon'));
 
+assert.ok(config.includes('showPlaceholderBlocks: false'));
+assert.ok(config.includes('showContactHours: false'));
+assert.ok(config.includes('instalmentTermsConfirmed: false'));
+assert.ok(config.includes("askForQuote: 'Ask for a current quote'"));
+assert.ok(config.includes("instalmentPublicLine: 'Spread the cost with a deposit and instalments'"));
+
+const legalPages = new Set(['privacy.html', 'cookies.html', 'terms.html', 'protection.html']);
+const token = /\{\{(?:PLACEHOLDER|VERIFY)\b/;
+const voidEls = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr']);
+
+function visibleMarkup(html) {
+  let i = 0;
+  let out = '';
+  const stack = [];
+  while (i < html.length) {
+    if (html.startsWith('<!--', i)) {
+      const end = html.indexOf('-->', i);
+      i = end === -1 ? html.length : end + 3;
+      continue;
+    }
+    if (html[i] === '<') {
+      const end = html.indexOf('>', i);
+      if (end === -1) break;
+      const raw = html.slice(i, end + 1);
+      const closing = /^<\s*\//.test(raw);
+      const name = (raw.match(/^<\s*\/?\s*([a-zA-Z0-9]+)/) || [])[1];
+      const tag = name ? name.toLowerCase() : '';
+      const selfClose = /\/>\s*$/.test(raw) || voidEls.has(tag);
+      const hidden = /(?:\s|^)hidden(?:\s|=|>|\/)/i.test(raw);
+      if (closing) {
+        while (stack.length) {
+          const top = stack.pop();
+          if (top.tag === tag) break;
+        }
+      } else if (tag && !selfClose) {
+        stack.push({ tag, hidden: hidden || stack.some((frame) => frame.hidden) });
+      }
+      const covered = stack.some((frame) => frame.hidden) || hidden;
+      if (!covered) out += raw;
+      i = end + 1;
+      continue;
+    }
+    const next = html.indexOf('<', i);
+    if (!stack.some((frame) => frame.hidden)) out += html.slice(i, next === -1 ? html.length : next);
+    i = next === -1 ? html.length : next;
+  }
+  return out;
+}
+
+for (const file of html) {
+  const base = path.basename(file);
+  const text = textOf(file);
+  assert.ok(!text.includes('og:image'), `${base} still publishes an og:image`);
+  assert.ok(!text.includes('twitter:image'), `${base} still publishes a twitter:image`);
+  assert.ok(!text.includes('Not VAT registered'), `${base} states a VAT status`);
+  assert.ok(!/low deposit/i.test(text), `${base} says low deposit`);
+  assert.ok(!/Book securely/i.test(text), `${base} says Book securely`);
+  assert.ok(!/tailored to you by the Trip N Travel team/i.test(text), `${base} uses the old hero line`);
+  if (legalPages.has(base)) continue;
+  const visible = visibleMarkup(text);
+  assert.ok(!token.test(visible), `${base} renders a placeholder token:\n${visible.match(/.{0,80}\{\{(?:PLACEHOLDER|VERIFY).{0,80}/) || visible.slice(0, 240)}`);
+}
+
+const consentLine = 'I agree to Trip N Travel contacting me about this enquiry (see <a href="privacy.html">Privacy Policy</a>)';
+for (const name of ['enquiry.html', 'contact.html']) {
+  const text = textOf(path.join(root, name));
+  assert.ok(text.includes('name="enquiryConsent"'), `${name} needs the enquiry consent checkbox`);
+  assert.ok(text.includes('required'), `${name} consent must be required`);
+  assert.ok(text.includes(consentLine), `${name} consent label changed`);
+  assert.ok(!/enquiryConsent"[^>]*checked/.test(text), `${name} consent must start unticked`);
+}
+
+assert.ok(!textOf(path.join(root, 'sitemap.xml')).includes('my-trip.html'));
+const tripJs = textOf(path.join(root, 'js/my-trip.js'));
+const tripHtml = textOf(path.join(root, 'my-trip.html'));
+assert.ok(tripHtml.includes('Load forecast'));
+assert.ok(tripHtml.includes('Open-Meteo'));
+assert.ok(tripJs.includes('countryCode'));
+assert.ok(tripJs.indexOf('fetch(') > tripJs.indexOf("addEventListener('click'"));
+assert.ok(!tripHtml.includes('Loading the forecast'));
+
+const missing = textOf(path.join(root, '404.html'));
+for (const attr of missing.match(/(?:href|src|srcset)="[^"]+"/g) || []) {
+  const url = attr.slice(attr.indexOf('"') + 1, -1);
+  assert.ok(url.startsWith('/') || url.startsWith('#') || url.startsWith('https:') || url.startsWith('http:') || url.startsWith('mailto:') || url.startsWith('tel:'), `404 asset is not root-relative: ${url}`);
+}
+
+const netlify = textOf(path.join(root, 'netlify.toml'));
+assert.ok(netlify.includes('from = "/inquiry.html"'));
+assert.ok(netlify.includes('to = "/enquiry.html"'));
+assert.ok(netlify.includes('status = 301'));
+assert.ok(netlify.includes('context.deploy-preview.headers'));
+assert.ok(netlify.includes('context.branch-deploy.headers'));
+assert.ok(netlify.includes('X-Robots-Tag = "noindex"'));
+assert.ok(!/context\.production/.test(netlify), 'production context must stay free of preview headers');
+
+const forms = textOf(path.join(root, 'js/forms.js'));
+assert.ok(forms.includes('enquiryConsent'));
+const matchmaker = textOf(path.join(root, 'js/matchmaker.js'));
+assert.ok(matchmaker.includes('reply on WhatsApp'));
+assert.ok(matchmaker.includes('hubspotEnabled'));
+
 console.log('compliance checks passed', files.length, 'files');

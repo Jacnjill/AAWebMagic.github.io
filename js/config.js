@@ -24,6 +24,8 @@ const TNT = {
   founderBase: 'Bristol',
   founderPhoto: '',
   contactHours: 'Messages answered 9am–8pm, 7 days',
+  /* Unverified opening hours stay off the public pages until confirmed. */
+  showContactHours: false,
   siteUrl: 'https://tripntravel.co.uk',
   ga4Id: 'G-T3VGVEDZ7V',
   metaPixelId: '{{PLACEHOLDER: Meta Pixel ID}}',
@@ -34,6 +36,10 @@ const TNT = {
   showPtsLine: false,
   extraDestinations: [],
   hubspotEnabled: false,
+  /* Internal preview only. Public pages keep {{PLACEHOLDER}} and {{VERIFY}} blocks hidden. */
+  showPlaceholderBlocks: false,
+  /* Public instalment wording stays the quote line until terms are confirmed in writing. */
+  instalmentTermsConfirmed: false,
   socialUrls: {
     facebook: '',
     instagram: '',
@@ -44,7 +50,8 @@ const TNT = {
   standardDepositLabel: '{{PLACEHOLDER: standard deposit}}',
   balanceDueWeeksLabel: '{{PLACEHOLDER: balance due weeks, default 10}}',
   balanceDueWeeksDefault: 10,
-  instalmentSentence: 'Spread the cost — secure your holiday with a low deposit and pay the balance in instalments before you travel.',
+  instalmentPublicLine: 'Spread the cost with a deposit and instalments',
+  askForQuote: 'Ask for a current quote',
   instalmentVerify: '{{VERIFY: instalment terms in writing}}',
   /* Shown only when showPtsLine is true. */
   ptsLine: 'Member of Protected Trust Services, membership 6393.',
@@ -53,5 +60,5 @@ const TNT = {
   atolDealLine: 'ATOL protected by the tour operator',
   aiDisclosure: "You'll chat with our AI travel assistant first; a travel adviser can take over whenever you like.",
   heroHeadline: 'Holidays planned for you, on WhatsApp.',
-  heroSub: 'Budget adventures, faith and heritage trips, and romantic escapes, tailored to you by the Trip N Travel team.'
+  heroSub: 'Budget adventures, faith and heritage trips, and romantic escapes. Tell us what you want and we will put together options.'
 };

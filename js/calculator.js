@@ -16,7 +16,7 @@
       out.textContent = plan.reason;
       return;
     }
-    var extra = plan.dueLabel ? (' Balance due date used here: ' + plan.dueLabel + ', which is the 1st of the departure month minus ' + TNT.balanceDueWeeksDefault + ' weeks (' + TNT.balanceDueWeeksLabel + ').') : '';
+    var extra = plan.dueLabel ? (' Balance due date used here: ' + plan.dueLabel + ', which is the 1st of the departure month minus ' + TNT.balanceDueWeeksDefault + ' weeks.') : '';
     out.textContent = plan.text + extra;
     if (!used && plan.kind === 'plan') {
       used = true;

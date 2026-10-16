@@ -12,14 +12,9 @@
   <meta property="og:title" content="Romantic Escapes | Trip N Travel">
   <meta property="og:description" content="Romantic escapes in Spain, Turkey and Greece, planned on WhatsApp with Trip N Travel.">
   <meta property="og:url" content="https://tripntravel.co.uk/romantic-escapes.html">
-  <meta property="og:image" content="https://tripntravel.co.uk/images/opt/og-share.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Trip N Travel share image placeholder">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Romantic Escapes | Trip N Travel">
   <meta name="twitter:description" content="Romantic escapes in Spain, Turkey and Greece, planned on WhatsApp with Trip N Travel.">
-  <meta name="twitter:image" content="https://tripntravel.co.uk/images/opt/og-share.jpg">
   <meta name="theme-color" content="#0060C0">
   <link rel="icon" href="images/opt/favicon-32.png" type="image/png">
   <link rel="apple-touch-icon" href="images/opt/apple-touch.png">
@@ -53,9 +48,8 @@
   <div class="contact-bar">
     <div class="wrap">
       <p>
-        <a data-call data-call-full data-location="top-bar">Call us</a>
-        <a data-wa data-wa-full data-location="top-bar">WhatsApp us</a>
-        <span data-hours></span>
+        <a data-call data-location="top-bar">Call</a>
+        <a data-wa data-location="top-bar">WhatsApp</a>
       </p>
     </div>
   </div>
@@ -105,7 +99,7 @@
           <article class="faq-item"><h3>Where can a romantic trip go?</h3><p>Spain, Turkey or Greece. Any other place is passed to a travel adviser.</p></article>
           <article class="faq-item"><h3>Can we ask for a private pool?</h3><p>Yes. Tick it in Find My Holiday. We will only say a stay has a private pool when that is confirmed on the quote.</p></article>
           <article class="faq-item"><h3>How are prices shown?</h3><p>As “From £X pp” when we have a price checked in the last 7 days, together with nights, board and departure airport. Otherwise, ask for a current quote.</p></article>
-          <article class="faq-item"><h3>Is this a honeymoon package?</h3><p>We can quote a trip for two. {{PLACEHOLDER: honeymoon extras, if any are offered}}</p></article>
+          <article class="faq-item"><h3>Is this a honeymoon package?</h3><p>We can quote a trip for two.</p><p data-placeholder-block hidden>{{PLACEHOLDER: honeymoon extras, if any are offered}}</p></article>
           <article class="faq-item"><h3>How do we start?</h3><p>Choose Find My Holiday on this page, or WhatsApp us. You'll chat with our AI travel assistant first; a travel adviser can take over whenever you like.</p></article>
         </div>
       </div>
@@ -134,7 +128,7 @@
         <p data-flag-flight hidden></p>
         <p><a data-call data-call-full data-location="footer">Call us</a></p>
         <p><a data-wa data-wa-full data-location="footer">WhatsApp us</a></p>
-        <p data-hours></p>
+        <p data-hours hidden></p>
         <div data-socials></div>
       </div>
       <nav aria-label="Explore">
@@ -153,13 +147,13 @@
           <li><a href="privacy.html">Privacy Policy</a></li>
           <li><a href="cookies.html">Cookie Policy</a></li>
           <li><a href="terms.html">Booking Terms</a></li>
-          <li><a href="protection.html">Financial Protection</a></li>
+          <li data-protection-link hidden><a href="protection.html">Financial Protection</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li><button type="button" class="linkish" data-manage-cookies>Manage cookies</button></li>
         </ul>
       </nav>
     </div>
-    <div class="wrap"><p class="footer-copy" data-year></p><p class="footer-copy">Not VAT registered.</p></div>
+    <div class="wrap"><p class="footer-copy" data-year></p></div>
   </footer>
   <div class="mobile-bar">
     <a class="btn btn-wa" data-wa data-location="mobile-bar">WhatsApp</a>

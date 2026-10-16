@@ -117,6 +117,11 @@
     return document.getElementById('cookie-banner');
   }
 
+  function closeBanner(el) {
+    if (el) el.remove();
+    if (!banner()) document.body.classList.remove('has-cookie');
+  }
+
   function render(openSettings) {
     var existing = banner();
     if (existing) existing.remove();
@@ -127,8 +132,7 @@
     el.setAttribute('role', 'region');
     el.setAttribute('aria-label', 'Cookie choices');
     el.innerHTML =
-      '<p><strong>Cookies</strong></p>' +
-      '<p>Necessary storage remembers this choice. Analytics and marketing tools stay off unless you allow them.</p>' +
+      '<p><strong>Cookies.</strong> Necessary storage remembers this choice. Analytics and marketing stay off unless you allow them.</p>' +
       '<div class="cookie-actions">' +
       '<button type="button" class="btn" data-cookie="accept">Accept</button>' +
       '<button type="button" class="btn" data-cookie="reject">Reject</button>' +
@@ -142,16 +146,17 @@
       '<button type="button" class="btn btn-accent" data-cookie="save">Save cookie settings</button>' +
       '</div>';
     document.body.appendChild(el);
+    document.body.classList.add('has-cookie');
     el.addEventListener('click', function (ev) {
       var btn = ev.target.closest('[data-cookie]');
       if (!btn) return;
       var action = btn.getAttribute('data-cookie');
       if (action === 'accept') {
         write({ necessary: true, analytics: true, marketing: true, updated: new Date().toISOString() });
-        el.remove();
+        closeBanner(el);
       } else if (action === 'reject') {
         write({ necessary: true, analytics: false, marketing: false, updated: new Date().toISOString() });
-        el.remove();
+        closeBanner(el);
       } else if (action === 'settings') {
         var panel = document.getElementById('cookie-settings');
         if (panel) panel.hidden = !panel.hidden;
@@ -162,7 +167,7 @@
           marketing: !!document.getElementById('cookie-marketing').checked,
           updated: new Date().toISOString()
         });
-        el.remove();
+        closeBanner(el);
       }
     });
   }

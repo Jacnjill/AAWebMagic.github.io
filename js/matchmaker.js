@@ -281,16 +281,18 @@
       '</dl>' +
       '<p class="ai-note">' + TNTSite.escapeHtml(TNT.aiDisclosure) + '</p>' +
       '<p><a class="btn btn-wa" id="mm-send" data-location="matchmaker" target="_blank" rel="noopener noreferrer" href="' + TNTLogic.waHref(TNT.whatsapp, message) + '">Send to us on WhatsApp</a></p>' +
-      '<p><button type="button" class="linkish" id="mm-email-toggle">Prefer email?</button></p>' +
-      '<form id="mm-email" hidden>' +
-      '<p>What happens next: if email sending is switched on, this goes to our form tool without the marketing tick. While that is switched off, we open WhatsApp with the same enquiry so you can send it yourself. Nothing is booked.</p>' +
-      '<label>Name <input name="name" required></label>' +
-      '<label>Email <input name="email" type="email" required></label>' +
-      '<label class="choice"><input type="checkbox" name="offersEmail"> I\'d like to receive holiday offers by email. I can unsubscribe at any time.</label>' +
-      '<p><a href="privacy.html">Read the privacy policy</a></p>' +
-      '<button class="btn btn-accent" type="submit">Send the enquiry</button>' +
-      '<p id="mm-email-status" role="status"></p>' +
-      '</form>';
+      (TNT.hubspotEnabled
+        ? '<p><button type="button" class="linkish" id="mm-email-toggle">Prefer email?</button></p>' +
+          '<form id="mm-email" hidden>' +
+          '<p>What happens next: this goes to our form tool without the marketing tick. Nothing is booked.</p>' +
+          '<label>Name <input name="name" required></label>' +
+          '<label>Email <input name="email" type="email" required></label>' +
+          '<label class="choice"><input type="checkbox" name="offersEmail"> I\'d like to receive holiday offers by email. I can unsubscribe at any time.</label>' +
+          '<p><a href="privacy.html">Read the privacy policy</a></p>' +
+          '<button class="btn btn-accent" type="submit">Send the enquiry</button>' +
+          '<p id="mm-email-status" role="status"></p>' +
+          '</form>'
+        : '<p>We\'ll reply on WhatsApp.</p>');
   }
 
   function bindConfirm() {
@@ -299,10 +301,12 @@
       TNTConsent.event('whatsapp_click', { page: location.pathname, button_location: 'matchmaker' });
       TNTConsent.lead({ method: 'whatsapp', trip_type: state.tripType });
     });
-    document.getElementById('mm-email-toggle').addEventListener('click', function () {
-      document.getElementById('mm-email').hidden = false;
+    var emailToggle = document.getElementById('mm-email-toggle');
+    var emailForm = document.getElementById('mm-email');
+    if (emailToggle && emailForm) emailToggle.addEventListener('click', function () {
+      emailForm.hidden = false;
     });
-    document.getElementById('mm-email').addEventListener('submit', function (ev) {
+    if (emailForm) emailForm.addEventListener('submit', function (ev) {
       ev.preventDefault();
       var form = ev.currentTarget;
       var message = TNTLogic.buildQuoteMessage(answers(), TNTSite.utm());

@@ -46,8 +46,38 @@
     scope.querySelectorAll('[data-registered]').forEach(function (el) {
       el.textContent = 'Registered in ' + TNT.registeredIn + ' ' + TNT.companyNumber;
     });
-    scope.querySelectorAll('[data-hours]').forEach(function (el) { el.textContent = TNT.contactHours; });
-    scope.querySelectorAll('[data-email]').forEach(function (el) { el.textContent = TNT.email; });
+    scope.querySelectorAll('[data-hours]').forEach(function (el) {
+      if (TNT.showContactHours && TNT.contactHours && !/\{\{/.test(TNT.contactHours)) {
+        el.hidden = false;
+        el.textContent = TNT.contactHours;
+      } else {
+        el.remove();
+      }
+    });
+    scope.querySelectorAll('[data-placeholder-block]').forEach(function (el) {
+      el.hidden = !TNT.showPlaceholderBlocks;
+    });
+    scope.querySelectorAll('[data-email]').forEach(function (el) {
+      var token = /\{\{/.test(String(TNT.email || ''));
+      var row = el.closest('[data-email-row]') || el;
+      if (!token) {
+        el.textContent = TNT.email;
+        row.hidden = false;
+      } else if (TNT.showPlaceholderBlocks) {
+        el.textContent = TNT.email;
+        row.hidden = false;
+      } else {
+        el.textContent = '';
+        row.hidden = true;
+      }
+    });
+    var instalmentText = TNT.instalmentTermsConfirmed ? TNT.instalmentPublicLine : TNT.askForQuote;
+    scope.querySelectorAll('[data-instalment]').forEach(function (el) {
+      el.textContent = instalmentText;
+    });
+    scope.querySelectorAll('[data-protection-link]').forEach(function (el) {
+      el.hidden = !(TNT.showAtolWording || TNT.showPtsLine);
+    });
     scope.querySelectorAll('[data-year]').forEach(function (el) {
       el.textContent = '© ' + new Date().getFullYear() + ' ' + company;
     });

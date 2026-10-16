@@ -12,14 +12,9 @@
   <meta property="og:title" content="Booking Terms (draft) | Trip N Travel">
   <meta property="og:description" content="Draft booking terms for Trip N Travel. We act as an agent and the organiser's terms apply.">
   <meta property="og:url" content="https://tripntravel.co.uk/terms.html">
-  <meta property="og:image" content="https://tripntravel.co.uk/images/opt/og-share.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Trip N Travel share image placeholder">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Booking Terms (draft) | Trip N Travel">
   <meta name="twitter:description" content="Draft booking terms for Trip N Travel. We act as an agent and the organiser's terms apply.">
-  <meta name="twitter:image" content="https://tripntravel.co.uk/images/opt/og-share.jpg">
   <meta name="theme-color" content="#0060C0">
   <link rel="icon" href="images/opt/favicon-32.png" type="image/png">
   <link rel="apple-touch-icon" href="images/opt/apple-touch.png">
@@ -54,9 +49,8 @@
   <div class="contact-bar">
     <div class="wrap">
       <p>
-        <a data-call data-call-full data-location="top-bar">Call us</a>
-        <a data-wa data-wa-full data-location="top-bar">WhatsApp us</a>
-        <span data-hours></span>
+        <a data-call data-location="top-bar">Call</a>
+        <a data-wa data-location="top-bar">WhatsApp</a>
       </p>
     </div>
   </div>
@@ -79,9 +73,9 @@
       <p>We need the passenger details the organiser asks for before payment is taken. Please check names match passports.</p>
       <h2>Payments</h2>
       <p data-payment-note>How you pay is confirmed in your quote. A trust-account claim is not published while that detail is still being checked.</p>
-      <p>Spread the cost — secure your holiday with a low deposit and pay the balance in instalments before you travel.</p>
+      <p data-instalment>Ask for a current quote</p>
       <p>{{VERIFY: instalment terms in writing}}</p>
-      <p>The instalments in that sentence are payments towards the holiday before you travel. They are confirmed in your quote.</p>
+      <p>Any instalments are payments towards the holiday before you travel. They are confirmed in your quote.</p>
       <h2>Changes and cancellations</h2>
       <p>Amendments and cancellations follow the organiser's terms. Any fee the organiser charges will be set out in those terms and in your quote. {{PLACEHOLDER: our own agency amendment fee, if one will be charged}}</p>
       <h2>Complaints</h2>
@@ -103,7 +97,7 @@
         <p data-flag-flight hidden></p>
         <p><a data-call data-call-full data-location="footer">Call us</a></p>
         <p><a data-wa data-wa-full data-location="footer">WhatsApp us</a></p>
-        <p data-hours></p>
+        <p data-hours hidden></p>
         <div data-socials></div>
       </div>
       <nav aria-label="Explore">
@@ -122,13 +116,13 @@
           <li><a href="privacy.html">Privacy Policy</a></li>
           <li><a href="cookies.html">Cookie Policy</a></li>
           <li><a href="terms.html">Booking Terms</a></li>
-          <li><a href="protection.html">Financial Protection</a></li>
+          <li data-protection-link hidden><a href="protection.html">Financial Protection</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li><button type="button" class="linkish" data-manage-cookies>Manage cookies</button></li>
         </ul>
       </nav>
     </div>
-    <div class="wrap"><p class="footer-copy" data-year></p><p class="footer-copy">Not VAT registered.</p></div>
+    <div class="wrap"><p class="footer-copy" data-year></p></div>
   </footer>
   <div class="mobile-bar">
     <a class="btn btn-wa" data-wa data-location="mobile-bar">WhatsApp</a>

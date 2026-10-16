@@ -1,0 +1,19 @@
+# GitHub Pages keeps inquiry.html as a meta refresh. On Netlify, redirect it.
+[[redirects]]
+  from = "/inquiry.html"
+  to = "/enquiry.html"
+  status = 301
+  force = true
+
+# Preview and branch deploys must not be indexed. Production has no X-Robots-Tag here.
+[[context.deploy-preview.headers]]
+  for = "/*"
+
+  [context.deploy-preview.headers.values]
+    X-Robots-Tag = "noindex"
+
+[[context.branch-deploy.headers]]
+  for = "/*"
+
+  [context.branch-deploy.headers.values]
+    X-Robots-Tag = "noindex"
