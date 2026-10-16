@@ -53,7 +53,7 @@
   <section class="hero deals-hero" style="background-image: url('images/packages-hero.jpg');">
     <div class="hero-content">
       <h1>Explore Our Packages</h1>
-      <p>Find your perfect escape at unbeatable prices</p>
+      <p>Find your perfect escape</p>
     </div>
   </section>
 
@@ -95,6 +95,7 @@
 
         packages.forEach(pkg => {
           const stars = '<i class="fa-solid fa-star"></i>'.repeat(pkg.stars);
+          // Prices return only after supplier portal checks.
           container.innerHTML += `
             <div class="package-card">
               <div class="card-image" style="background-image: url('images/package-image/${pkg.image}');"></div>
@@ -102,7 +103,7 @@
                 <h3>${pkg.title}</h3>
                 <p class="stars">${stars}</p>
                 <p>${pkg.description}</p>
-                <span class="price-tag">${pkg.price}</span>
+                <span class="price-tag">Ask for a current quote</span>
                 <a href="mailto:info@tripntravel.co.uk?subject=${encodeURIComponent(pkg.emailSubject)}" class="btn">
                   <i class="fa-solid fa-envelope"></i> Email Us
                 </a>
