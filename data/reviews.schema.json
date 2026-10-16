@@ -1,0 +1,40 @@
+{
+  "$comment": "Schema for data/reviews.json. The site renders a review only when consentGiven is true. Leave the file as [] until a traveller has agreed in writing. Do not add sample reviews.",
+  "title": "Trip N Travel reviews",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["name", "trip", "date", "rating", "text", "source", "consentGiven"],
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "First name and initial only, for example Aisha K."
+      },
+      "trip": {
+        "type": "string",
+        "description": "Destination and type of trip. Do not name a supplier."
+      },
+      "date": {
+        "type": "string",
+        "description": "ISO date the trip took place or the review was given."
+      },
+      "rating": {
+        "type": ["number", "null"],
+        "minimum": 1,
+        "maximum": 5
+      },
+      "text": {
+        "type": "string",
+        "description": "The traveller's own words."
+      },
+      "source": {
+        "type": "string",
+        "description": "Where the review was given."
+      },
+      "consentGiven": {
+        "type": "boolean",
+        "description": "True only when there is a record of permission to publish."
+      }
+    }
+  }
+}
