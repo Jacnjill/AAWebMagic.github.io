@@ -38,7 +38,7 @@ Analytics help us understand how people use our website: how many people visit, 
 
 We only switch analytics on if you click "Accept all". Until then, it stays off and no information is sent to Google Analytics.
 
-Advertising (off unless you click Accept all)
+Advertising (not currently used)
 
 We don't currently use advertising cookies. If that changes, we will ask for your consent first and update this page.
 

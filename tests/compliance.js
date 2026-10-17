@@ -376,7 +376,16 @@ assert.ok(textOf(path.join(root, 'cookies.html')).includes('Analytics stays off.
 assert.ok(textOf(path.join(root, 'cookies.html')).includes('we stop using analytics.'));
 assert.ok(!textOf(path.join(root, 'cookies.html')).includes('Analytics and advertising stay off.'));
 assert.ok(!textOf(path.join(root, 'cookies.html')).includes('we stop using analytics and advertising tags.'));
-assert.ok(textOf(path.join(root, 'privacy.html')).includes('<a href="cookies.html">Cookie Notice</a>'));
+assert.ok(textOf(path.join(root, 'cookies.html')).includes('<h3>Advertising (not currently used)</h3>'));
+assert.ok(!textOf(path.join(root, 'cookies.html')).includes('Advertising (off unless you click Accept all)'));
+assert.ok(textOf(path.join(root, 'cookies.html')).includes('explained in our <a href="privacy.html">Privacy Notice</a>.'));
+assert.ok(textOf(path.join(root, 'cookies.html')).includes('section 7 of our <a href="privacy.html">Privacy Notice</a>.'));
+assert.ok(textOf(path.join(root, 'cookies.html')).includes('Our <a href="privacy.html">Privacy Notice</a> explains'));
+assert.ok(textOf(path.join(root, 'cookies.html')).includes('how to use them: <a href="privacy.html">Privacy Notice</a>.'));
+assert.ok(textOf(path.join(root, 'cookies.html')).includes('2 years by default. Chrome may limit it to 400 days, and Safari to 7 days, if you do not visit again.'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('our separate <a href="cookies.html">Cookie Notice</a>.'));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes('covered in our <a href="privacy.html">Privacy Notice</a>.'));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes('as explained in our <a href="privacy.html">Privacy Notice</a>.'));
 for (const file of html) {
   const base = path.basename(file);
   if (base === 'inquiry.html') continue;
