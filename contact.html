@@ -21,7 +21,7 @@
   <link rel="preload" href="fonts/source-sans-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/source-sans-700.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" as="image" href="images/photos/spain.avif" type="image/avif" fetchpriority="high">
+  <link rel="preload" as="image" href="images/photos/contact.avif" type="image/avif" fetchpriority="high">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/site.css">
 </head>
@@ -49,9 +49,9 @@
   <main id="main">
     <section class="page-hero">
       <picture>
-        <source type="image/avif" srcset="images/photos/spain.avif">
-        <source type="image/webp" srcset="images/photos/spain.webp">
-        <img src="images/photos/spain.webp" alt="Green cliffs above the sea in Ibiza, Spain" width="1200" height="800" fetchpriority="high" decoding="async">
+        <source type="image/avif" srcset="images/photos/contact.avif">
+        <source type="image/webp" srcset="images/photos/contact.webp">
+        <img src="images/photos/contact.webp" alt="Buildings along a shore in warm light" width="1200" height="800" fetchpriority="high" decoding="async">
       </picture>
       <div class="wrap">
         <nav class="crumbs crumbs-on-dark" aria-label="Breadcrumb" data-crumbs>
@@ -72,7 +72,7 @@
       <div>
         <h2>Talk to us</h2>
         <p>Raja Ali, the founder, is based in Bristol.</p>
-        <p><a class="btn btn-wa" data-wa data-wa-full data-location="contact-primary">WhatsApp us</a></p>
+        <p class="wa-gap"><a class="btn btn-wa" data-wa data-wa-full data-location="contact-primary">WhatsApp us</a></p>
         <p class="ai-note" data-ai-note hidden></p>
         <div class="raja-slot" data-placeholder-block hidden>
           <h2>Meet Raja</h2>
@@ -81,6 +81,10 @@
         </div>
         <h2>What happens next</h2>
         <p>We open WhatsApp with your message so you can send it. Nothing is booked. We do not add you to a mailing list unless you tick a box.</p>
+        <h2>How we work</h2>
+        <p>You tell us who is travelling, when you want to go, and what you would like to spend.</p>
+        <p>We reply on WhatsApp with a quote.</p>
+        <p>We can quote holidays in Spain, Turkey and Greece.</p>
         <div data-placeholder-block hidden>
           <h2>Opening hours</h2>
           <p>{{PLACEHOLDER: opening hours}}</p>
@@ -103,7 +107,6 @@
         </div>
         <label class="choice"><input type="checkbox" name="offersWhatsapp"> I'd like to receive holiday offers by WhatsApp. I can unsubscribe at any time.</label>
         <p><a href="privacy.html">Read the privacy policy</a></p>
-        <p>What happens next: we open WhatsApp with your message so you can send it. Nothing is booked. We do not add you to a mailing list unless you tick a box.</p>
         <button class="btn btn-accent" type="submit">Send on WhatsApp</button>
         <p data-status role="status"></p>
       </form>
