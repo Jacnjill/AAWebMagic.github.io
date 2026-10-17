@@ -380,6 +380,16 @@ assert.ok(textOf(path.join(root, 'cookies.html')).includes('2 years by default. 
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('our separate <a href="cookies.html">Cookie Notice</a>.'));
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('covered in our <a href="privacy.html">Privacy Notice</a>.'));
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('as explained in our <a href="privacy.html">Privacy Notice</a>.'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('Who looks after the recordings for us: we handle calls through our phone system provider, 3CX, and Twilio, which carries our calls, records and stores them on our behalf (see sections 6 and 7).'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('They act on our instructions, apart from limited purposes of their own, such as security and keeping their services running, which they explain in their own privacy notices:'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('Meta: its WhatsApp Business platform, which we use to send and receive our WhatsApp messages, and Facebook and Instagram lead forms and adverts'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('3CX and Twilio: 3CX is our phone system provider. Twilio carries our phone calls, and records and stores our call recordings for us'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('Calls with Trip N Travel advisers are recorded for training, quality and complaint-handling purposes.'));
+assert.ok(!textOf(path.join(root, 'privacy.html')).includes('Twilio, our phone calling provider'));
+assert.ok(!textOf(path.join(root, 'privacy.html')).includes('They only use your information to provide their service to us'));
+assert.ok(!/3CX stores|stored by 3CX|3CX, which/i.test(textOf(path.join(root, 'privacy.html'))), 'privacy notice must not say 3CX stores calls');
+assert.ok(!textOf(path.join(root, 'cookies.html')).includes('3CX'));
+assert.ok(!textOf(path.join(root, 'complaints.html')).includes('3CX'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('Office hours: 7 days a week, 9:00am to 8:00pm UK time'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('Our office hours are 7 days a week, 9:00am to 8:00pm UK time.'));
 assert.ok(textOf(path.join(root, 'cookies.html')).includes('Our office hours are 7 days a week, 9:00am to 8:00pm UK time.'));
