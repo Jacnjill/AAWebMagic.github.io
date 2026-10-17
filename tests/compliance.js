@@ -339,12 +339,7 @@ assert.ok(textOf(path.join(root, 'js/matchmaker.js')).includes(privacyAboveButto
 const expectedPlaceholders = {
   'privacy.html': ['[DATE OF PUBLICATION]'],
   'cookies.html': ['[DATE OF PUBLICATION]'],
-  'complaints.html': [
-    '[DATE OF PUBLICATION]',
-    '[WHATSAPP NUMBER: not recorded, to be added]',
-    '[PHONE NUMBER: not recorded, to be added]',
-    '[REVIEW REPLY TIME: not recorded, to be added]'
-  ]
+  'complaints.html': ['[DATE OF PUBLICATION]']
 };
 const legalFinal = /legalPagesFinal:\s*true/.test(config);
 for (const [name, expected] of Object.entries(expectedPlaceholders)) {
@@ -391,6 +386,13 @@ assert.ok(textOf(path.join(root, 'cookies.html')).includes('Our office hours are
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('Contact us during our office hours: 7 days a week, 9:00am to 8:00pm UK time.'));
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('during our office hours, 7 days a week, 9:00am to 8:00pm UK time'));
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('not available around the clock'));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes('<a href="tel:+442045385838">+44 20 4538 5838</a>'));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes('<a href="https://wa.me/442045385838">+44 20 4538 5838</a>'));
+assert.ok(!textOf(path.join(root, 'complaints.html')).includes('wa.me/442045385838?text='));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes('reply within 14 days.'));
+assert.ok(!textOf(path.join(root, 'complaints.html')).includes('[PHONE NUMBER:'));
+assert.ok(!textOf(path.join(root, 'complaints.html')).includes('[WHATSAPP NUMBER:'));
+assert.ok(!textOf(path.join(root, 'complaints.html')).includes('[REVIEW REPLY TIME:'));
 for (const name of ['privacy.html', 'cookies.html', 'complaints.html']) {
   assert.ok(!textOf(path.join(root, name)).includes('9am to 8pm'), name + ' still has the old office hours');
 }
