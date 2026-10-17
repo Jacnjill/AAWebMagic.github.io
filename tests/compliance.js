@@ -69,7 +69,7 @@ assert.ok(config.includes('showAtolWording: false'));
 assert.ok(config.includes('showPtsLine: false'));
 assert.ok(config.includes('hubspotEnabled: false'));
 assert.ok(config.includes("privacyUrl: 'privacy.html'"));
-assert.ok(config.includes('legalPagesFinal: false'));
+assert.ok(config.includes('legalPagesFinal: true'));
 assert.ok(config.includes('privacyLineFinal: true'));
 assert.ok(config.includes("leadEndpoint: ''"));
 assert.ok(!config.includes('hubspotPortalId'), 'HubSpot portal id should be gone from the website route');
@@ -339,12 +339,7 @@ assert.ok(textOf(path.join(root, 'js/matchmaker.js')).includes(privacyAboveButto
 const expectedPlaceholders = {
   'privacy.html': ['[DATE OF PUBLICATION]'],
   'cookies.html': ['[DATE OF PUBLICATION]'],
-  'complaints.html': [
-    '[DATE OF PUBLICATION]',
-    '[WHATSAPP NUMBER: not recorded, to be added]',
-    '[PHONE NUMBER: not recorded, to be added]',
-    '[REVIEW REPLY TIME: not recorded, to be added]'
-  ]
+  'complaints.html': ['[DATE OF PUBLICATION]']
 };
 const legalFinal = /legalPagesFinal:\s*true/.test(config);
 for (const [name, expected] of Object.entries(expectedPlaceholders)) {
@@ -385,6 +380,35 @@ assert.ok(textOf(path.join(root, 'cookies.html')).includes('2 years by default. 
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('our separate <a href="cookies.html">Cookie Notice</a>.'));
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('covered in our <a href="privacy.html">Privacy Notice</a>.'));
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('as explained in our <a href="privacy.html">Privacy Notice</a>.'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('Who looks after the recordings for us: we handle calls through our phone system provider, 3CX, and Twilio, which carries our calls, records and stores them on our behalf (see sections 6 and 7).'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('They act on our instructions, apart from limited purposes of their own, such as security and keeping their services running, which they explain in their own privacy notices:'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('Meta: its WhatsApp Business platform, which we use to send and receive our WhatsApp messages, and Facebook and Instagram lead forms and adverts'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('3CX and Twilio: 3CX is our phone system provider. Twilio carries our phone calls, and records and stores our call recordings for us'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('Calls with Trip N Travel advisers are recorded for training, quality and complaint-handling purposes.'));
+assert.ok(!textOf(path.join(root, 'privacy.html')).includes('Twilio, our phone calling provider'));
+assert.ok(!textOf(path.join(root, 'privacy.html')).includes('They only use your information to provide their service to us'));
+assert.ok(!/3CX stores|stored by 3CX|3CX, which/i.test(textOf(path.join(root, 'privacy.html'))), 'privacy notice must not say 3CX stores calls');
+assert.ok(!textOf(path.join(root, 'cookies.html')).includes('3CX'));
+assert.ok(!textOf(path.join(root, 'complaints.html')).includes('3CX'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('It processes your enquiry messages and trip details (such as your first name, destination, dates, party size, budget, the occasion and your message) to help write replies and quotes. When our advisers use AI tools, it can also see names, phone numbers and recent messages for that enquiry. It acts under our instructions.'));
+assert.ok(!textOf(path.join(root, 'privacy.html')).includes('only to help write replies to you, and acts under our instructions'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('It is based in the US (see section 7). If you write to us about health, accessibility, children, visas, complaints or refunds, a person deals with it and the message is not sent to the AI.'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('Office hours: 7 days a week, 9:00am to 8:00pm UK time'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('Our office hours are 7 days a week, 9:00am to 8:00pm UK time.'));
+assert.ok(textOf(path.join(root, 'cookies.html')).includes('Our office hours are 7 days a week, 9:00am to 8:00pm UK time.'));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes('Contact us during our office hours: 7 days a week, 9:00am to 8:00pm UK time.'));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes('during our office hours, 7 days a week, 9:00am to 8:00pm UK time'));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes('not available around the clock'));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes('<a href="tel:+442045385838">+44 20 4538 5838</a>'));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes('<a href="https://wa.me/442045385838">+44 20 4538 5838</a>'));
+assert.ok(!textOf(path.join(root, 'complaints.html')).includes('wa.me/442045385838?text='));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes('reply within 14 days.'));
+assert.ok(!textOf(path.join(root, 'complaints.html')).includes('[PHONE NUMBER:'));
+assert.ok(!textOf(path.join(root, 'complaints.html')).includes('[WHATSAPP NUMBER:'));
+assert.ok(!textOf(path.join(root, 'complaints.html')).includes('[REVIEW REPLY TIME:'));
+for (const name of ['privacy.html', 'cookies.html', 'complaints.html']) {
+  assert.ok(!textOf(path.join(root, name)).includes('9am to 8pm'), name + ' still has the old office hours');
+}
 for (const file of html) {
   const base = path.basename(file);
   if (base === 'inquiry.html') continue;
