@@ -199,8 +199,28 @@ assert.ok(netlify.includes('to = "/enquiry.html"'));
 assert.ok(netlify.includes('status = 301'));
 assert.ok(netlify.includes('context.deploy-preview.headers'));
 assert.ok(netlify.includes('context.branch-deploy.headers'));
-assert.ok(netlify.includes('X-Robots-Tag = "noindex"'));
-assert.ok(!/context\.production/.test(netlify), 'production context must stay free of preview headers');
+assert.ok(netlify.includes('X-Robots-Tag = "noindex, nofollow"'));
+assert.ok(!/context\.production/.test(netlify), 'do not add a production-only header block; the site-wide header is the indexing switch');
+
+const robotsTxt = textOf(path.join(root, 'robots.txt'));
+const noindexOn = /^Disallow: \/$/m.test(robotsTxt);
+if (noindexOn) {
+  assert.ok(/^User-agent: \*$/m.test(robotsTxt), 'robots.txt needs User-agent: * while noindex is on');
+  assert.ok(/# BEGIN indexing-off[\s\S]*\[\[headers\]\][\s\S]*for = "\/\*"[\s\S]*X-Robots-Tag = "noindex, nofollow"[\s\S]*# END indexing-off/.test(netlify), 'the site-wide noindex header must cover every deploy context');
+}
+for (const file of html) {
+  const base = path.basename(file);
+  const text = textOf(file);
+  const comment = text.match(/<!-- build: ([0-9a-f]{7}) -->/);
+  const meta = text.match(/<meta name="build" content="([0-9a-f]{7})">/);
+  const foot = text.match(/data-build hidden>build ([0-9a-f]{7})</);
+  assert.ok(comment && meta && foot, `${base} is missing the build marker`);
+  assert.strictEqual(comment[1], meta[1], `${base} build comment and meta differ`);
+  assert.strictEqual(comment[1], foot[1], `${base} build comment and footer differ`);
+  if (noindexOn) {
+    assert.ok(text.includes('<meta name="robots" content="noindex, nofollow">'), `${base} must carry noindex, nofollow while indexing is off`);
+  }
+}
 
 const legalLine = 'TRIPNTRAVEL PRIVATE LTD, company number 16525641, registered in England and Wales, registered office 36 Scotts Road, Bromley, Kent BR1 3QD';
 assert.ok(config.includes(legalLine), 'config must keep the full company line');
@@ -235,6 +255,13 @@ assert.ok(!/\b(years?|experience|expert|award)\b/i.test(aboutVisible), 'about pa
 assert.ok(!/Raja Ali, founder\./.test(aboutVisible), 'the duplicate Raja Ali team line must stay off the about page');
 assert.ok(siteJs.includes("el.hidden = !(TNT.showFounderBio && !/\\{\\{/.test(el.textContent || ''))"), 'founder bio stays hidden until the flag is on and the wording has no placeholder');
 assert.ok(textOf(path.join(root, 'destinations.html')).includes('Not sure where? Tell us your budget'), 'destinations page needs the closing line');
+const paymentLine = 'Payment is taken only through a payment link we send you when you decide to book.';
+assert.ok(textOf(path.join(root, 'packages.html')).includes(paymentLine), 'payment is taken only when someone decides to book');
+assert.ok(textOf(path.join(root, 'packages.html')).includes('>Ask for a current quote</a>'), 'packages keeps Ask for a current quote');
+for (const file of files) {
+  if (file.endsWith('.woff2') || file.endsWith('.jpg') || file.endsWith('.png') || file.endsWith('.webp') || file.endsWith('.avif')) continue;
+  assert.ok(!textOf(file).includes('sent with your quote'), `${path.relative(root, file)} still ties the payment link to the quote`);
+}
 
 for (const file of html) {
   const base = path.basename(file);

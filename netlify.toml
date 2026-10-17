@@ -5,18 +5,18 @@
   status = 301
   force = true
 
-# Preview and branch deploys must not be indexed. Production has no X-Robots-Tag here.
+# Deploy previews and branch deploys stay noindex even after the site-wide block below is removed.
 [[context.deploy-preview.headers]]
   for = "/*"
 
   [context.deploy-preview.headers.values]
-    X-Robots-Tag = "noindex"
+    X-Robots-Tag = "noindex, nofollow"
 
 [[context.branch-deploy.headers]]
   for = "/*"
 
   [context.branch-deploy.headers.values]
-    X-Robots-Tag = "noindex"
+    X-Robots-Tag = "noindex, nofollow"
 
 # /topdeals opens the deals page. That page sends people to packages until a deal is showable.
 [[redirects]]
@@ -28,3 +28,13 @@
   from = "/topdeals.html"
   to = "/topDeals.html"
   status = 200
+
+
+# BEGIN indexing-off
+# Site-wide noindex for every deploy context, including a normal production deploy of the preview.
+[[headers]]
+  for = "/*"
+
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+# END indexing-off
