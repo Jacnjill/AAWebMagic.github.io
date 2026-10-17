@@ -37,7 +37,7 @@ const TNT = {
   /* Privacy Notice link used above enquiry submit buttons. Relative on this draft. */
   privacyUrl: 'privacy.html',
   /* Draft legal pages still show highlighted placeholders. A release check fails if this is true while any remain. */
-  legalPagesFinal: false,
+  legalPagesFinal: true,
   /* The Advisor supplied the enquiry privacy line. It is on every enquiry form. */
   privacyLineFinal: true,
   showAtolWording: false,

@@ -30,11 +30,3 @@
   status = 200
 
 
-# BEGIN indexing-off
-# Site-wide noindex for every deploy context, including a normal production deploy of the preview.
-[[headers]]
-  for = "/*"
-
-  [headers.values]
-    X-Robots-Tag = "noindex, nofollow"
-# END indexing-off

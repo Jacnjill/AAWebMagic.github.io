@@ -69,7 +69,7 @@ assert.ok(config.includes('showAtolWording: false'));
 assert.ok(config.includes('showPtsLine: false'));
 assert.ok(config.includes('hubspotEnabled: false'));
 assert.ok(config.includes("privacyUrl: 'privacy.html'"));
-assert.ok(config.includes('legalPagesFinal: false'));
+assert.ok(config.includes('legalPagesFinal: true'));
 assert.ok(config.includes('privacyLineFinal: true'));
 assert.ok(config.includes("leadEndpoint: ''"));
 assert.ok(!config.includes('hubspotPortalId'), 'HubSpot portal id should be gone from the website route');
