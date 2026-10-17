@@ -272,6 +272,13 @@ a:hover { color: var(--accent-dark); }
 
 .section { padding: var(--section-y) 0; }
 .section-soft, .band-soft { background: var(--soft); }
+.section-white { background: #fff; }
+.hero-photo + .section {
+  position: relative;
+  z-index: 1;
+  background: var(--bg);
+  margin-top: -6px;
+}
 .band { background: #fff; }
 
 .grid-12, .photo-grid, .doors, .cards, .faq-list, .package-list { display: grid; gap: 20px; }
@@ -375,7 +382,9 @@ textarea { min-height: 8rem; resize: vertical; }
 .disclaimer { color: var(--muted); }
 
 .cta-band { background: var(--accent); color: #fff; padding: 4rem 0; }
-.cta-band h2 { color: #fff; }
+.cta-band h2 { color: #fff; margin-bottom: 0; }
+.cta-band .cta-sub { margin: 0.35rem 0 0; max-width: 36rem; color: #fff; }
+.cta-band .cta-action { margin: 24px 0 0; }
 .cta-band a:not(.btn) { color: #fff; }
 .cta-band .btn-wa {
   background: transparent;
@@ -391,6 +400,7 @@ textarea { min-height: 8rem; resize: vertical; }
 .about-columns h2:first-child { margin-top: 0; }
 .wa-gap { margin-bottom: 48px; }
 .wa-gap + h2 { margin-top: 0; }
+h2.block-gap { margin-top: 48px; }
 .brand-panel {
   background: var(--ink);
   color: #fff;
@@ -466,6 +476,7 @@ textarea { min-height: 8rem; resize: vertical; }
 }
 .mobile-bar .btn { flex: 1 1 0; min-width: 0; padding: 0.45rem 0.35rem; }
 .mobile-bar .btn-wa { flex: 1 0 auto; min-width: 140px; white-space: nowrap; }
+.mobile-bar .btn-accent { flex: 1 0 auto; min-width: 120px; white-space: nowrap; }
 body { padding-bottom: 72px; }
 body.modal-open { overflow: hidden; }
 .wa-float { display: none; }
@@ -542,6 +553,7 @@ body.has-cookie .mobile-bar { display: none; }
 .check-list li { margin: 0.45rem 0; }
 
 @media (max-width: 767px) {
+  .footer-copy { margin-top: 16px; }
   .site-footer a:not(.brand),
   .site-footer .linkish {
     text-decoration: none;
