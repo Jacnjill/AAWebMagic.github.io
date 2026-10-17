@@ -41,7 +41,12 @@
       el.rel = 'noopener noreferrer';
       if (el.hasAttribute('data-wa-icon')) {
         if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'WhatsApp us');
-      } else if (el.hasAttribute('data-wa-full') || !el.textContent.trim()) el.textContent = 'WhatsApp us on ' + TNT.whatsappDisplay;
+      } else if (el.hasAttribute('data-wa-full') || !el.textContent.trim()) {
+        el.textContent = 'WhatsApp us';
+        if (el.hasAttribute('data-wa-full') && !el.getAttribute('aria-label')) {
+          el.setAttribute('aria-label', 'WhatsApp us on ' + TNT.whatsappDisplay);
+        }
+      }
     });
     var legalLine = TNT.legalFooterLine;
     var tail = 'Kent BR1 3QD';
@@ -361,8 +366,16 @@
       });
   }
 
+  function showBuildMarker() {
+    var on = false;
+    try { on = new URLSearchParams(location.search).get('build') === '1'; } catch (e) { on = false; }
+    if (!on) return;
+    document.querySelectorAll('[data-build]').forEach(function (el) { el.hidden = false; });
+  }
+
   function init() {
     utm();
+    showBuildMarker();
     refresh(document);
     initNav();
     initTracking();

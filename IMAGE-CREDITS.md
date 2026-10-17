@@ -15,14 +15,14 @@ No photograph is used as a portrait of Raja Ali, a member of staff, or a custome
 | `images/photos/adventure.avif`, `adventure.webp` | Sunlit houses along the Villajoyosa coast, Spain | https://www.pexels.com/photo/scenic-mediterranean-coastline-in-villajoyosa-33766992/ | Emilio Sánchez Hernández | Pexels Licence |
 | `images/photos/heritage.avif`, `heritage.webp` | Stone arches in warm evening light. Used for faith and heritage. The frame does not name a place. | https://www.pexels.com/photo/historical-stone-architecture-at-sunset-32711854/ | Eyüp Çelik | Pexels Licence |
 | `images/photos/romantic.avif`, `romantic.webp` | An empty beach at sunset. Used on the romantic card only. | https://www.pexels.com/photo/empty-sandy-beach-of-sea-at-sunset-5743438/ | Alfin Auzikri | Pexels Licence |
-| `images/photos/flights.avif`, `flights.webp` | Soft cloud in warm daylight. No aircraft and no sun flare. | https://www.pexels.com/photo/a-view-of-a-clouds-and-sky-9208090/ | Ahmet Onur Yeygün | Pexels Licence |
+| `images/photos/flights.avif`, `flights.webp` | Soft cirrus cloud in pale daylight. No aircraft and no sun flare. Replaces the earlier teal-and-pink sky. | https://www.pexels.com/photo/31054232/ | Tuğba | Pexels Licence |
 | `images/photos/coast.avif`, `coast.webp` | A boat on clear water in warm daylight. Destinations page band only. The frame does not name a place. | https://www.pexels.com/photo/1450353/ | Asad Photo Maldives | Pexels Licence |
 | `images/photos/about.avif`, `about.webp` | A sharp stone arch in warm daylight. About page band only. The frame does not name a place. | https://www.pexels.com/photo/34761679/ | Engin Bolat | Pexels Licence |
 | `images/photos/deals.avif`, `deals.webp` | Small boats on clear water. Top deals page band only. The frame does not name a place. | https://www.pexels.com/photo/motorboats-moored-on-azure-seawater-in-sunny-port-4701631/ | Maahid Photos | Pexels Licence |
 | `images/photos/packages.avif`, `packages.webp` | A coastal town in warm evening light. Packages page band only. The frame does not name a place. | https://www.pexels.com/photo/18240226/ | Ad Thiry | Pexels Licence |
 | `images/photos/contact.avif`, `contact.webp` | Buildings along a shore in warm light. Contact page band only. The frame does not name a place. | https://www.pexels.com/photo/20820394/ | Dima Cekal | Pexels Licence |
 
-Every photograph above uses the same grade: a warm white balance, contrast raised by 10%, and saturation capped at about 85% so bright pixels do not go more colourful than that. The Spain photograph also has its shadows lifted. Page bands do not reuse the card photographs:
+Every photograph above is graded with the same settings before it is saved: a mild warm white balance, contrast raised by 10%, a shared shadow lift, and saturation pulled toward the same level then capped at about 85%. Spain is cropped toward the cliffs so less of the hazy sky fills the card. Page bands do not reuse the card photographs:
 
 - Destinations band: boat on clear water (`coast`)
 - Holidays band: coastal town (`packages`), not the Villajoyosa adventure card
