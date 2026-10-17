@@ -390,6 +390,9 @@ assert.ok(!textOf(path.join(root, 'privacy.html')).includes('They only use your 
 assert.ok(!/3CX stores|stored by 3CX|3CX, which/i.test(textOf(path.join(root, 'privacy.html'))), 'privacy notice must not say 3CX stores calls');
 assert.ok(!textOf(path.join(root, 'cookies.html')).includes('3CX'));
 assert.ok(!textOf(path.join(root, 'complaints.html')).includes('3CX'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('It processes your enquiry messages and trip details (such as your first name, destination, dates, party size, budget, the occasion and your message) to help write replies and quotes. When our advisers use AI tools, it can also see names, phone numbers and recent messages for that enquiry. It acts under our instructions.'));
+assert.ok(!textOf(path.join(root, 'privacy.html')).includes('only to help write replies to you, and acts under our instructions'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('It is based in the US (see section 7). If you write to us about health, accessibility, children, visas, complaints or refunds, a person deals with it and the message is not sent to the AI.'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('Office hours: 7 days a week, 9:00am to 8:00pm UK time'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('Our office hours are 7 days a week, 9:00am to 8:00pm UK time.'));
 assert.ok(textOf(path.join(root, 'cookies.html')).includes('Our office hours are 7 days a week, 9:00am to 8:00pm UK time.'));
