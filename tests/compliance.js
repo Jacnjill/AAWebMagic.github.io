@@ -99,6 +99,11 @@ assert.ok(config.includes('showPlaceholderBlocks: false'));
 assert.ok(config.includes('showAiDisclosure: false'));
 assert.ok(config.includes("You'll chat with our AI travel assistant first"));
 assert.ok(config.includes('showContactHours: false'));
+assert.ok(textOf(path.join(root, 'topDeals.html')).includes('noindex'));
+const siteJs = textOf(path.join(root, 'js/site.js'));
+assert.ok(siteJs.includes("location.replace(dealsPageUrl('packages.html'))"));
+assert.ok(textOf(path.join(root, 'netlify.toml')).includes('from = "/topdeals"'));
+
 assert.ok(config.includes('instalmentTermsConfirmed: false'));
 assert.ok(config.includes("askForQuote: 'Ask for a current quote'"));
 assert.ok(config.includes("instalmentPublicLine: 'Spread the cost with a deposit and instalments'"));

@@ -21,7 +21,7 @@
   <link rel="preload" href="fonts/source-sans-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/source-sans-700.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" as="image" href="images/photos/greece.avif" type="image/avif" fetchpriority="high">
+  <link rel="preload" as="image" href="images/photos/about.avif" type="image/avif" fetchpriority="high">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/site.css">
 </head>
@@ -49,9 +49,9 @@
   <main id="main">
     <section class="page-hero">
       <picture>
-        <source type="image/avif" srcset="images/photos/greece.avif">
-        <source type="image/webp" srcset="images/photos/greece.webp">
-        <img src="images/photos/greece.webp" alt="White buildings above the sea in Santorini, Greece" width="1200" height="800" fetchpriority="high" decoding="async">
+        <source type="image/avif" srcset="images/photos/about.avif">
+        <source type="image/webp" srcset="images/photos/about.webp">
+        <img src="images/photos/about.webp" alt="Stone columns in warm daylight" width="1200" height="800" fetchpriority="high" decoding="async">
       </picture>
       <div class="wrap">
         <nav class="crumbs crumbs-on-dark" aria-label="Breadcrumb" data-crumbs>
@@ -68,19 +68,27 @@
       </div>
     </section>
 
-    <section class="section"><div class="wrap">
-      <h2>The company</h2>
-      <p data-company></p>
-      <h2>Raja Ali</h2>
-      <p>I'm Raja Ali, founder of Trip N Travel, based in Bristol. I plan trips personally, and you can reach me on WhatsApp.</p>
-      <p data-placeholder-block hidden>{{PLACEHOLDER: how the agency started}} {{PLACEHOLDER: Raja's background before Trip N Travel}}</p>
-      <h2>The team</h2>
-      <p>Raja Ali, founder.</p>
-      <p data-placeholder-block hidden>{{PLACEHOLDER: confirm team}}</p>
-      <h2>Why a small agency?</h2>
-      <p>You can reach the agency on WhatsApp and keep the conversation in one place.</p>
-      <p data-why-protect hidden></p>
-      <p><a href="contact.html">Go to the contact page</a></p>
+    <section class="section"><div class="wrap about-split">
+      <div class="about-copy">
+        <h2>The company</h2>
+        <p data-company></p>
+        <h2>Raja Ali</h2>
+        <p>I'm Raja Ali, founder of Trip N Travel, based in Bristol. I plan trips personally, and you can reach me on WhatsApp.</p>
+        <p data-placeholder-block hidden>{{PLACEHOLDER: how the agency started}} {{PLACEHOLDER: Raja's background before Trip N Travel}}</p>
+        <h2>The team</h2>
+        <p>Raja Ali, founder.</p>
+        <p data-placeholder-block hidden>{{PLACEHOLDER: confirm team}}</p>
+        <h2>Why a small agency?</h2>
+        <p>You can reach the agency on WhatsApp and keep the conversation in one place.</p>
+        <p data-why-protect hidden></p>
+        <p><a href="contact.html">Go to the contact page</a></p>
+      </div>
+      <aside class="brand-panel" aria-label="Founder">
+        <p class="eyebrow">Founder</p>
+        <h2>Raja Ali</h2>
+        <p>Based in Bristol. Chat to Trip N Travel on WhatsApp.</p>
+        <div class="photo-slot" data-founder-slot hidden>Raja's own photograph will go here. It is not on the site yet.</div>
+      </aside>
     </div></section>
 
     <section id="meet-raja" class="section section-soft" data-placeholder-block hidden>
@@ -142,7 +150,6 @@
           <li><a href="cookies.html">Cookie Policy</a></li>
           <li><a href="terms.html">Booking Terms</a></li>
           <li data-protection-link hidden><a href="protection.html">Financial Protection</a></li>
-          <li><a href="contact.html">Contact</a></li>
           <li><button type="button" class="linkish" data-manage-cookies>Manage cookies</button></li>
         </ul>
       </nav>

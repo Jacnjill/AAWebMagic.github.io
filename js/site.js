@@ -43,8 +43,13 @@
         if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'WhatsApp us');
       } else if (el.hasAttribute('data-wa-full') || !el.textContent.trim()) el.textContent = 'WhatsApp us on ' + TNT.whatsappDisplay;
     });
-    var company = TNT.legalName + ' (trading as ' + TNT.tradingName + '). Registered in ' + TNT.registeredIn + ', company number ' + TNT.companyNumber + '. Registered office: ' + TNT.registeredOffice + '.';
-    scope.querySelectorAll('[data-company]').forEach(function (el) { el.textContent = company; });
+    var office = String(TNT.registeredOffice || '');
+    var tail = 'Kent, BR1 3QD';
+    var officeHtml = office.indexOf(tail) === -1
+      ? escapeHtml(office)
+      : escapeHtml(office.slice(0, office.indexOf(tail))) + '<span class="nowrap">' + escapeHtml(tail) + '</span>';
+    var companyHtml = escapeHtml(TNT.legalName + ' (trading as ' + TNT.tradingName + '). Registered in ' + TNT.registeredIn + ', company number ' + TNT.companyNumber + '. Registered office: ') + officeHtml + '.';
+    scope.querySelectorAll('[data-company]').forEach(function (el) { el.innerHTML = companyHtml; });
     scope.querySelectorAll('[data-registered]').forEach(function (el) {
       el.textContent = 'Registered in ' + TNT.registeredIn + ' ' + TNT.companyNumber;
     });
@@ -96,7 +101,7 @@
       el.hidden = !TNT.instalmentTermsConfirmed;
     });
     scope.querySelectorAll('[data-year]').forEach(function (el) {
-      el.textContent = '© ' + new Date().getFullYear() + ' ' + company;
+      el.textContent = '© ' + new Date().getFullYear() + ' ' + TNT.tradingName;
     });
     scope.querySelectorAll('[data-flag-trust]').forEach(function (el) {
       if (TNT.showPtsLine) {
@@ -149,9 +154,10 @@
       if (!socialHost.children.length) socialHost.remove();
     }
     var raja = document.getElementById('meet-raja');
+    var photo = TNT.founderPhoto;
+    var usablePhoto = photo && !/placeholder|team\.jpg/i.test(photo);
     if (raja) {
-      var photo = TNT.founderPhoto;
-      if (!photo || /placeholder|team\.jpg/i.test(photo)) raja.remove();
+      if (!usablePhoto) raja.remove();
       else {
         raja.hidden = false;
         var img = raja.querySelector('img');
@@ -161,6 +167,20 @@
         }
       }
     }
+    scope.querySelectorAll('[data-founder-slot]').forEach(function (el) {
+      if (usablePhoto) {
+        el.hidden = false;
+        el.textContent = '';
+        var portrait = document.createElement('img');
+        portrait.src = photo;
+        portrait.alt = TNT.founderName + ', founder of ' + TNT.tradingName + ', based in ' + TNT.founderBase;
+        portrait.width = 640;
+        portrait.height = 800;
+        el.appendChild(portrait);
+      } else {
+        el.hidden = !TNT.showPlaceholderBlocks;
+      }
+    });
     var protection = document.getElementById('protection-copy');
     if (protection && !protection.dataset.ready) {
       var bits = [];
@@ -312,10 +332,14 @@
       .catch(function () { section.remove(); });
   }
 
-  function loadDealsNav() {
+  function dealsPageUrl(file) {
     var script = document.querySelector('script[src$="site.js"]');
-    var url = 'data/deals.json';
-    if (script && script.src) url = script.src.replace(/js\/site\.js(?:\?.*)?$/, 'data/deals.json');
+    if (script && script.src) return script.src.replace(/js\/site\.js(?:\?.*)?$/, file);
+    return file;
+  }
+
+  function loadDealsNav() {
+    var url = dealsPageUrl('data/deals.json');
     fetch(url)
       .then(function (r) { return r.json(); })
       .then(function (rows) {
@@ -323,14 +347,19 @@
         var any = (rows || []).some(function (d) {
           return TNTLogic.isDealShowable(d, today, TNT.priceMaxAgeDays);
         });
-        if (!any) return;
+        if (!any) {
+          if (document.body.hasAttribute('data-deals-page')) location.replace(dealsPageUrl('packages.html'));
+          return;
+        }
         document.querySelectorAll('[data-nav-deals]').forEach(function (el) { el.hidden = false; });
         if (document.body.hasAttribute('data-deals-page')) {
           var robots = document.querySelector('meta[name="robots"]');
           if (robots && /noindex/i.test(robots.getAttribute('content') || '')) robots.remove();
         }
       })
-      .catch(function () {});
+      .catch(function () {
+        if (document.body.hasAttribute('data-deals-page')) location.replace(dealsPageUrl('packages.html'));
+      });
   }
 
   function init() {

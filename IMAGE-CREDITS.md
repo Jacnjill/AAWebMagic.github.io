@@ -11,18 +11,23 @@ No photograph is used as a portrait of Raja Ali, a member of staff, or a custome
 | `images/photos/hero.avif`, `hero.webp`, `hero-900.avif`, `hero-900.webp` | Quiet Mediterranean shore in warm evening light. Cropped to 16:9 from the upper part of the frame. | https://www.pexels.com/photo/scenic-mediterranean-beach-at-sunset-33630394/ | Nihat Küçük | Pexels Licence |
 | `images/photos/spain.avif`, `spain.webp` | Green cliffs above the sea in Ibiza, Spain | https://www.pexels.com/photo/scenic-coastal-view-of-ibiza-spain-in-summer-29041773/ | Raymond Petrik | Pexels Licence |
 | `images/photos/turkey.avif`, `turkey.webp` | Rocky shore and clear water on the Antalya coast, Turkey | https://www.pexels.com/photo/stunning-mediterranean-coast-in-antalya-34093798/ | zuleyha | Pexels Licence |
-| `images/photos/greece.avif`, `greece.webp` | White buildings above the sea in Santorini, Greece | https://www.pexels.com/photo/white-and-blue-concrete-building-1285625/ | Aleksandar Pasaric | Pexels Licence |
+| `images/photos/greece.avif`, `greece.webp` | White buildings above the sea in Santorini, Greece. Used on the Greece card only. | https://www.pexels.com/photo/white-and-blue-concrete-building-1285625/ | Aleksandar Pasaric | Pexels Licence |
 | `images/photos/adventure.avif`, `adventure.webp` | Sunlit houses along the Villajoyosa coast, Spain | https://www.pexels.com/photo/scenic-mediterranean-coastline-in-villajoyosa-33766992/ | Emilio Sánchez Hernández | Pexels Licence |
 | `images/photos/heritage.avif`, `heritage.webp` | Stone arches in warm evening light. Used for faith and heritage. The frame does not name a place. | https://www.pexels.com/photo/historical-stone-architecture-at-sunset-32711854/ | Eyüp Çelik | Pexels Licence |
-| `images/photos/romantic.avif`, `romantic.webp` | An empty beach at sunset | https://www.pexels.com/photo/empty-sandy-beach-of-sea-at-sunset-5743438/ | Alfin Auzikri | Pexels Licence |
-| `images/photos/flights.avif`, `flights.webp` | Sunlight above a layer of cloud. No aircraft. | https://www.pexels.com/photo/blue-sky-and-white-clouds-912364/ | Brett Sayles | Pexels Licence |
+| `images/photos/romantic.avif`, `romantic.webp` | An empty beach at sunset. Used on the romantic card only. | https://www.pexels.com/photo/empty-sandy-beach-of-sea-at-sunset-5743438/ | Alfin Auzikri | Pexels Licence |
+| `images/photos/flights.avif`, `flights.webp` | Soft cloud in warm daylight. No aircraft and no sun flare. | https://www.pexels.com/photo/a-view-of-a-clouds-and-sky-9208090/ | Ahmet Onur Yeygün | Pexels Licence |
+| `images/photos/coast.avif`, `coast.webp` | A boat on clear water in warm daylight. Destinations page band only. The frame does not name a place. | https://www.pexels.com/photo/1450353/ | Asad Photo Maldives | Pexels Licence |
+| `images/photos/about.avif`, `about.webp` | Stone columns in warm daylight. About page band only. The frame does not name a place. | https://www.pexels.com/photo/empty-hall-in-old-stone-courtyard-15046187/ | Tamás Lichter | Pexels Licence |
+| `images/photos/deals.avif`, `deals.webp` | Small boats on clear water. Top deals page band only. The frame does not name a place. | https://www.pexels.com/photo/motorboats-moored-on-azure-seawater-in-sunny-port-4701631/ | Maahid Photos | Pexels Licence |
 
-The same warm grade is baked into Spain, Turkey, Greece, the adventure coast, the faith and heritage arches, and the empty beach: saturation 1.16, contrast 1.08, a little more red and a little less blue. Page bands reuse those files:
+Every photograph above is balanced to the same warm daylight grade: each file’s colour cast is neutralised, then a small warm bias is added and the mid-tones are lifted to a similar brightness. Page bands do not reuse the card photographs:
 
-- Destinations band: empty beach (`romantic`)
+- Destinations band: boat on clear water (`coast`)
 - Holidays band: Villajoyosa coast (`adventure`)
-- About band: Santorini buildings (`greece`)
+- About band: stone columns (`about`)
 - Contact band: Ibiza cliffs (`spain`)
-- Top deals band: Santorini buildings (`greece`)
+- Top deals band: small boats (`deals`)
+- Romantic card: empty beach (`romantic`)
+- Greece card: Santorini buildings (`greece`)
 
-The Meet Raja photograph is not included. `founderPhoto` in `js/config.js` stays empty until Raja provides a real photo file. The contact page has a marked space for that photograph, and it stays hidden unless `showPlaceholderBlocks` is true.
+The Meet Raja photograph is not included. `founderPhoto` in `js/config.js` stays empty until Raja provides a real photo file. The About page shows a branded panel, and the photograph space on that panel stays hidden unless a real file is set or `showPlaceholderBlocks` is true. The contact page has a separate marked space for that photograph, also hidden unless `showPlaceholderBlocks` is true.

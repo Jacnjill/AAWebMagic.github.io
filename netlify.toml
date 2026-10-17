@@ -17,3 +17,14 @@
 
   [context.branch-deploy.headers.values]
     X-Robots-Tag = "noindex"
+
+# /topdeals opens the deals page. That page sends people to packages until a deal is showable.
+[[redirects]]
+  from = "/topdeals"
+  to = "/topDeals.html"
+  status = 200
+
+[[redirects]]
+  from = "/topdeals.html"
+  to = "/topDeals.html"
+  status = 200
