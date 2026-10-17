@@ -393,6 +393,7 @@ textarea { min-height: 8rem; resize: vertical; }
 }
 .cta-band .btn-wa:hover { background: #fff; color: var(--ink); filter: none; }
 .section-how { padding-top: 96px; }
+.section-how h2 { margin-bottom: 24px; }
 .about-copy h2 { margin-top: 72px; }
 .about-copy h2:first-child { margin-top: 0; }
 .about-columns { display: grid; gap: 2rem; align-items: start; }
@@ -553,6 +554,7 @@ body.has-cookie .mobile-bar { display: none; }
 .check-list li { margin: 0.45rem 0; }
 
 @media (max-width: 767px) {
+  body { padding-bottom: 112px; }
   .footer-copy { margin-top: 16px; }
   .site-footer a:not(.brand),
   .site-footer .linkish {
@@ -586,6 +588,7 @@ body.has-cookie .mobile-bar { display: none; }
   #site-nav li { display: flex; align-items: center; }
   #site-nav a.nav-enquire,
   #site-nav a.nav-enquire[aria-current="page"] { margin: 0 0 0 0.35rem; }
+  .section-how .wrap { padding-right: 0; }
   .steps { grid-template-columns: repeat(3, 1fr); }
   #site-nav a { padding: 0.4rem 0.5rem; min-height: 44px; white-space: nowrap; }
   .doors, .cards { grid-template-columns: repeat(3, 1fr); }
