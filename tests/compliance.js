@@ -385,6 +385,15 @@ assert.ok(textOf(path.join(root, 'cookies.html')).includes('2 years by default. 
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('our separate <a href="cookies.html">Cookie Notice</a>.'));
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('covered in our <a href="privacy.html">Privacy Notice</a>.'));
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('as explained in our <a href="privacy.html">Privacy Notice</a>.'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('Office hours: 7 days a week, 9:00am to 8:00pm UK time'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('Our office hours are 7 days a week, 9:00am to 8:00pm UK time.'));
+assert.ok(textOf(path.join(root, 'cookies.html')).includes('Our office hours are 7 days a week, 9:00am to 8:00pm UK time.'));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes('Contact us during our office hours: 7 days a week, 9:00am to 8:00pm UK time.'));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes('during our office hours, 7 days a week, 9:00am to 8:00pm UK time'));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes('not available around the clock'));
+for (const name of ['privacy.html', 'cookies.html', 'complaints.html']) {
+  assert.ok(!textOf(path.join(root, name)).includes('9am to 8pm'), name + ' still has the old office hours');
+}
 for (const file of html) {
   const base = path.basename(file);
   if (base === 'inquiry.html') continue;
