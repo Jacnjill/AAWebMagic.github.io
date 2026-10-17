@@ -220,6 +220,8 @@ for (const file of html) {
   if (noindexOn) {
     assert.ok(text.includes('<meta name="robots" content="noindex, nofollow">'), `${base} must carry noindex, nofollow while indexing is off`);
   }
+  assert.ok(!text.includes('Top Deals'), `${base} must not contain Top Deals`);
+  assert.ok(!text.includes('Financial Protection'), `${base} must not contain Financial Protection`);
 }
 
 const legalLine = 'TRIPNTRAVEL PRIVATE LTD, company number 16525641, registered in England and Wales, registered office 36 Scotts Road, Bromley, Kent BR1 3QD';
