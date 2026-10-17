@@ -99,10 +99,10 @@ assert.ok(inquiry.includes('http-equiv="refresh"'));
 assert.ok(inquiry.includes('enquiry.html'));
 assert.ok(inquiry.includes('rel="canonical" href="https://tripntravel.co.uk/enquiry.html"'));
 
-for (const name of ['privacy.html', 'cookies.html', 'terms.html', 'protection.html', 'complaints.html']) {
+for (const name of ['privacy.html', 'cookies.html', 'terms.html', 'complaints.html']) {
   assert.ok(textOf(path.join(root, name)).includes('DRAFT — requires review before publishing'));
 }
-assert.ok(textOf(path.join(root, 'protection.html')).includes('Financial protection details coming soon'));
+assert.ok(!fs.existsSync(path.join(root, 'protection.html')), 'protection.html must not be published');
 
 assert.ok(config.includes('showPlaceholderBlocks: false'));
 assert.ok(config.includes('showFounderBio: false'));
@@ -118,7 +118,7 @@ assert.ok(config.includes('instalmentTermsConfirmed: false'));
 assert.ok(config.includes("askForQuote: 'Ask for a current quote'"));
 assert.ok(config.includes("instalmentPublicLine: 'Spread the cost with a deposit and instalments'"));
 
-const legalPages = new Set(['privacy.html', 'cookies.html', 'terms.html', 'protection.html', 'complaints.html']);
+const legalPages = new Set(['privacy.html', 'cookies.html', 'terms.html', 'complaints.html']);
 const token = /\{\{(?:PLACEHOLDER|VERIFY)\b/;
 const voidEls = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr']);
 
@@ -242,9 +242,20 @@ for (const file of html) {
   if (noindexOn) {
     assert.ok(text.includes('<meta name="robots" content="noindex, nofollow">'), `${base} must carry noindex, nofollow while indexing is off`);
   }
+  assert.ok(!text.includes('protection.html'), `${base} links to protection.html`);
   assert.ok(!text.includes('Top Deals'), `${base} must not contain Top Deals`);
   assert.ok(!text.includes('Financial Protection'), `${base} must not contain Financial Protection`);
+  const navs = text.match(/<nav\b[\s\S]*?<\/nav>/gi) || [];
+  const footerStart = text.indexOf('<footer');
+  const footerEnd = text.lastIndexOf('</footer>');
+  const regions = navs.join('\n') + (footerStart !== -1 && footerEnd > footerStart ? text.slice(footerStart, footerEnd) : '');
+  assert.ok(!regions.includes('Top Deals'), `${base} navigation or footer contains Top Deals`);
+  assert.ok(!regions.includes('Financial Protection'), `${base} navigation or footer contains Financial Protection`);
+  assert.ok(!regions.includes('topDeals.html'), `${base} navigation or footer links to topDeals.html`);
 }
+const sitemap = textOf(path.join(root, 'sitemap.xml'));
+assert.ok(!sitemap.includes('protection.html'), 'sitemap must not list protection.html');
+assert.ok(!textOf(path.join(root, 'netlify.toml')).includes('protection.html'), 'redirects must not publish protection.html');
 
 const legalLine = 'TRIPNTRAVEL PRIVATE LTD, company number 16525641, registered in England and Wales, registered office 36 Scotts Road, Bromley, Kent BR1 3QD';
 assert.ok(config.includes(legalLine), 'config must keep the full company line');
@@ -361,6 +372,10 @@ assert.ok(textOf(path.join(root, 'cookies.html')).includes("We don't currently u
 assert.ok(!textOf(path.join(root, 'cookies.html')).includes('ADVISOR TO CONFIRM'));
 assert.ok(!textOf(path.join(root, 'cookies.html')).includes('information collected by advertising tags goes to Meta and Google'));
 assert.ok(!textOf(path.join(root, 'cookies.html')).includes('On Facebook, Instagram and Google'));
+assert.ok(textOf(path.join(root, 'cookies.html')).includes('Analytics stays off.'));
+assert.ok(textOf(path.join(root, 'cookies.html')).includes('we stop using analytics.'));
+assert.ok(!textOf(path.join(root, 'cookies.html')).includes('Analytics and advertising stay off.'));
+assert.ok(!textOf(path.join(root, 'cookies.html')).includes('we stop using analytics and advertising tags.'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('<a href="cookies.html">Cookie Notice</a>'));
 for (const file of html) {
   const base = path.basename(file);

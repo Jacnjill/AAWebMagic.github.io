@@ -1,0 +1,93 @@
+Cookie Notice
+
+Version 2. Last updated: [DATE OF PUBLICATION]
+
+The short version
+
+Our website uses a very small number of things that it needs to work. We'd also like to use analytics, to understand how people use our site.
+
+We only switch analytics on if you click "Accept all". If you click "Reject all", or you don't make a choice, it stays off. Rejecting won't stop you using our website or sending us an enquiry.
+
+You can change your mind at any time using the "Manage cookies" link at the bottom of every page.
+
+1. Who we are
+
+TripNTravel (also written Trip N Travel) is the trading name of TRIPNTRAVEL PRIVATE LTD (company number 16525641), an independent travel agency, and a member of PTS. Our registered office is 36 Scotts Road, Bromley, Kent BR1 3QD. Our website is tripntravel.co.uk.
+
+Privacy contact: info@tripntravel.co.uk
+
+This Cookie Notice explains the cookies and similar technologies we use on our website, and the choices you have. How we use your personal information more generally is explained in our Privacy Notice.
+
+2. What cookies and similar technologies are
+
+Cookies are small text files that a website saves on your computer, phone or tablet when you visit it. They let the website remember things, such as your cookie choice, or count how many people visit a page.
+
+Similar technologies work in much the same way. They include tags or pixels (small pieces of code on a web page that send information to another company when the page loads) and local storage in your browser. In this notice, "cookies" covers all of these.
+
+The law (the Privacy and Electronic Communications Regulations, known as PECR) says we must ask for your consent before we use anything that isn't strictly necessary for the website to work. Where cookies collect information about you, data protection law (UK GDPR) applies too.
+
+3. The types of cookies we use
+
+Strictly necessary (always on)
+
+We save your cookie choice (Accept all or Reject all) in your browser's local storage, so we don't ask you again on every page. The website needs this to work properly, so we don't need your consent for it. Before you make a choice, we don't set any other cookies.
+
+Analytics (off unless you click Accept all)
+
+Analytics help us understand how people use our website: how many people visit, which pages they look at, and how they found us. We use this to improve the site. The analytics service we use is Google Analytics, provided by Google.
+
+We only switch analytics on if you click "Accept all". Until then, it stays off and no information is sent to Google Analytics.
+
+Advertising (off unless you click Accept all)
+
+We don't currently use advertising cookies. If that changes, we will ask for your consent first and update this page.
+
+4. The cookies on our website
+
+The table below lists what we use. We check it whenever the website changes.
+
+Type | Name | What it does | Provider | How long it lasts
+Strictly necessary | tnt-consent (browser local storage, not a cookie) | Remembers your choice (Accept all or Reject all) | TripNTravel | No expiry is set. It stays in local storage until the browser clears it or the choice is saved again.
+Analytics (only if you click Accept all) | _ga | Counts visits and shows us how people use the site, so we can improve it | Google Analytics | 2 years by default. Chrome may limit it to 400 days, and Safari to 7 days, if you do not visit again.
+Analytics (only if you click Accept all) | _ga_T3VGVEDZ7V | Keeps track of a visit to our site for Google Analytics | Google Analytics | 2 years by default. Chrome may limit it to 400 days, and Safari to 7 days, if you do not visit again.
+
+If we add or change cookies, we'll update this table and the date at the top, and ask for your consent again where needed.
+
+5. Your choice: Accept all or Reject all
+
+When you first visit our website, a cookie banner asks whether you're happy for us to use analytics.
+
+- "Accept all" and "Reject all" are shown side by side, the same size and the same style, so saying no is as easy as saying yes.
+- Until you make a choice, we only use what is strictly necessary. Analytics stays off.
+- If you click "Reject all", you can still use the whole website and send us an enquiry.
+
+We save your choice on your device so we don't ask you on every page. We'll ask you again if we change the cookies we use.
+
+6. Changing your mind or withdrawing consent
+
+You can change your choice, or withdraw your consent, at any time. It's as easy to withdraw as it was to give.
+
+- On our website: click "Manage cookies" at the bottom of any page and change your choice. From then on, we stop using analytics. Cookies already on your device may stay there until they expire or you delete them in your browser settings.
+- In your browser: most browsers let you see, block and delete cookies in their settings. If you block all cookies, some parts of our website may not work. The ICO explains more at ico.org.uk.
+
+Withdrawing consent doesn't affect anything that happened before you changed your mind.
+
+7. Who receives the information, and where
+
+If you accept, information collected by analytics goes to Google. Our website is hosted by Netlify. Some of these companies process data outside the UK, including in the US. Where that happens we rely on UK-approved safeguards, as explained in section 7 of our Privacy Notice.
+
+We do not sell your personal data.
+
+8. More information, questions and complaints
+
+Our Privacy Notice explains how we use your personal information, your rights (including access, correction and objection) and how to use them: Privacy Notice.
+
+If you have a question about cookies, or you're unhappy with how we've used them, please contact us first at info@tripntravel.co.uk. Our office hours are 9am to 8pm UK time.
+
+You also have the right to complain to the Information Commissioner's Office (ICO), the UK's data protection regulator: ico.org.uk or 0303 123 1113.
+
+9. Changes to this notice
+
+We'll update this notice if the cookies we use change, and we'll change the date and version at the top. If we start using a new type of non-essential cookie, we'll ask for your consent before using it.
+
+TRIPNTRAVEL PRIVATE LTD, trading as TripNTravel (Trip N Travel). Company number 16525641. Registered office: 36 Scotts Road, Bromley, Kent BR1 3QD.
