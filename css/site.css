@@ -476,6 +476,7 @@ h2.block-gap { margin-top: 48px; }
   border-top: 1px solid var(--line);
 }
 .mobile-bar .btn { flex: 1 1 0; min-width: 0; padding: 0.45rem 0.35rem; }
+.mobile-bar .btn-ghost { flex: 1 0 auto; min-width: 4.75rem; white-space: nowrap; }
 .mobile-bar .btn-wa { flex: 1 0 auto; min-width: 140px; white-space: nowrap; }
 .mobile-bar .btn-accent { flex: 1 0 auto; min-width: 120px; white-space: nowrap; }
 body { padding-bottom: 72px; }
@@ -554,6 +555,7 @@ body.has-cookie .mobile-bar { display: none; }
 .check-list li { margin: 0.45rem 0; }
 
 @media (max-width: 767px) {
+  html { scroll-padding-bottom: 72px; }
   body { padding-bottom: 112px; }
   .footer-copy { margin-top: 16px; }
   .site-footer a:not(.brand),

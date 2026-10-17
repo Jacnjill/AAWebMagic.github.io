@@ -16,7 +16,7 @@ const fresh = {
   priceCheckedDate: daysAgo(7),
   nights: 7,
   board: 'Bed and breakfast',
-  departureAirport: 'Bristol'
+  departureAirport: 'Manchester'
 };
 assert.strictEqual(L.isDealShowable(fresh, new Date(), 7), true);
 assert.strictEqual(L.isDealShowable(Object.assign({}, fresh, { priceCheckedDate: daysAgo(8) }), new Date(), 7), false);
@@ -38,7 +38,7 @@ const faith = L.buildQuoteMessage({
   month: '2027-06',
   monthLabel: 'June 2027',
   flexible: true,
-  from: 'Bristol',
+  from: 'Manchester',
   adults: 2,
   children: 1,
   ages: ['7'],
@@ -50,7 +50,7 @@ assert.ok(faith.startsWith('Assalamu alaikum / Hi Trip N Travel 👋'));
 assert.ok(faith.includes('Trip type: Faith & heritage'));
 assert.ok(faith.includes('Destination: Turkey'));
 assert.ok(faith.includes('When: June 2027 (flexible)'));
-assert.ok(faith.includes('From: Bristol'));
+assert.ok(faith.includes('From: Manchester'));
 assert.ok(faith.includes('Travellers: 2 adults, 1 child aged 7'));
 assert.ok(faith.includes('Budget: £400–£700'));
 assert.ok(faith.includes('Extras: Halal food, Private pool'));

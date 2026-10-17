@@ -167,7 +167,7 @@
         var img = raja.querySelector('img');
         if (img) {
           img.src = photo;
-          img.alt = TNT.founderName + ', founder of ' + TNT.tradingName + ', based in ' + TNT.founderBase;
+          img.alt = TNT.founderName + ', founder of ' + TNT.tradingName;
         }
       }
     }
@@ -180,7 +180,7 @@
         el.textContent = '';
         var portrait = document.createElement('img');
         portrait.src = photo;
-        portrait.alt = TNT.founderName + ', founder of ' + TNT.tradingName + ', based in ' + TNT.founderBase;
+        portrait.alt = TNT.founderName + ', founder of ' + TNT.tradingName;
         portrait.width = 640;
         portrait.height = 800;
         el.appendChild(portrait);

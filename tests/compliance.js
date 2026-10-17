@@ -250,7 +250,17 @@ assert.ok(/data-founder-bio[^>]*hidden/.test(bioTag) || /hidden[^>]*data-founder
 assert.ok(aboutHtml.includes('{{PLACEHOLDER: founder bio, wording approved by Raja}}'), 'founder bio slot must wait for Raja');
 assert.ok(aboutHtml.includes('{{PLACEHOLDER: founder location, wording approved by Raja}}'), 'founder location slot must wait for Raja');
 const aboutVisible = visibleMarkup(aboutHtml).replace(/<[^>]+>/g, ' ');
-assert.ok(!/bristol|based in|\blocation\b/i.test(aboutVisible), 'about page must not show a location while the bio flag is off');
+const staffPlace = joined(['Bris', 'tol']);
+const staffPlace2 = joined(['Bradley', ' ', 'Stoke']);
+const basedPhrase = joined(['based', ' in']);
+assert.ok(!new RegExp(staffPlace + '|' + basedPhrase + '|\\blocation\\b', 'i').test(aboutVisible), 'about page must not show a location while the bio flag is off');
+for (const file of files) {
+  if (/\.(woff2|jpg|png|webp|avif)$/.test(file)) continue;
+  const shipped = textOf(file);
+  const rel = path.relative(root, file);
+  assert.ok(!shipped.includes(staffPlace), `${rel} names a staff place`);
+  assert.ok(!shipped.includes(staffPlace2), `${rel} names a second staff place`);
+}
 assert.ok(!/\b(years?|experience|expert|award)\b/i.test(aboutVisible), 'about page must not show an experience claim while the bio flag is off');
 assert.ok(!/Raja Ali, founder\./.test(aboutVisible), 'the duplicate Raja Ali team line must stay off the about page');
 assert.ok(siteJs.includes("el.hidden = !(TNT.showFounderBio && !/\\{\\{/.test(el.textContent || ''))"), 'founder bio stays hidden until the flag is on and the wording has no placeholder');

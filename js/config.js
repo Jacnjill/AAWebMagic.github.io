@@ -23,9 +23,9 @@ const TNT = {
   whatsappDisplay: '+44 7752 340248',
   email: '{{PLACEHOLDER: contact email}}',
   founderName: 'Raja Ali',
-  founderBase: 'Bristol',
+  founderBase: '',
   founderPhoto: '',
-  /* About founder card stays the role line only until Raja supplies a bio and a location line. */
+  /* About founder card stays the role line only until Raja supplies a bio. No staff location is published. */
   showFounderBio: false,
   contactHours: 'Messages answered 9am–8pm, 7 days',
   /* Unverified opening hours stay off the public pages until confirmed. */

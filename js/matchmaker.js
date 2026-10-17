@@ -1,7 +1,7 @@
 (function () {
   var STEPS = ['Trip type', 'Destination', 'When', 'Flying from', 'Who is travelling', 'Budget'];
   var TRIPS = ['Budget adventure', 'Faith & heritage', 'Romantic', 'Family', 'Not sure'];
-  var AIRPORTS = ['Bristol', 'Birmingham', 'Manchester', 'London (any)', 'Cardiff', 'Other'];
+  var AIRPORTS = ['Birmingham', 'Manchester', 'London (any)', 'Cardiff', 'Other'];
   var BUDGETS = ['Under £400', '£400–£700', '£700–£1,000', '£1,000+'];
   var EXTRAS = ['Halal food', 'Alcohol-free hotel', 'Private pool', 'All inclusive'];
   var state = {
