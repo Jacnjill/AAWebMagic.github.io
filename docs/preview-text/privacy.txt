@@ -1,0 +1,172 @@
+Privacy Notice
+
+Version 2. Last updated: [DATE OF PUBLICATION]
+
+The short version
+
+- We're TripNTravel, an independent UK travel agency. We use your details to answer your enquiry, find you a holiday and book it for you.
+- We only ask for what we need to do that.
+- We share booking details with the holiday companies and airlines whose products we sell, so they can provide your trip.
+- We do not sell your personal data, and we do not pass it to other companies for their own marketing.
+- We only send you holiday news and offers if you've said yes. You can change your mind at any time.
+- Calls with our advisers are recorded. We tell you at the start of every call.
+- You pay through a secure payment link. We never take your card details by WhatsApp or phone.
+- You have rights over your information, including seeing it, correcting it and complaining to the ICO.
+
+1. Who we are
+
+TripNTravel (also written Trip N Travel) is the trading name of TRIPNTRAVEL PRIVATE LTD. We're an independent travel agency and a member of PTS. Our website is tripntravel.co.uk.
+
+Company number: 16525641
+
+Registered office: 36 Scotts Road, Bromley, Kent BR1 3QD
+
+Privacy contact: info@tripntravel.co.uk
+
+Office hours: 9am to 8pm UK time
+
+In data protection law we are the "controller" of your personal information. That simply means we decide how it's used, and we're responsible for looking after it.
+
+We're a travel agent. We help you choose and book holidays and flights from the holiday companies and airlines whose products we sell. Those companies provide your trip.
+
+2. How we get your information
+
+Most of what we hold comes straight from you, when you get in touch by:
+
+- WhatsApp (we use the WhatsApp Business platform, provided by Meta)
+- Phone call
+- Email
+- A form on our website
+- A Facebook or Instagram lead form or advert (Meta passes us the details you enter)
+
+If you book for other people, such as your partner or children, you give us their details too. Please make sure they know you're sharing them with us.
+
+3. What information we collect
+
+When you enquire, we may ask for:
+
+- Your name, phone number and email address
+- Where you'd like to go, your travel dates and your departure airport
+- How many people are travelling, and the ages of any children
+- Board basis (for example, all inclusive or half board) and a rough budget
+- Your messages to us, and our notes from phone calls
+- Your marketing choices, and a record of when and how you made them (see section 5)
+
+When you book, we also need:
+
+- Each traveller's name exactly as it appears on their passport
+- Dates of birth
+- Passport details, if the holiday company or airline needs them
+- Any special requirements you tell us about
+- A payment reference (never your full card number)
+
+Health and accessibility needs. Special requirements can sometimes include health or accessibility information, such as a wheelchair request or a medical condition. The law treats this as "special category" data. We only collect and use it where we need it to arrange your travel, with your explicit consent or where the law otherwise allows.
+
+Children. We only collect children's names and ages as part of a family holiday enquiry or booking, and we get them from the adult who is booking.
+
+Payments. You pay through a secure payment link produced on the PTS system, and your payment goes into the PTS merchant account. We do not take your card details ourselves, whether by WhatsApp or by phone.
+
+Calls with our advisers
+
+We record calls with our advisers, whether you phone us or we phone you.
+
+- Why: for training, quality, and to help us deal with complaints and disputes. Our legal reason is our legitimate interests in running a good business and resolving problems fairly (see section 4).
+- We tell you first. Before the call connects, and before recording starts, you'll hear: "Calls with Trip N Travel advisers are recorded for training, quality and complaint-handling purposes."
+- What we keep: the recording of the call, and a simple log of the call (the date, the phone numbers and how long it lasted).
+- How long: 12 months from the call. If a complaint or dispute means we need the recording for longer, we keep it until that is resolved, then delete it.
+- Who can listen: only authorised staff.
+- Who looks after the recordings for us: Twilio, our phone calling provider, records and stores the calls on our behalf (see sections 6 and 7).
+- Your choice: you can object to a call being recorded. Tell the adviser, or contact us afterwards, and we will consider your request. Please don't give card details on a call: we never need them.
+
+4. Why we use your information (and our legal reasons)
+
+The law says we must have a valid reason (a "lawful basis") for each use. Here's what we do and why:
+
+- Replying to your enquiry and preparing quotes: because you've asked us to, as a step before a possible booking (a contract).
+- Making and managing your booking: to carry out our contract with you.
+- Meeting our legal and accounting duties: because the law requires it (legal obligation).
+- Keeping records, preventing fraud, improving our service, training our team, recording calls and handling complaints and disputes: our legitimate interests in running a good, safe business. We balance these against your rights.
+- Sending holiday news and offers: only with your consent (see section 5).
+- Health or accessibility information: with your explicit consent, or where it's necessary to arrange your travel and the law allows it.
+
+5. Holiday news and offers: your choice
+
+We'd love to send you holiday news and offers, but only if you want them. We ask separately for each channel (for example WhatsApp). You can say yes to one and no to the others.
+
+Asking us about a holiday does not count as saying yes to marketing. We'll reply to your enquiry by WhatsApp, phone or email, including sending you quotes, but we won't add you to offers unless you've opted in.
+
+On our website enquiry form, there is a tick box, not ticked for you, that says: "Yes, I'd like to receive holiday offers and deals from Trip N Travel by WhatsApp. I can stop these at any time by replying STOP or by telling you." You can send the form without ticking it.
+
+Our records. If you tick it, we record that you did, the date and time, the page of our website you used, and the version of the wording you saw. We keep this as proof of your choice.
+
+You can withdraw your consent at any time, for any channel.
+
+How to tell us to stop. Just reply STOP on WhatsApp (or "unsubscribe", "opt out" or "don't message me"), or tell us in any other way, by phone, email or message. We'll record your request and stop.
+
+If you have a live booking, we may still need to send you essential messages about it, such as payments due, changes to your holiday or travel disruption. These are service messages, not marketing.
+
+6. Who we share your information with
+
+We do not sell your personal data, and we do not pass it to other companies for their own marketing.
+
+Holiday companies and airlines. When you book, we give the holiday companies and airlines whose products we sell the details they need to make your booking. They use your information as separate controllers, under their own privacy notices.
+
+PTS. Payment links and booking records are handled through PTS, which acts under its own terms and its own privacy notice. We can give you a link to it if you ask.
+
+The service providers who help us run our business. They only use your information to provide their service to us:
+
+- HubSpot: our customer records system (CRM). Your data is held in an EU data centre, but HubSpot is part of a US-owned group.
+- Meta: WhatsApp Business, and Facebook and Instagram lead forms and adverts
+- Twilio: our phone calling system. Twilio records and stores our call recordings for us
+- Supabase and Netlify: hosting for our sales app and our website
+- Google (Workspace, Drive and email) and Microsoft (email): our office and email tools
+- Anthropic: our AI provider. It processes your enquiry messages (such as your first name, destination, dates, party size, budget and message) only to help write replies to you, and acts under our instructions. It is based in the US (see section 7). If you write to us about health, accessibility, children, visas, complaints or refunds, a person deals with it and the message is not sent to the AI.
+
+AI assistants. We use AI tools to help draft replies and summarise enquiries. A TripNTravel adviser can take over the conversation at any time, just ask, and sensitive topics are always handled by a person. We don't make decisions about you that have a legal effect using only automated tools.
+
+7. Sending information outside the UK
+
+Some of our providers are based in the US or process data outside the UK. Where that happens, we rely on UK-approved safeguards, such as the UK-US data bridge or standard contractual clauses with the UK Addendum, and we only use providers that offer them. Please contact us if you would like more information. One of these is Anthropic, the AI provider that helps us write replies (see section 6). It is based in the US, and we rely on standard contractual clauses with the UK Addendum for that transfer.
+
+8. How long we keep your information
+
+We only keep your information for as long as we need it:
+
+- Enquiries that don't lead to a booking: 12 months
+- Booking and accounting records: 6 years, the usual UK standard
+- Records of your marketing choices: until you withdraw your consent, and after that we keep a note that you opted out, so that we don't contact you again
+- Call recordings: 12 months from the call, unless a complaint or dispute means we need to keep a recording for longer
+
+After that, we delete it or make it anonymous.
+
+9. Your rights
+
+You have the right to:
+
+- Ask for a copy of the information we hold about you (access)
+- Ask us to correct anything that's wrong or incomplete (correction)
+- Ask us to delete your information (erasure)
+- Ask us to limit how we use it (restriction)
+- Ask for your information in a format you can take elsewhere (portability)
+- Object to how we use it, including for marketing and call recording (objection)
+- Withdraw your consent at any time, where we rely on consent
+
+Some rights only apply in certain situations, and we may sometimes need to keep information for legal reasons. If so, we'll explain why.
+
+To use any of these rights, contact us at info@tripntravel.co.uk, or message or call us in the usual way. We'll reply within one month.
+
+10. Cookies
+
+Our website uses cookies. We explain these in our separate Cookie Notice.
+
+11. Questions and complaints
+
+If you have a question or you're unhappy with how we've handled your information, please talk to us first at info@tripntravel.co.uk. Our office hours are 9am to 8pm UK time. We'll do our best to put it right.
+
+You also have the right to complain to the Information Commissioner's Office (ICO), the UK's data protection regulator: ico.org.uk or 0303 123 1113.
+
+12. Changes to this notice
+
+We'll update this notice if the way we use your information changes, and we'll change the date and version at the top. If a change affects you in a significant way, we'll let you know.
+
+TRIPNTRAVEL PRIVATE LTD, trading as TripNTravel (Trip N Travel). Company number 16525641. Registered office: 36 Scotts Road, Bromley, Kent BR1 3QD.

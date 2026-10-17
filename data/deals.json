@@ -1,0 +1,20 @@
+[
+  {
+    "id": "example-turkey-budget",
+    "placeholder": true,
+    "title": "{{PLACEHOLDER: deal title}}",
+    "niche": "budget",
+    "destination": "Turkey",
+    "fromPricePP": 0,
+    "nights": 7,
+    "board": "{{PLACEHOLDER: board basis}}",
+    "departureAirport": "{{PLACEHOLDER: departure airport}}",
+    "priceCheckedDate": "2020-01-01",
+    "flightInclusive": false,
+    "halalFood": false,
+    "alcoholFree": false,
+    "privatePool": false,
+    "image": "",
+    "highlights": []
+  }
+]

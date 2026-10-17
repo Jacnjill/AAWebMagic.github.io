@@ -1,0 +1,3 @@
+Fraunces and Source Sans 3 are used under the SIL Open Font License, Version 1.1.
+They are Google Fonts, self-hosted so the site does not call fonts.googleapis.com or fonts.gstatic.com when a page loads.
+Full license: https://openfontlicense.org
