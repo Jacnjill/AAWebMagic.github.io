@@ -383,7 +383,7 @@ textarea { min-height: 8rem; resize: vertical; }
 
 .cta-band { background: var(--accent); color: #fff; padding: 4rem 0; }
 .cta-band h2 { color: #fff; margin-bottom: 0; }
-.cta-band .cta-sub { margin: 0.35rem 0 0; max-width: 36rem; color: #fff; }
+.cta-band .cta-sub { margin: 10px 0 0; max-width: 36rem; color: #fff; }
 .cta-band .cta-action { margin: 24px 0 0; }
 .cta-band a:not(.btn) { color: #fff; }
 .cta-band .btn-wa {
