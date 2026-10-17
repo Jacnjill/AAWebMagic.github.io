@@ -53,7 +53,8 @@ for (const file of html) {
   const text = textOf(file);
   assert.ok(!/ATOL/i.test(text), `${file} mentions ATOL`);
   const base = path.basename(file);
-  if (base !== 'privacy.html') {
+  const advisorPtsPages = new Set(['privacy.html', 'cookies.html', 'complaints.html']);
+  if (!advisorPtsPages.has(base)) {
     assert.ok(!/\bPTS\b/.test(text) && !/Protected Trust Services/i.test(text), `${file} mentions PTS`);
   }
   assert.ok(!text.includes('6393'), `${file} has the PTS number`);
@@ -68,6 +69,8 @@ assert.ok(config.includes('showAtolWording: false'));
 assert.ok(config.includes('showPtsLine: false'));
 assert.ok(config.includes('hubspotEnabled: false'));
 assert.ok(config.includes("privacyUrl: ''"));
+assert.ok(config.includes('legalPagesFinal: false'));
+assert.ok(config.includes('privacyLineFinal: false'));
 assert.ok(config.includes("hubspotRegion: 'eu1'"));
 assert.ok(config.includes("hubspotPortalId: '146832569'"));
 assert.ok(config.includes("hubspotFormId: 'd9794649-3539-41a5-8373-9df3b876c38f'"));
@@ -310,6 +313,60 @@ for (const file of html) {
   assert.ok(footer.includes('>Complaints</a>'), `${base} complaints link must be visible`);
 }
 
+const suppliedFormLine = 'By sending this form you agree we may use your details to reply to your enquiry, as explained in our Privacy Notice.';
+assert.ok(!enquiryHtml.includes(suppliedFormLine), 'the Advisor has not supplied that form line');
+assert.ok(!textOf(path.join(root, 'contact.html')).includes(suppliedFormLine));
+if (/privacyLineFinal:\s*true/.test(config)) {
+  assert.fail('privacyLineFinal is true, but the Advisor still has to supply the enquiry form privacy line');
+}
+
+const expectedPlaceholders = {
+  'privacy.html': ['[DATE OF PUBLICATION]'],
+  'cookies.html': [
+    '[DATE OF PUBLICATION]',
+    '[ADVISOR TO CONFIRM: advertising section wording to be adjusted because no advertising tags are live]'
+  ],
+  'complaints.html': [
+    '[DATE OF PUBLICATION]',
+    '[WHATSAPP NUMBER: not recorded, to be added]',
+    '[PHONE NUMBER: not recorded, to be added]',
+    '[REVIEW REPLY TIME: not recorded, to be added]'
+  ]
+};
+const legalFinal = /legalPagesFinal:\s*true/.test(config);
+for (const [name, expected] of Object.entries(expectedPlaceholders)) {
+  const text = textOf(path.join(root, name));
+  const found = [...text.matchAll(/<span class="placeholder">(\[[^\]]+\])<\/span>/g)].map((match) => match[1]);
+  console.log('placeholders ' + name + ': ' + (found.join(' | ') || '(none)'));
+  assert.ok(!text.includes('[LINK]'), name + ' still has a [LINK] marker');
+  assert.ok(!text.includes('[LINK TO COOKIE NOTICE]'), name + ' still has a cookie-notice marker');
+  assert.ok(!text.includes('[VERIFIED LIFETIME]'), name + ' still has an unverified lifetime');
+  assert.ok(text.includes('>Privacy Notice</a>'), name + ' footer should say Privacy Notice');
+  assert.ok(text.includes('>Cookie Notice</a>'), name + ' footer should say Cookie Notice');
+  assert.ok(text.includes('data-manage-cookies'), name + ' needs Manage cookies');
+  if (legalFinal) {
+    assert.deepStrictEqual(found, [], name + ' still has placeholders while legalPagesFinal is true');
+  } else {
+    assert.deepStrictEqual(found, expected, name + ' placeholder list changed');
+  }
+}
+assert.ok(textOf(path.join(root, 'cookies.html')).includes('No expiry is set. It stays in local storage until the browser clears it or the choice is saved again.'));
+assert.ok(textOf(path.join(root, 'cookies.html')).includes('>_ga</td>'));
+assert.ok(textOf(path.join(root, 'cookies.html')).includes('>_ga_T3VGVEDZ7V</td>'));
+assert.ok(!textOf(path.join(root, 'cookies.html')).includes('To be confirmed'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('<a href="cookies.html">Cookie Notice</a>'));
+for (const file of html) {
+  const base = path.basename(file);
+  if (base === 'inquiry.html') continue;
+  const text = textOf(file);
+  const footerStart = text.indexOf('<footer');
+  const footer = text.slice(footerStart);
+  const prefix = base === '404.html' ? '/' : '';
+  assert.ok(footer.includes(`href="${prefix}privacy.html">Privacy Notice</a>`), `${base} footer link should read Privacy Notice`);
+  assert.ok(footer.includes(`href="${prefix}cookies.html">Cookie Notice</a>`), `${base} footer link should read Cookie Notice`);
+  assert.ok(footer.includes('data-manage-cookies'), `${base} footer needs Manage cookies`);
+}
+
 const forms = textOf(path.join(root, 'js/forms.js'));
 assert.ok(forms.includes('enquiryConsent'));
 assert.ok(forms.includes('api-'), 'the form posts to the regional HubSpot host');
@@ -331,7 +388,7 @@ assert.ok(matchmaker.includes('hubspotEnabled'));
 const { spawnSync } = require('child_process');
 const cookieRun = spawnSync(process.execPath, [path.join(__dirname, 'cookie-banner.js')], {
   encoding: 'utf8',
-  timeout: 180000,
+  timeout: 240000,
   env: Object.assign({}, process.env, { NODE_PATH: '/tmp/pw/node_modules' })
 });
 if (cookieRun.stdout) process.stdout.write(cookieRun.stdout);

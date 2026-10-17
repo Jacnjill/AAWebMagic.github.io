@@ -14,7 +14,7 @@ function loadPlaywright() {
 const { chromium } = loadPlaywright();
 const root = path.join(__dirname, '..');
 const port = 8795;
-const pages = ['index.html', 'packages.html', 'destinations.html', 'contact.html', 'enquiry.html'];
+const pages = ['index.html', 'packages.html', 'destinations.html', 'contact.html', 'enquiry.html', 'privacy.html', 'cookies.html', 'complaints.html'];
 const widths = [
   { name: '390', width: 390, height: 844 },
   { name: '1280', width: 1280, height: 900 }
@@ -68,6 +68,22 @@ function hubspotHits(urls) {
   return urls.filter((url) => hubspotReq.test(url));
 }
 
+function foreign(urls) {
+  return urls.filter((url) => {
+    try { return new URL(url).hostname !== '127.0.0.1'; } catch (e) { return true; }
+  });
+}
+
+function notGa(urls) {
+  return urls.filter((url) => {
+    let host = '';
+    try { host = new URL(url).hostname; } catch (e) { return true; }
+    if (host === 'www.googletagmanager.com' || host === 'www.google-analytics.com') return false;
+    if (host.endsWith('.google-analytics.com')) return false;
+    return true;
+  });
+}
+
 function badCookies(cookies) {
   return cookies.filter((cookie) => nonEssential.test(cookie.name));
 }
@@ -115,6 +131,7 @@ async function main() {
         const beforeUrls = first.requests.slice();
         const beforeTrackers = trackerHits(beforeUrls);
         if (beforeTrackers.length) fail(file + ' ' + width.name + ' tracker request before a choice: ' + beforeTrackers.join(' '));
+        if (foreign(beforeUrls).length) fail(file + ' ' + width.name + ' third-party request before a choice: ' + foreign(beforeUrls).join(' '));
         if (hubspotHits(beforeUrls).length) fail(file + ' ' + width.name + ' HubSpot request before a choice: ' + hubspotHits(beforeUrls).join(' '));
         const hubspotCode = await first.page.evaluate(() => {
           return [...document.scripts].some((script) => /hsforms|hubspot/i.test(script.src || '')) || !!document.querySelector('.hs-form-frame');
@@ -157,8 +174,10 @@ async function main() {
         await accepted.page.click('[data-cookie="accept"]');
         await wait(800);
         const afterAccept = trackerHits(accepted.requests);
-        const unexpected = afterAccept.filter((item) => !analyticsHost.test(item));
+        const unexpected = notGa(afterAccept);
         if (unexpected.length) fail(file + ' ' + width.name + ' unexpected tracker after Accept all: ' + unexpected.join(' '));
+        const acceptExtra = notGa(foreign(accepted.requests));
+        if (acceptExtra.length) fail(file + ' ' + width.name + ' third-party request after Accept all that is not Google Analytics: ' + acceptExtra.join(' '));
         if (hubspotHits(accepted.requests).length) fail(file + ' ' + width.name + ' HubSpot request after Accept all while the form switch is off');
         const acceptState = await readState(accepted.context, accepted.page);
         const acceptChoice = JSON.parse(acceptState.storage.consent || 'null');
@@ -169,7 +188,7 @@ async function main() {
         accepted.requests.length = 0;
         await accepted.page.reload({ waitUntil: 'networkidle' });
         if (await accepted.page.locator('#cookie-banner').count()) fail(file + ' ' + width.name + ' banner returned after Accept all reload');
-        const reloadAccept = trackerHits(accepted.requests).filter((item) => !analyticsHost.test(item));
+        const reloadAccept = notGa(trackerHits(accepted.requests));
         if (reloadAccept.length) fail(file + ' ' + width.name + ' non-analytics tracker after Accept reload: ' + reloadAccept.join(' '));
         if (hubspotHits(accepted.requests).length) fail(file + ' ' + width.name + ' HubSpot request after Accept reload while the form switch is off');
         await accepted.context.close();
@@ -193,6 +212,45 @@ async function main() {
         });
       }
     }
+
+    const withdrawal = await fresh(browser, 390, 844);
+    await withdrawal.page.goto('http://127.0.0.1:' + port + '/index.html', { waitUntil: 'networkidle' });
+    withdrawal.requests.length = 0;
+    await withdrawal.page.click('[data-cookie="accept"]');
+    await wait(1000);
+    const now = Date.now() / 1000;
+    const acceptedCookies = await withdrawal.context.cookies();
+    const gaCookies = acceptedCookies.filter((cookie) => cookie.name === '_ga' || cookie.name === '_ga_T3VGVEDZ7V');
+    if (!gaCookies.some((cookie) => cookie.name === '_ga')) fail('Accept all did not set _ga');
+    if (!gaCookies.some((cookie) => cookie.name === '_ga_T3VGVEDZ7V')) fail('Accept all did not set _ga_T3VGVEDZ7V');
+    withdrawal.requests.length = 0;
+    await withdrawal.page.click('[data-manage-cookies]');
+    await withdrawal.page.click('[data-cookie="reject"]');
+    await wait(600);
+    const withdrawClick = trackerHits(withdrawal.requests);
+    const afterWithdraw = (await withdrawal.context.cookies()).filter((cookie) => cookie.name === '_ga' || cookie.name === '_ga_T3VGVEDZ7V');
+    withdrawal.requests.length = 0;
+    await withdrawal.page.reload({ waitUntil: 'networkidle' });
+    const withdrawReload = trackerHits(withdrawal.requests);
+    const afterReload = (await withdrawal.context.cookies()).filter((cookie) => cookie.name === '_ga' || cookie.name === '_ga_T3VGVEDZ7V');
+    if (withdrawReload.length) fail('Google Analytics loaded again after Manage cookies then Reject all: ' + withdrawReload.join(' '));
+    if (await withdrawal.page.locator('#cookie-banner').count()) fail('banner returned after withdrawal reload');
+    const stored = await withdrawal.page.evaluate(() => localStorage.getItem('tnt-consent'));
+    const storedChoice = JSON.parse(stored || 'null');
+    if (!storedChoice || storedChoice.analytics !== false || storedChoice.marketing !== false) {
+      fail('Manage cookies then Reject all did not store analytics and marketing as off');
+    }
+    rows.withdrawal = {
+      gaAfterAccept: gaCookies.map((cookie) => cookie.name + ' expires in ' + Math.round((cookie.expires - now) / 86400) + ' days'),
+      trackersOnWithdrawClick: withdrawClick,
+      gaAfterWithdraw: afterWithdraw.map((cookie) => cookie.name),
+      trackersOnReload: withdrawReload,
+      gaAfterReload: afterReload.map((cookie) => cookie.name),
+      removedByCode: afterReload.length === 0
+    };
+    if (afterReload.length === 0) fail('expected the test to record whether GA cookies remain; none were present after reload');
+    console.log('withdrawal ' + JSON.stringify(rows.withdrawal));
+    await withdrawal.context.close();
   } finally {
     await browser.close();
     server.kill();
@@ -264,6 +322,19 @@ async function main() {
     lines.push('');
   }
   lines.push('');
+  if (rows.withdrawal) {
+    lines.push('## Withdrawal');
+    lines.push('');
+    lines.push('On index.html, Accept all was followed by Manage cookies and then Reject all.');
+    lines.push('');
+    lines.push('- Google Analytics cookies after Accept all: ' + rows.withdrawal.gaAfterAccept.join('; '));
+    lines.push('- Tracker requests started by the Reject click: ' + (rows.withdrawal.trackersOnWithdrawClick.join(' ') || 'none'));
+    lines.push('- Google Analytics cookies still present after Reject all: ' + (rows.withdrawal.gaAfterWithdraw.join(', ') || 'none'));
+    lines.push('- Tracker requests on the next page load: ' + (rows.withdrawal.trackersOnReload.join(' ') || 'none'));
+    lines.push('- Google Analytics cookies still present after that reload: ' + (rows.withdrawal.gaAfterReload.join(', ') || 'none'));
+    lines.push('- The site code removes those cookies: ' + (rows.withdrawal.removedByCode ? 'yes' : 'no'));
+    lines.push('');
+  }
   if (failures.length) {
     lines.push('## Failures');
     lines.push('');

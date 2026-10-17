@@ -43,6 +43,10 @@ const TNT = {
   hubspotConsentVersion: 'WA-MKT-v1',
   /* Live privacy notice URL. Empty keeps the words Privacy Notice as plain text. */
   privacyUrl: '',
+  /* Draft legal pages still show highlighted placeholders. A release check fails if this is true while any remain. */
+  legalPagesFinal: false,
+  /* The Advisor has not supplied the enquiry-form privacy line. Leave this false until they do. */
+  privacyLineFinal: false,
   showAtolWording: false,
   showPtsLine: false,
   extraDestinations: [],

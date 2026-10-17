@@ -422,6 +422,25 @@ h2.block-gap { margin-top: 48px; }
   margin: 0;
 }
 
+.legal-copy h2 { margin-top: 2rem; }
+.legal-copy h3 { margin-top: 1.4rem; }
+.legal-copy li { margin: 0.35rem 0; }
+.placeholder {
+  background: #fff3bf;
+  color: var(--text);
+  padding: 0.05em 0.25em;
+}
+.table-scroll { overflow-x: auto; max-width: 100%; }
+.notice-table { width: 100%; border-collapse: collapse; }
+.notice-table th,
+.notice-table td {
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  padding: 0.55rem 0.65rem;
+}
+.notice-table th { background: var(--soft); }
+
 .crumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: 0.35rem 0.4rem; padding: 0; margin: 0 0 1rem; }
 .crumbs li:not(:last-child)::after { content: "/"; margin-left: 0.4rem; color: var(--muted); }
 
