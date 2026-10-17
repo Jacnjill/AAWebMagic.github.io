@@ -18,8 +18,9 @@
   <meta name="theme-color" content="#0E5A57">
   <link rel="icon" href="images/opt/favicon-32.png" type="image/png">
   <link rel="apple-touch-icon" href="images/opt/apple-touch.png">
-  <link rel="preload" href="fonts/source-sans-400.woff2" as="font" type="font/woff2">
-  <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2">
+  <link rel="preload" href="fonts/source-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/source-sans-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" as="image" href="images/photos/hero-900.avif" type="image/avif" imagesrcset="images/photos/hero-900.avif 900w, images/photos/hero.avif 1600w" imagesizes="100vw" fetchpriority="high">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/site.css">
@@ -36,13 +37,11 @@
       <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav id="site-nav" aria-label="Primary">
         <ul>
-        <li><a href="index.html" aria-current="page">Home</a></li>
-        <li><a href="packages.html">Holiday Packages</a></li>
+        <li><a href="packages.html">Holidays</a></li>
         <li><a href="destinations.html">Destinations</a></li>
-        <li><a href="topDeals.html">Top Deals</a></li>
-        <li><a href="enquiry.html">Enquiry</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
+        <li><a class="nav-enquire" href="enquiry.html">Enquire</a></li>
         </ul>
       </nav>
     </div>
@@ -80,7 +79,7 @@
           <span class="photo-card-copy">
             <span class="photo-kicker">Destination</span>
             <h3>Spain</h3>
-            <p>Ask us for a holiday in Spain.</p>
+            <p>Holidays in Spain, shaped around the budget you give us.</p>
           </span>
         </a>
         <a class="photo-card" href="enquiry.html?destination=Turkey">
@@ -92,7 +91,7 @@
           <span class="photo-card-copy">
             <span class="photo-kicker">Destination</span>
             <h3>Turkey</h3>
-            <p>Ask us for a holiday in Turkey.</p>
+            <p>We can quote a family holiday in Turkey. Tell us the children's ages.</p>
           </span>
         </a>
         <a class="photo-card" href="enquiry.html?destination=Greece">
@@ -104,7 +103,7 @@
           <span class="photo-card-copy">
             <span class="photo-kicker">Destination</span>
             <h3>Greece</h3>
-            <p>Ask us for a holiday in Greece.</p>
+            <p>A trip for two in Greece. Tell us if you want us to check a private pool.</p>
           </span>
         </a>
         </div>
@@ -131,7 +130,7 @@
           <picture>
             <source type="image/avif" srcset="images/photos/heritage.avif">
             <source type="image/webp" srcset="images/photos/heritage.webp">
-            <img src="images/photos/heritage.webp" alt="Domes and minarets of the Blue Mosque in Istanbul" width="1800" height="192" loading="lazy" decoding="async">
+            <img src="images/photos/heritage.webp" alt="Stone arches in warm evening light" width="1200" height="800" loading="lazy" decoding="async">
           </picture>
           <span class="photo-card-copy">
             <span class="photo-kicker">Holiday</span>
@@ -175,9 +174,9 @@
       <div class="wrap">
         <h2>How it works</h2>
         <ol class="steps">
-          <li><h3>Tell us what you want in 60 seconds</h3><p>Use Find My Holiday. It takes about a minute.</p></li>
-          <li><h3>Tailored quote on WhatsApp</h3><p>We reply on WhatsApp with a quote for you to look at.</p></li>
-          <li><h3 data-instalment>Ask for a current quote</h3><p>When you are happy with the quote, ask us and we will set out the price and how to pay.</p></li>
+          <li><span class="step-num">1</span><h3>Tell us what you want</h3></li>
+          <li><span class="step-num">2</span><h3>We reply on WhatsApp</h3></li>
+          <li><span class="step-num">3</span><h3 data-instalment>Ask for a current quote</h3></li>
         </ol>
       </div>
     </section>
@@ -224,7 +223,7 @@
           <label class="choice"><input type="checkbox" name="offersEmail"> I'd like to receive holiday offers by email. I can unsubscribe at any time.</label>
           <label class="choice"><input type="checkbox" name="offersWhatsapp"> I'd like to receive holiday offers by WhatsApp. I can unsubscribe at any time.</label>
           <p><a href="privacy.html">Read the privacy policy</a></p>
-          <p>What happens next: we open WhatsApp with your message so you can send it. Nothing is booked. We do not add you to a mailing list unless you tick a box, and we do not save this to HubSpot while that connection is switched off.</p>
+          <p>What happens next: we open WhatsApp with your message so you can send it. Nothing is booked. We do not add you to a mailing list unless you tick a box.</p>
           <button class="btn btn-accent" type="submit">Request the guide</button>
           <p data-status role="status"></p>
         </form>
@@ -238,7 +237,6 @@
           <button type="button" class="btn btn-ghost" data-open-matchmaker data-location="final-cta">Find My Holiday</button>
           <a class="btn btn-wa" data-wa data-location="final-cta">WhatsApp Us</a>
         </div>
-        <p class="ai-note">You'll chat with our AI travel assistant first; a travel adviser can take over whenever you like.</p>
       </div>
     </section>
 
@@ -261,9 +259,9 @@
       <nav aria-label="Explore">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="packages.html">Holiday Packages</a></li>
+          <li><a href="packages.html">Holidays</a></li>
           <li><a href="destinations.html">Destinations</a></li>
-          <li><a href="topDeals.html">Top Deals</a></li>
+          <li data-nav-deals hidden><a href="topDeals.html">Top Deals</a></li>
           <li><a href="enquiry.html">Enquiry</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>

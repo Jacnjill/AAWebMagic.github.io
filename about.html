@@ -18,8 +18,10 @@
   <meta name="theme-color" content="#0E5A57">
   <link rel="icon" href="images/opt/favicon-32.png" type="image/png">
   <link rel="apple-touch-icon" href="images/opt/apple-touch.png">
-  <link rel="preload" href="fonts/source-sans-400.woff2" as="font" type="font/woff2">
-  <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2">
+  <link rel="preload" href="fonts/source-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/source-sans-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" as="image" href="images/photos/greece.avif" type="image/avif" fetchpriority="high">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/site.css">
 </head>
@@ -35,29 +37,37 @@
       <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav id="site-nav" aria-label="Primary">
         <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="packages.html">Holiday Packages</a></li>
+        <li><a href="packages.html">Holidays</a></li>
         <li><a href="destinations.html">Destinations</a></li>
-        <li><a href="topDeals.html">Top Deals</a></li>
-        <li><a href="enquiry.html">Enquiry</a></li>
         <li><a href="about.html" aria-current="page">About</a></li>
         <li><a href="contact.html">Contact</a></li>
+        <li><a class="nav-enquire" href="enquiry.html">Enquire</a></li>
         </ul>
       </nav>
     </div>
   </header>
   <main id="main">
-    <nav class="crumbs wrap" aria-label="Breadcrumb" data-crumbs>
-      <ol>
-        <li><a href="index.html">Home</a></li>
-        <li><span aria-current="page">About</span></li>
-      </ol>
-    </nav>
-    
-    <section class="hero"><div class="wrap">
-      <h1>About Trip N Travel</h1>
-      <p class="lede">Trip N Travel is the trading name of TRIPNTRAVEL PRIVATE LTD. Raja Ali founded the agency and is based in Bristol.</p>
-    </div></section>
+    <section class="page-hero">
+      <picture>
+        <source type="image/avif" srcset="images/photos/greece.avif">
+        <source type="image/webp" srcset="images/photos/greece.webp">
+        <img src="images/photos/greece.webp" alt="White buildings above the sea in Santorini, Greece" width="1200" height="800" fetchpriority="high" decoding="async">
+      </picture>
+      <div class="wrap">
+        <nav class="crumbs crumbs-on-dark" aria-label="Breadcrumb" data-crumbs>
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li><span aria-current="page">About</span></li>
+          </ol>
+        </nav>
+        <div class="hero-copy">
+          <p class="eyebrow">About</p>
+          <h1>About Trip N Travel</h1>
+          <p class="lede">Trip N Travel is the trading name of TRIPNTRAVEL PRIVATE LTD. Raja Ali founded the agency and is based in Bristol.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="section"><div class="wrap">
       <h2>The company</h2>
       <p data-company></p>
@@ -68,7 +78,7 @@
       <p>Raja Ali, founder.</p>
       <p data-placeholder-block hidden>{{PLACEHOLDER: confirm team}}</p>
       <h2>Why a small agency?</h2>
-      <p>You can reach the agency on WhatsApp and keep the conversation in one place. You'll chat with our AI travel assistant first; a travel adviser can take over whenever you like.</p>
+      <p>You can reach the agency on WhatsApp and keep the conversation in one place.</p>
       <p data-why-protect hidden></p>
       <p><a href="contact.html">Go to the contact page</a></p>
     </div></section>
@@ -93,6 +103,7 @@
       <div class="wrap">
         <h2>Talk to Raja</h2>
         <p>Tell us who is travelling and where you would like to go. We will reply on WhatsApp.</p>
+        <p><a class="btn btn-wa" data-wa data-location="about-raja">WhatsApp</a></p>
         <p class="ai-note">You'll chat with our AI travel assistant first; a travel adviser can take over whenever you like.</p>
       </div>
     </section>
@@ -117,9 +128,9 @@
       <nav aria-label="Explore">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="packages.html">Holiday Packages</a></li>
+          <li><a href="packages.html">Holidays</a></li>
           <li><a href="destinations.html">Destinations</a></li>
-          <li><a href="topDeals.html">Top Deals</a></li>
+          <li data-nav-deals hidden><a href="topDeals.html">Top Deals</a></li>
           <li><a href="enquiry.html">Enquiry</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>

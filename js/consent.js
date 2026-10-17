@@ -119,7 +119,10 @@
 
   function closeBanner(el) {
     if (el) el.remove();
-    if (!banner()) document.body.classList.remove('has-cookie');
+    if (!banner()) {
+      document.body.classList.remove('has-cookie');
+      document.body.classList.remove('cookie-expanded');
+    }
   }
 
   function render(openSettings) {
@@ -132,7 +135,7 @@
     el.setAttribute('role', 'region');
     el.setAttribute('aria-label', 'Cookie choices');
     el.innerHTML =
-      '<p><strong>Cookies.</strong> Necessary storage remembers this choice. Analytics and marketing stay off unless you allow them.</p>' +
+      '<p>Analytics and marketing stay off unless you allow them.</p>' +
       '<div class="cookie-actions">' +
       '<button type="button" class="btn" data-cookie="accept">Accept</button>' +
       '<button type="button" class="btn" data-cookie="reject">Reject</button>' +
@@ -142,7 +145,7 @@
       '<label class="choice"><input type="checkbox" checked disabled> Necessary (always on)</label>' +
       '<label class="choice"><input type="checkbox" id="cookie-analytics"' + (current.analytics ? ' checked' : '') + '> Analytics</label>' +
       '<label class="choice"><input type="checkbox" id="cookie-marketing"' + (current.marketing ? ' checked' : '') + '> Marketing</label>' +
-      '<p class="muted">Analytics covers Google Analytics. Marketing covers Meta and TikTok, and only if an ID has been added in the site configuration.</p>' +
+      '<p class="muted">Analytics is Google Analytics. Marketing tags stay off unless you allow them.</p>' +
       '<button type="button" class="btn btn-accent" data-cookie="save">Save cookie settings</button>' +
       '</div>';
     document.body.appendChild(el);
@@ -159,7 +162,11 @@
         closeBanner(el);
       } else if (action === 'settings') {
         var panel = document.getElementById('cookie-settings');
-        if (panel) panel.hidden = !panel.hidden;
+        if (panel) {
+          panel.hidden = !panel.hidden;
+          el.classList.toggle('is-expanded', !panel.hidden);
+          document.body.classList.toggle('cookie-expanded', !panel.hidden);
+        }
       } else if (action === 'save') {
         write({
           necessary: true,

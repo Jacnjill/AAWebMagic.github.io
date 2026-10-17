@@ -300,6 +300,27 @@
       .catch(function () { section.remove(); });
   }
 
+  function loadDealsNav() {
+    var script = document.querySelector('script[src$="site.js"]');
+    var url = 'data/deals.json';
+    if (script && script.src) url = script.src.replace(/js\/site\.js(?:\?.*)?$/, 'data/deals.json');
+    fetch(url)
+      .then(function (r) { return r.json(); })
+      .then(function (rows) {
+        var today = new Date();
+        var any = (rows || []).some(function (d) {
+          return TNTLogic.isDealShowable(d, today, TNT.priceMaxAgeDays);
+        });
+        if (!any) return;
+        document.querySelectorAll('[data-nav-deals]').forEach(function (el) { el.hidden = false; });
+        if (document.body.hasAttribute('data-deals-page')) {
+          var robots = document.querySelector('meta[name="robots"]');
+          if (robots && /noindex/i.test(robots.getAttribute('content') || '')) robots.remove();
+        }
+      })
+      .catch(function () {});
+  }
+
   function init() {
     utm();
     refresh(document);
@@ -307,6 +328,7 @@
     initTracking();
     initSchema();
     loadProof();
+    loadDealsNav();
   }
 
   window.TNTSite = { refresh: refresh, utm: utm, escapeHtml: escapeHtml };

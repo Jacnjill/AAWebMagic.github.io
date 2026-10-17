@@ -18,8 +18,9 @@
   <meta name="theme-color" content="#0E5A57">
   <link rel="icon" href="images/opt/favicon-32.png" type="image/png">
   <link rel="apple-touch-icon" href="images/opt/apple-touch.png">
-  <link rel="preload" href="fonts/source-sans-400.woff2" as="font" type="font/woff2">
-  <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2">
+  <link rel="preload" href="fonts/source-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/source-sans-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/site.css">
 </head>
@@ -35,13 +36,11 @@
       <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav id="site-nav" aria-label="Primary">
         <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="packages.html">Holiday Packages</a></li>
+        <li><a href="packages.html">Holidays</a></li>
         <li><a href="destinations.html">Destinations</a></li>
-        <li><a href="topDeals.html">Top Deals</a></li>
-        <li><a href="enquiry.html" aria-current="page">Enquiry</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
+        <li><a class="nav-enquire" href="enquiry.html" aria-current="page">Enquire</a></li>
         </ul>
       </nav>
     </div>
@@ -57,7 +56,6 @@
     <section class="hero"><div class="wrap">
       <h1>Enquiry</h1>
       <p class="lede">Spain, Turkey and Greece can be quoted from this form. Any other destination, or flights only, is passed to a travel adviser.</p>
-      <p class="ai-note">You'll chat with our AI travel assistant first; a travel adviser can take over whenever you like.</p>
     </div></section>
     <section class="section"><div class="wrap">
       <form class="form-card" data-form="enquiry">
@@ -90,7 +88,8 @@
         <label class="choice"><input type="checkbox" name="offersEmail"> I'd like to receive holiday offers by email. I can unsubscribe at any time.</label>
         <label class="choice"><input type="checkbox" name="offersWhatsapp"> I'd like to receive holiday offers by WhatsApp. I can unsubscribe at any time.</label>
         <p><a href="privacy.html">Read the privacy policy</a></p>
-        <p>What happens next: we open WhatsApp with your message so you can send it. Nothing is booked. We do not add you to a mailing list unless you tick a box, and we do not save this to HubSpot while that connection is switched off.</p>
+        <p>What happens next: we open WhatsApp with your message so you can send it. Nothing is booked. We do not add you to a mailing list unless you tick a box.</p>
+        <p class="ai-note">You'll chat with our AI travel assistant first; a travel adviser can take over whenever you like.</p>
         <button class="btn btn-accent" type="submit">Send the enquiry</button>
         <p data-status role="status"></p>
       </form>
@@ -115,9 +114,9 @@
       <nav aria-label="Explore">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="packages.html">Holiday Packages</a></li>
+          <li><a href="packages.html">Holidays</a></li>
           <li><a href="destinations.html">Destinations</a></li>
-          <li><a href="topDeals.html">Top Deals</a></li>
+          <li data-nav-deals hidden><a href="topDeals.html">Top Deals</a></li>
           <li><a href="enquiry.html">Enquiry</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>

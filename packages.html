@@ -18,8 +18,10 @@
   <meta name="theme-color" content="#0E5A57">
   <link rel="icon" href="images/opt/favicon-32.png" type="image/png">
   <link rel="apple-touch-icon" href="images/opt/apple-touch.png">
-  <link rel="preload" href="fonts/source-sans-400.woff2" as="font" type="font/woff2">
-  <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2">
+  <link rel="preload" href="fonts/source-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/source-sans-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" as="image" href="images/photos/adventure.avif" type="image/avif" fetchpriority="high">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/site.css">
 </head>
@@ -35,30 +37,37 @@
       <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav id="site-nav" aria-label="Primary">
         <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="packages.html" aria-current="page">Holiday Packages</a></li>
+        <li><a href="packages.html" aria-current="page">Holidays</a></li>
         <li><a href="destinations.html">Destinations</a></li>
-        <li><a href="topDeals.html">Top Deals</a></li>
-        <li><a href="enquiry.html">Enquiry</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
+        <li><a class="nav-enquire" href="enquiry.html">Enquire</a></li>
         </ul>
       </nav>
     </div>
   </header>
   <main id="main">
-    <nav class="crumbs wrap" aria-label="Breadcrumb" data-crumbs>
-      <ol>
-        <li><a href="index.html">Home</a></li>
-        <li><span aria-current="page">Holiday Packages</span></li>
-      </ol>
-    </nav>
-    
-    <section class="hero"><div class="wrap">
-      <p class="eyebrow">Holiday packages</p>
-      <h1>Holidays we can quote</h1>
-      <p class="lede">Budget adventures, faith and heritage trips, and romantic escapes. Tell us what you want and we will put a quote together on WhatsApp.</p>
-    </div></section>
+    <section class="page-hero">
+      <picture>
+        <source type="image/avif" srcset="images/photos/adventure.avif">
+        <source type="image/webp" srcset="images/photos/adventure.webp">
+        <img src="images/photos/adventure.webp" alt="Sunlit houses along the Villajoyosa coast, Spain" width="1200" height="800" fetchpriority="high" decoding="async">
+      </picture>
+      <div class="wrap">
+        <nav class="crumbs crumbs-on-dark" aria-label="Breadcrumb" data-crumbs>
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li><span aria-current="page">Holiday Packages</span></li>
+          </ol>
+        </nav>
+        <div class="hero-copy">
+          <p class="eyebrow">Holidays</p>
+          <h1>Holidays we can quote</h1>
+          <p class="lede">Budget adventures, faith and heritage trips, and romantic escapes. Tell us what you want and we will put a quote together on WhatsApp.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="section"><div class="wrap">
       <h2>Choose a holiday</h2>
       <div class="photo-grid">
@@ -78,7 +87,7 @@
           <picture>
             <source type="image/avif" srcset="images/photos/heritage.avif">
             <source type="image/webp" srcset="images/photos/heritage.webp">
-            <img src="images/photos/heritage.webp" alt="Domes and minarets of the Blue Mosque in Istanbul" width="1800" height="192" loading="lazy" decoding="async">
+            <img src="images/photos/heritage.webp" alt="Stone arches in warm evening light" width="1200" height="800" loading="lazy" decoding="async">
           </picture>
           <span class="photo-card-copy">
             <span class="photo-kicker">Holiday</span>
@@ -114,8 +123,8 @@
     </div></section>
     <section class="section section-soft"><div class="wrap">
       <h2>Prices and paying</h2>
-      <p>A price on this site is shown as “From £X pp”, with the nights, board, departure airport and the date it was checked. Ask us for a quote if you do not see a price.</p>
-      <p data-instalment>Ask for a current quote</p>
+      <p>Ask us for a quote and we will set out the price and how to pay.</p>
+      <p><a class="btn btn-accent" data-instalment href="enquiry.html">Ask for a current quote</a></p>
       <p data-placeholder-block hidden>{{VERIFY: instalment terms in writing}}</p>
     </div></section>
 
@@ -138,9 +147,9 @@
       <nav aria-label="Explore">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="packages.html">Holiday Packages</a></li>
+          <li><a href="packages.html">Holidays</a></li>
           <li><a href="destinations.html">Destinations</a></li>
-          <li><a href="topDeals.html">Top Deals</a></li>
+          <li data-nav-deals hidden><a href="topDeals.html">Top Deals</a></li>
           <li><a href="enquiry.html">Enquiry</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>

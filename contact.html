@@ -18,8 +18,10 @@
   <meta name="theme-color" content="#0E5A57">
   <link rel="icon" href="images/opt/favicon-32.png" type="image/png">
   <link rel="apple-touch-icon" href="images/opt/apple-touch.png">
-  <link rel="preload" href="fonts/source-sans-400.woff2" as="font" type="font/woff2">
-  <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2">
+  <link rel="preload" href="fonts/source-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/source-sans-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" as="image" href="images/photos/spain.avif" type="image/avif" fetchpriority="high">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/site.css">
 </head>
@@ -35,34 +37,48 @@
       <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav id="site-nav" aria-label="Primary">
         <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="packages.html">Holiday Packages</a></li>
+        <li><a href="packages.html">Holidays</a></li>
         <li><a href="destinations.html">Destinations</a></li>
-        <li><a href="topDeals.html">Top Deals</a></li>
-        <li><a href="enquiry.html">Enquiry</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html" aria-current="page">Contact</a></li>
+        <li><a class="nav-enquire" href="enquiry.html">Enquire</a></li>
         </ul>
       </nav>
     </div>
   </header>
   <main id="main">
-    <nav class="crumbs wrap" aria-label="Breadcrumb" data-crumbs>
-      <ol>
-        <li><a href="index.html">Home</a></li>
-        <li><span aria-current="page">Contact</span></li>
-      </ol>
-    </nav>
-    
-    <section class="hero"><div class="wrap">
-      <h1>Contact Trip N Travel</h1>
-      <p class="lede">WhatsApp is the quickest way to reach us. There is no map on this page.</p>
-      <p class="ai-note">You'll chat with our AI travel assistant first; a travel adviser can take over whenever you like.</p>
-    </div></section>
+    <section class="page-hero">
+      <picture>
+        <source type="image/avif" srcset="images/photos/spain.avif">
+        <source type="image/webp" srcset="images/photos/spain.webp">
+        <img src="images/photos/spain.webp" alt="Green cliffs above the sea in Ibiza, Spain" width="1200" height="800" fetchpriority="high" decoding="async">
+      </picture>
+      <div class="wrap">
+        <nav class="crumbs crumbs-on-dark" aria-label="Breadcrumb" data-crumbs>
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li><span aria-current="page">Contact</span></li>
+          </ol>
+        </nav>
+        <div class="hero-copy">
+          <p class="eyebrow">Contact</p>
+          <h1>Contact Trip N Travel</h1>
+          <p class="lede">WhatsApp is the quickest way to reach us.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="section"><div class="wrap split">
       <div>
         <h2>Talk to us</h2>
+        <p>Raja Ali, the founder, is based in Bristol.</p>
         <p><a class="btn btn-wa" data-wa data-wa-full data-location="contact-primary">WhatsApp us</a></p>
+        <p class="ai-note">You'll chat with our AI travel assistant first; a travel adviser can take over whenever you like.</p>
+        <div class="raja-slot" data-placeholder-block hidden>
+          <h2>Meet Raja</h2>
+          <div class="photo-slot">Raja's own photograph will go here. It is not on the site yet.</div>
+          <p>{{PLACEHOLDER: Raja's own photograph}}</p>
+        </div>
         <p><a data-call data-call-full data-location="contact">Call us</a></p>
         <p data-email-row data-placeholder-block hidden>Email: <span data-email></span></p>
         <p data-hours hidden></p>
@@ -81,7 +97,7 @@
         </div>
         <label class="choice"><input type="checkbox" name="offersWhatsapp"> I'd like to receive holiday offers by WhatsApp. I can unsubscribe at any time.</label>
         <p><a href="privacy.html">Read the privacy policy</a></p>
-        <p>What happens next: we open WhatsApp with your message so you can send it. Nothing is booked. We do not add you to a mailing list unless you tick a box, and we do not save this to HubSpot while that connection is switched off.</p>
+        <p>What happens next: we open WhatsApp with your message so you can send it. Nothing is booked. We do not add you to a mailing list unless you tick a box.</p>
         <button class="btn btn-accent" type="submit">Send on WhatsApp</button>
         <p data-status role="status"></p>
       </form>
@@ -106,9 +122,9 @@
       <nav aria-label="Explore">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="packages.html">Holiday Packages</a></li>
+          <li><a href="packages.html">Holidays</a></li>
           <li><a href="destinations.html">Destinations</a></li>
-          <li><a href="topDeals.html">Top Deals</a></li>
+          <li data-nav-deals hidden><a href="topDeals.html">Top Deals</a></li>
           <li><a href="enquiry.html">Enquiry</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
