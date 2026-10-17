@@ -71,11 +71,10 @@ assert.ok(config.includes('hubspotEnabled: false'));
 assert.ok(config.includes("privacyUrl: 'privacy.html'"));
 assert.ok(config.includes('legalPagesFinal: false'));
 assert.ok(config.includes('privacyLineFinal: true'));
-assert.ok(config.includes("hubspotRegion: 'eu1'"));
-assert.ok(config.includes("hubspotPortalId: '146832569'"));
-assert.ok(config.includes("hubspotFormId: 'd9794649-3539-41a5-8373-9df3b876c38f'"));
-assert.ok(config.includes("hubspotConsentVersion: 'WA-MKT-v1'"));
-assert.ok(config.includes("hubspotConsentSource: 'website'"));
+assert.ok(config.includes("leadEndpoint: ''"));
+assert.ok(!config.includes('hubspotPortalId'), 'HubSpot portal id should be gone from the website route');
+assert.ok(!config.includes('hubspotFormId'), 'HubSpot form id should be gone from the website route');
+assert.ok(!config.includes('hsforms.com'), 'config must not name the HubSpot Forms API');
 assert.ok(config.includes('extraDestinations: []'));
 assert.ok(config.includes("ga4Id: 'G-T3VGVEDZ7V'"));
 assert.ok(config.includes('priceMaxAgeDays: 7'));
@@ -400,18 +399,19 @@ for (const file of html) {
 
 const forms = textOf(path.join(root, 'js/forms.js'));
 assert.ok(forms.includes('enquiryConsent'));
-assert.ok(forms.includes('api-'), 'the form posts to the regional HubSpot host');
-assert.ok(forms.includes('.hsforms.com/submissions/v3/integration/submit/'));
-assert.ok(forms.includes("hubspotField('firstname'"));
-assert.ok(forms.includes("hubspotField('lastname'"));
-assert.ok(forms.includes("hubspotField('phone'"));
-assert.ok(forms.includes("hubspotField('email'"));
-assert.ok(forms.includes("hubspotField('tnt_destination'"));
-assert.ok(forms.includes("hubspotField('tnt_marketing_consent'"));
-assert.ok(forms.includes("hubspotField('tnt_marketing_consent_source'"));
-assert.ok(forms.includes("hubspotField('tnt_consent_wording_version'"));
-assert.ok(forms.includes('marketingCookiesOn'), 'HubSpot waits for marketing cookie consent');
+assert.ok(forms.includes("headers: { 'Content-Type': 'application/json' }"));
+assert.ok(forms.includes('whatsapp_marketing_consent'));
+assert.ok(forms.includes('company_website'));
+assert.ok(forms.includes("form.id || 'website-enquiry'"));
+assert.ok(forms.includes('does not depend on marketing-cookie consent'));
+assert.ok(!forms.includes('marketingCookiesOn'), 'the website lead route must not wait for marketing cookies');
+assert.ok(!forms.includes('hsforms.com'), 'the HubSpot Forms API path should be gone');
+assert.ok(!forms.includes('hubspotField'), 'the HubSpot field helper should be gone');
 assert.ok(!forms.includes('hutk'), 'the form must not send a HubSpot tracking cookie');
+assert.ok(enquiryHtml.includes('name="company_website"'));
+assert.ok(enquiryHtml.includes('tabindex="-1"'));
+assert.ok(enquiryHtml.includes('autocomplete="off"'));
+assert.ok(enquiryHtml.includes('class="honeypot"'));
 const matchmaker = textOf(path.join(root, 'js/matchmaker.js'));
 assert.ok(matchmaker.includes('reply on WhatsApp'));
 assert.ok(matchmaker.includes('hubspotEnabled'));
@@ -435,7 +435,7 @@ const hubspotRun = spawnSync(process.execPath, [path.join(__dirname, 'hubspot-fo
 if (hubspotRun.stdout) process.stdout.write(hubspotRun.stdout);
 if (hubspotRun.status !== 0) {
   if (hubspotRun.stderr) process.stderr.write(hubspotRun.stderr);
-  throw new Error('HubSpot form check failed');
+  throw new Error('lead form check failed');
 }
 
 console.log('compliance checks passed', files.length, 'files');

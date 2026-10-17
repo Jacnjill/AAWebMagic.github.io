@@ -7,54 +7,59 @@
     window.open(TNTLogic.waHref(TNT.whatsapp, message), '_blank', 'noopener');
   }
 
-  function marketingCookiesOn() {
-    var choice = window.TNTConsent && TNTConsent.read ? TNTConsent.read() : null;
-    return !!(choice && choice.marketing === true);
+  var LEAD_DESTINATIONS = ['Spain', 'Turkey', 'Greece', 'Not sure', 'Other'];
+
+  /* Our own function. It sets no cookie and loads no HubSpot script, so this route does not depend on marketing-cookie consent. */
+  function leadAllowed() {
+    var endpoint = typeof TNT.leadEndpoint === 'string' ? TNT.leadEndpoint.trim() : '';
+    return !!(TNT.hubspotEnabled && TNTLogic.isRealId(endpoint));
   }
 
-  function hubspotAllowed() {
-    return !!(TNT.hubspotEnabled && TNTLogic.isRealId(TNT.hubspotPortalId) && TNTLogic.isRealId(TNT.hubspotFormId) && marketingCookiesOn());
-  }
-
-  function hubspotField(name, value) {
-    return { objectTypeId: '0-1', name: name, value: value == null ? '' : String(value) };
+  function enquiryLead(form) {
+    var body = { firstname: form.firstname.value.trim() };
+    var last = form.lastname ? form.lastname.value.trim() : '';
+    if (last) body.lastname = last;
+    body.phone = form.phone ? form.phone.value.trim() : '';
+    var email = form.email ? form.email.value.trim() : '';
+    if (email) body.email = email;
+    var destination = form.destination ? form.destination.value : '';
+    if (LEAD_DESTINATIONS.indexOf(destination) !== -1) body.tnt_destination = destination;
+    body.whatsapp_marketing_consent = !!(form.tnt_marketing_consent && form.tnt_marketing_consent.checked);
+    body.page_url = location.href;
+    body.source = form.id || 'website-enquiry';
+    body.company_website = form.company_website ? form.company_website.value : '';
+    return body;
   }
 
   async function submitLead(opts) {
-    var hubspotOk = false;
-    var hubspotTried = false;
-    if (opts.hubspotFields && hubspotAllowed()) {
-      hubspotTried = true;
+    var sent = false;
+    var tried = false;
+    if (opts.lead && leadAllowed()) {
+      tried = true;
       try {
-        var payload = {
-          fields: opts.hubspotFields,
-          context: { pageUri: location.href, pageName: document.title }
-        };
-        var region = TNT.hubspotRegion || 'eu1';
-        var url = 'https://api-' + region + '.hsforms.com/submissions/v3/integration/submit/' +
-          encodeURIComponent(TNT.hubspotPortalId) + '/' + encodeURIComponent(TNT.hubspotFormId);
-        var res = await fetch(url, {
+        var endpoint = TNT.leadEndpoint.trim();
+        var res = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(opts.lead)
         });
-        hubspotOk = res.ok;
+        sent = !!res.ok;
       } catch (e) {
-        hubspotOk = false;
+        sent = false;
       }
     }
-    if (hubspotOk) {
+    if (sent) {
       status(opts.status, TNT.showContactHours
         ? 'Thank you. Your enquiry has been sent. We will reply during our contact hours. Nothing is booked yet.'
         : 'Thank you. Your enquiry has been sent. Nothing is booked yet.');
-    } else if (hubspotTried) {
+    } else if (tried) {
       openWhatsApp(opts.message);
       status(opts.status, 'We could not send the form. WhatsApp should open with your message. Please press send there.');
     } else {
       openWhatsApp(opts.message);
       status(opts.status, 'WhatsApp should open with your message. Please press send there. We have not stored this on a form tool.');
     }
-    TNTConsent.lead({ method: hubspotOk ? 'email' : 'whatsapp', trip_type: opts.tripType || '' });
+    TNTConsent.lead({ method: sent ? 'email' : 'whatsapp', trip_type: opts.tripType || '' });
     if (opts.guide) TNTConsent.event('guide_download', { guide: 'Turkey on a Budget 2027' });
   }
 
@@ -98,6 +103,7 @@
     }
     var message = '';
     var fields = [];
+    var lead = null;
     var guide = false;
     if (kind === 'contact') {
       message = [
@@ -118,17 +124,7 @@
         return;
       }
       message = enquiryMessage(form);
-      var marketingOn = form.tnt_marketing_consent && form.tnt_marketing_consent.checked;
-      fields = [
-        hubspotField('firstname', form.firstname.value.trim()),
-        hubspotField('lastname', form.lastname.value.trim()),
-        hubspotField('email', form.email.value.trim()),
-        hubspotField('phone', form.phone.value.trim()),
-        hubspotField('tnt_destination', form.destination.value),
-        hubspotField('tnt_marketing_consent', marketingOn ? (form.tnt_marketing_consent.value || 'whatsapp') : ''),
-        hubspotField('tnt_marketing_consent_source', TNT.hubspotConsentSource || 'website'),
-        hubspotField('tnt_consent_wording_version', TNT.hubspotConsentVersion || 'WA-MKT-v1')
-      ];
+      lead = enquiryLead(form);
     } else if (kind === 'guide') {
       guide = true;
       message = [
@@ -164,7 +160,7 @@
     submitLead({
       message: message,
       fields: fields,
-      hubspotFields: kind === 'enquiry' ? fields : null,
+      lead: lead,
       status: box,
       guide: guide,
       tripType: kind
@@ -204,5 +200,5 @@
   }
 
   linkPrivacyNotice();
-  window.TNTForms = { submitLead: submitLead, linkPrivacyNotice: linkPrivacyNotice, hubspotAllowed: hubspotAllowed };
+  window.TNTForms = { submitLead: submitLead, linkPrivacyNotice: linkPrivacyNotice, leadAllowed: leadAllowed };
 })();

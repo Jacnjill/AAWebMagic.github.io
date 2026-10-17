@@ -34,13 +34,6 @@ const TNT = {
   ga4Id: 'G-T3VGVEDZ7V',
   metaPixelId: '{{PLACEHOLDER: Meta Pixel ID}}',
   tiktokPixelId: '{{PLACEHOLDER: TikTok Pixel ID}}',
-  hubspotPortalId: '146832569',
-  hubspotFormId: 'd9794649-3539-41a5-8373-9df3b876c38f',
-  /* EU region. The submission URL is api-eu1.hsforms.com. The embed script is not used. */
-  hubspotRegion: 'eu1',
-  /* Value stored on the published form for the hidden source field. */
-  hubspotConsentSource: 'website',
-  hubspotConsentVersion: 'WA-MKT-v1',
   /* Privacy Notice link used above enquiry submit buttons. Relative on this draft. */
   privacyUrl: 'privacy.html',
   /* Draft legal pages still show highlighted placeholders. A release check fails if this is true while any remain. */
@@ -50,6 +43,10 @@ const TNT = {
   showAtolWording: false,
   showPtsLine: false,
   extraDestinations: [],
+  /* Full URL of our own enquiry function. Empty until go-live. Do not guess a URL. */
+  leadEndpoint: '',
+  /* Master switch for posting the enquiry form to leadEndpoint. Stays false.
+     This route sets no cookie and loads no HubSpot script, so it does not wait for a marketing-cookie choice. */
   hubspotEnabled: false,
   /* Internal preview only. Public pages keep {{PLACEHOLDER}} and {{VERIFY}} blocks hidden. */
   showPlaceholderBlocks: false,

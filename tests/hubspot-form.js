@@ -1,4 +1,4 @@
-/* HubSpot enquiry submission. The site flag stays off in config. */
+/* Website enquiry submission. The site flag and endpoint stay off in config. Fetch is mocked. */
 const { spawn } = require('child_process');
 const path = require('path');
 
@@ -14,6 +14,7 @@ const { chromium } = loadPlaywright();
 const root = path.join(__dirname, '..');
 const port = 8796;
 const pageUrl = 'http://127.0.0.1:' + port + '/enquiry.html';
+const endpoint = 'https://lead.example.test/website-lead';
 const hubspotUrl = /hsforms\.com|hubspot/i;
 
 function startServer() {
@@ -44,6 +45,21 @@ async function fill(page, marketing) {
   await page.evaluate(() => { window.open = function () { return null; }; });
 }
 
+async function armLogs(page) {
+  await page.evaluate(() => {
+    window.__logs = [];
+    ['log', 'info', 'warn', 'error', 'debug'].forEach((level) => {
+      const orig = console[level].bind(console);
+      console[level] = function () {
+        window.__logs.push(Array.from(arguments).map((item) => {
+          try { return typeof item === 'string' ? item : JSON.stringify(item); } catch (e) { return String(item); }
+        }).join(' '));
+        return orig.apply(console, arguments);
+      };
+    });
+  });
+}
+
 async function main() {
   const server = startServer();
   await wait(300);
@@ -56,9 +72,14 @@ async function main() {
     const offRequests = [];
     off.on('request', (req) => offRequests.push(req.url()));
     await off.goto(pageUrl, { waitUntil: 'domcontentloaded' });
+    const beforeSubmit = offRequests.slice();
+    if (beforeSubmit.some((url) => url === endpoint || hubspotUrl.test(url))) fail('a lead or HubSpot request ran before submit');
     const code = await off.evaluate(() => {
       const scripts = [...document.scripts].map((script) => script.src || '');
       const notice = document.querySelector('[data-privacy-notice]');
+      const honeypot = document.querySelector('[name="company_website"]');
+      const box = honeypot ? honeypot.getBoundingClientRect() : null;
+      const style = honeypot ? getComputedStyle(honeypot.parentElement) : null;
       return {
         scripts: scripts.filter((src) => /hsforms|hubspot/i.test(src)),
         frame: !!document.querySelector('.hs-form-frame'),
@@ -66,105 +87,161 @@ async function main() {
         noticeLink: !!(notice && notice.querySelector('a')),
         noticeHref: notice && notice.querySelector('a') ? notice.querySelector('a').getAttribute('href') : '',
         marketingChecked: document.querySelector('#en-marketing').checked,
-        flag: TNT.hubspotEnabled
+        emailRequired: document.querySelector('#en-email').required,
+        flag: TNT.hubspotEnabled,
+        endpoint: TNT.leadEndpoint,
+        honeypot: honeypot ? {
+          tabIndex: honeypot.tabIndex,
+          autocomplete: honeypot.getAttribute('autocomplete'),
+          hidden: honeypot.getAttribute('aria-hidden'),
+          left: box.left,
+          width: box.width,
+          height: box.height,
+          overflow: style.overflow
+        } : null
       };
     });
     if (code.flag !== false) fail('hubspotEnabled is not off in config');
+    if (code.endpoint !== '') fail('leadEndpoint is not empty in config');
     if (code.scripts.length || code.frame) fail('HubSpot code is on the page while the flag is off');
     if (!code.noticeLink || code.noticeHref !== 'privacy.html') fail('Privacy Notice should link to privacy.html');
     if (!code.noticeText.includes('Privacy Notice')) fail('privacy notice text missing');
     if (code.marketingChecked) fail('marketing consent starts ticked');
-    await fill(off, true);
+    if (code.emailRequired) fail('email should stay optional');
+    if (!code.honeypot) fail('honeypot missing');
+    if (code.honeypot.tabIndex !== -1) fail('honeypot tabindex is ' + code.honeypot.tabIndex);
+    if (code.honeypot.autocomplete !== 'off') fail('honeypot autocomplete is ' + code.honeypot.autocomplete);
+    if (code.honeypot.hidden !== 'true') fail('honeypot is not aria-hidden');
+    if (!(code.honeypot.left < 0 && code.honeypot.width <= 1 && code.honeypot.height <= 1)) {
+      fail('honeypot is not visually hidden ' + JSON.stringify(code.honeypot));
+    }
+    await off.evaluate((url) => { TNT.leadEndpoint = url; }, endpoint);
+    await fill(off, false);
     await off.click('button[type="submit"]');
     await wait(400);
-    if (offRequests.some((url) => hubspotUrl.test(url))) fail('flag off made a HubSpot request: ' + offRequests.filter((url) => hubspotUrl.test(url)).join(' '));
+    if (offRequests.some((url) => url === endpoint || hubspotUrl.test(url))) fail('flag off made a lead request');
     const offStatus = await off.locator('[data-status]').innerText();
     if (!offStatus.includes('have not stored this on a form tool')) fail('flag off did not keep the WhatsApp path: ' + offStatus);
     await off.close();
 
-    const bare = await browser.newPage();
-    const bareRequests = [];
-    bare.on('request', (req) => bareRequests.push(req.url()));
-    await bare.goto(pageUrl, { waitUntil: 'domcontentloaded' });
-    await bare.evaluate(() => { TNT.hubspotEnabled = true; });
-    await fill(bare, false);
-    await bare.click('button[type="submit"]');
+    const emptyEndpoint = await browser.newPage();
+    const emptyRequests = [];
+    emptyEndpoint.on('request', (req) => emptyRequests.push(req.url()));
+    await emptyEndpoint.goto(pageUrl, { waitUntil: 'domcontentloaded' });
+    await emptyEndpoint.evaluate(() => { TNT.hubspotEnabled = true; TNT.leadEndpoint = '   '; });
+    await fill(emptyEndpoint, false);
+    await emptyEndpoint.click('button[type="submit"]');
     await wait(400);
-    if (bareRequests.some((url) => hubspotUrl.test(url))) fail('flag on before a cookie choice made a HubSpot request');
-    const bareStatus = await bare.locator('[data-status]').innerText();
-    if (!bareStatus.includes('have not stored this on a form tool')) fail('flag on before consent did not stay off HubSpot: ' + bareStatus);
-    await bare.close();
-
-    const rejected = await browser.newPage();
-    const rejectedRequests = [];
-    rejected.on('request', (req) => rejectedRequests.push(req.url()));
-    await rejected.goto(pageUrl, { waitUntil: 'domcontentloaded' });
-    await rejected.click('[data-cookie="reject"]');
-    await rejected.evaluate(() => { TNT.hubspotEnabled = true; });
-    await fill(rejected, true);
-    await rejected.click('button[type="submit"]');
-    await wait(400);
-    if (rejectedRequests.some((url) => hubspotUrl.test(url))) fail('flag on after Reject all made a HubSpot request');
-    await rejected.close();
+    if (emptyRequests.some((url) => url === endpoint || hubspotUrl.test(url))) fail('an empty endpoint made a lead request');
+    const emptyStatus = await emptyEndpoint.locator('[data-status]').innerText();
+    if (!emptyStatus.includes('have not stored this on a form tool')) fail('empty endpoint did not keep the WhatsApp path: ' + emptyStatus);
+    await emptyEndpoint.close();
 
     const accepted = await browser.newPage();
     let captured = null;
-    await accepted.route('**/*hsforms.com/**', (route) => {
-      captured = { url: route.request().url(), body: route.request().postData() || '' };
+    const seenBefore = [];
+    accepted.on('request', (req) => {
+      if (!captured) seenBefore.push(req.url());
+    });
+    await accepted.route(endpoint, (route) => {
+      captured = {
+        url: route.request().url(),
+        method: route.request().method(),
+        type: route.request().headers()['content-type'] || '',
+        body: route.request().postData() || ''
+      };
       route.fulfill({ status: 200, contentType: 'application/json', body: '{}' });
     });
     await accepted.goto(pageUrl, { waitUntil: 'domcontentloaded' });
-    await accepted.evaluate(() => {
-      localStorage.setItem('tnt-consent', JSON.stringify({ necessary: true, analytics: true, marketing: true }));
+    await accepted.evaluate((url) => {
       TNT.hubspotEnabled = true;
-    });
+      TNT.leadEndpoint = url;
+    }, endpoint);
+    await armLogs(accepted);
     await fill(accepted, true);
+    if (seenBefore.some((url) => url === endpoint)) fail('lead request ran before submit');
     await accepted.click('button[type="submit"]');
     await wait(500);
-    if (!captured) fail('flag on with consent did not submit to HubSpot');
+    if (!captured) fail('flag on with an endpoint did not submit');
     else {
-      if (!captured.url.includes('api-eu1.hsforms.com/submissions/v3/integration/submit/146832569/d9794649-3539-41a5-8373-9df3b876c38f')) {
-        fail('submission URL is wrong: ' + captured.url);
-      }
-      if (/hutk/i.test(captured.body)) fail('submission sent hutk');
+      if (captured.method !== 'POST') fail('method was ' + captured.method);
+      if (!captured.type.includes('application/json')) fail('content type was ' + captured.type);
+      if (hubspotUrl.test(captured.url)) fail('submission still used HubSpot');
       const payload = JSON.parse(captured.body);
-      const names = (payload.fields || []).map((field) => field.name);
-      const wanted = ['firstname', 'lastname', 'email', 'phone', 'tnt_destination', 'tnt_marketing_consent', 'tnt_marketing_consent_source', 'tnt_consent_wording_version'];
-      wanted.forEach((name) => {
-        if (names.indexOf(name) === -1) fail('missing field ' + name);
-      });
-      function value(name) {
-        const field = payload.fields.find((item) => item.name === name);
-        return field ? field.value : undefined;
+      const keys = Object.keys(payload);
+      const wanted = ['firstname', 'lastname', 'phone', 'email', 'tnt_destination', 'whatsapp_marketing_consent', 'page_url', 'source', 'company_website'];
+      if (keys.join(',') !== wanted.join(',')) fail('JSON keys were ' + keys.join(','));
+      if (payload.firstname !== 'Raja' || payload.lastname !== 'Ali') fail('name fields were not sent');
+      if (payload.phone !== '07700900123') fail('phone was not sent');
+      if (payload.email !== 'raja@example.com') fail('email was not sent');
+      if (payload.tnt_destination !== 'Spain') fail('destination was not sent');
+      if (payload.whatsapp_marketing_consent !== true) fail('ticked consent was ' + payload.whatsapp_marketing_consent);
+      if (payload.page_url !== pageUrl) fail('page_url was ' + payload.page_url);
+      if (payload.source !== 'website-enquiry') fail('source was ' + payload.source);
+      if (payload.company_website !== '') fail('honeypot value was ' + JSON.stringify(payload.company_website));
+      if (/hutk|hsforms|objectTypeId|tnt_marketing_consent_source|tnt_consent_wording_version/i.test(captured.body)) {
+        fail('submission still carries HubSpot fields');
       }
-      if (value('firstname') !== 'Raja' || value('lastname') !== 'Ali') fail('name fields were not sent');
-      if (value('phone') !== '07700900123') fail('phone was not sent');
-      if (value('email') !== 'raja@example.com') fail('email was not sent');
-      if (value('tnt_destination') !== 'Spain') fail('destination was not sent');
-      if (value('tnt_marketing_consent') !== 'whatsapp') fail('marketing consent value was ' + value('tnt_marketing_consent'));
-      if (value('tnt_marketing_consent_source') !== 'website') fail('consent source was ' + value('tnt_marketing_consent_source'));
-      if (value('tnt_consent_wording_version') !== 'WA-MKT-v1') fail('wording version was ' + value('tnt_consent_wording_version'));
-      if (payload.context && payload.context.hutk) fail('context includes hutk');
     }
+    const logs = await accepted.evaluate(() => window.__logs || []);
+    if (logs.some((line) => line.includes('07700900123') || line.includes('raja@example.com'))) fail('personal data was logged');
     const okStatus = await accepted.locator('[data-status]').innerText();
     if (!okStatus.includes('Your enquiry has been sent')) fail('success state missing: ' + okStatus);
     await accepted.close();
 
+    const unticked = await browser.newPage();
+    let untickedBody = null;
+    await unticked.route(endpoint, (route) => {
+      untickedBody = route.request().postData() || '';
+      route.fulfill({ status: 200, contentType: 'application/json', body: '{}' });
+    });
+    await unticked.goto(pageUrl, { waitUntil: 'domcontentloaded' });
+    await unticked.evaluate((url) => {
+      localStorage.setItem('tnt-consent', JSON.stringify({ necessary: true, analytics: false, marketing: false }));
+      TNT.hubspotEnabled = true;
+      TNT.leadEndpoint = url;
+    }, endpoint);
+    await fill(unticked, false);
+    await unticked.fill('#en-email', '');
+    await unticked.evaluate(() => { document.querySelector('#en-last').required = false; document.querySelector('#en-last').value = ''; });
+    await unticked.click('button[type="submit"]');
+    await wait(500);
+    if (!untickedBody) fail('unticked consent did not submit');
+    else {
+      const payload = JSON.parse(untickedBody);
+      if (payload.whatsapp_marketing_consent !== false) fail('unticked consent was ' + payload.whatsapp_marketing_consent);
+      if (Object.prototype.hasOwnProperty.call(payload, 'email')) fail('blank email was sent');
+      if (Object.prototype.hasOwnProperty.call(payload, 'lastname')) fail('blank last name was sent');
+      if (payload.company_website !== '') fail('honeypot was filled');
+    }
+    await unticked.close();
+
     const broken = await browser.newPage();
-    await broken.route('**/*hsforms.com/**', (route) => {
-      route.fulfill({ status: 400, contentType: 'application/json', body: '{"status":"error"}' });
+    await broken.route(endpoint, (route) => {
+      route.fulfill({ status: 502, contentType: 'application/json', body: '{"error":"database password secret-token"}' });
     });
     await broken.goto(pageUrl, { waitUntil: 'domcontentloaded' });
-    await broken.evaluate(() => {
-      localStorage.setItem('tnt-consent', JSON.stringify({ necessary: true, analytics: true, marketing: true }));
-      TNT.hubspotEnabled = true;
-    });
+    await broken.evaluate((url) => { TNT.hubspotEnabled = true; TNT.leadEndpoint = url; }, endpoint);
     await fill(broken, false);
     await broken.click('button[type="submit"]');
     await wait(500);
     const errStatus = await broken.locator('[data-status]').innerText();
     if (!errStatus.includes('could not send the form')) fail('error state missing: ' + errStatus);
+    if (!errStatus.includes('WhatsApp')) fail('error state does not point to WhatsApp: ' + errStatus);
+    if (/secret-token|502|database password/i.test(errStatus)) fail('raw error was shown: ' + errStatus);
     await broken.close();
+
+    const offline = await browser.newPage();
+    await offline.route(endpoint, (route) => route.abort('failed'));
+    await offline.goto(pageUrl, { waitUntil: 'domcontentloaded' });
+    await offline.evaluate((url) => { TNT.hubspotEnabled = true; TNT.leadEndpoint = url; }, endpoint);
+    await fill(offline, false);
+    await offline.click('button[type="submit"]');
+    await wait(500);
+    const offlineStatus = await offline.locator('[data-status]').innerText();
+    if (!offlineStatus.includes('could not send the form')) fail('network error state missing: ' + offlineStatus);
+    if (/failed to fetch|typeerror|network/i.test(offlineStatus)) fail('raw network error was shown: ' + offlineStatus);
+    await offline.close();
 
     const linked = await browser.newPage();
     await linked.goto(pageUrl, { waitUntil: 'domcontentloaded' });
@@ -188,7 +265,7 @@ async function main() {
     console.error(failures.join('\n'));
     process.exit(1);
   }
-  console.log('hubspot form checks passed');
+  console.log('lead form checks passed');
 }
 
 main().catch((error) => {

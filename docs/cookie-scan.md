@@ -31,7 +31,7 @@ No Google Ads tag is in the build. There is no conversion id and no `googleadser
 
 `js/consent.js` contains Meta and TikTok loaders. Both return before adding a script, because the Meta and TikTok ids in `js/config.js` are placeholders. Accept all does not load them.
 
-HubSpot's embed script is not on any page. `js/forms.js` can POST an enquiry to the EU Forms API only when `hubspotEnabled` is true and marketing cookies are on. `hubspotEnabled` is false. That POST does not send a tracking cookie, and the page does not set a HubSpot cookie.
+HubSpot's embed script is not on any page. `js/forms.js` can POST the enquiry as JSON to `leadEndpoint` only when `hubspotEnabled` is true and `leadEndpoint` is a real URL. Both stay off. That route sets no cookie, loads no HubSpot script, and does not wait for marketing-cookie consent.
 
 The two "To be confirmed" advertising rows are not in the cookie table. The Advertising subsection now says the site does not currently use advertising cookies, and that consent will be asked before that changes.
 

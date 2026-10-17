@@ -412,6 +412,18 @@ h2.block-gap { margin-top: 48px; }
 .brand-panel .eyebrow { color: var(--gold); }
 .note-gap { margin-top: 56px; }
 .form-card { padding-bottom: 1.1rem; }
+.honeypot,
+.honeypot input {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
 
 .draft-banner {
   background: var(--text);

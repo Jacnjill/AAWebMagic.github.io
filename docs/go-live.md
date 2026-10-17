@@ -13,3 +13,13 @@ Needs Raja's explicit yes. Do not run this on the private preview.
 5. Run `node tests/compliance.js`. With indexing on, the test no longer requires the meta on every page. The build marker must still be on every page.
 
 To put the preview back out of search, run `node scripts/set-indexing.js off`.
+
+## Go-live: website enquiry form
+
+The enquiry form does not post anywhere on this preview. Do not turn this on until Raja says the function is ready.
+
+1. In `js/config.js`, set `hubspotEnabled` to `true`. That is the master switch. It stays `false` here. Turning it on does not load a HubSpot script and does not set a cookie.
+2. In `js/config.js`, set `leadEndpoint` to the full URL of our own function. It stays `''` here. Do not guess the URL.
+3. On the function, `WEBSITE_LEAD_ENABLED` must be on, and `WEBSITE_LEAD_ALLOWED_ORIGINS` must include the exact site origin `https://tripntravel.co.uk`.
+
+The form posts only when both site settings are set. It does not wait for a marketing-cookie choice.
