@@ -60,7 +60,7 @@
       'Holiday offers by WhatsApp: ' + (form.offersWhatsapp && form.offersWhatsapp.checked ? 'yes' : 'no')
     ];
     if (flightOnly || TNTLogic.needsAdviser(destination, flightOnly)) {
-      lines.push('A travel adviser will reply to you');
+      lines.push('Chat to Trip N Travel on WhatsApp');
     }
     var utm = TNTSite.utm();
     lines.push('Ref: ' + utm.source + '/' + utm.campaign);

@@ -96,6 +96,8 @@ for (const name of ['privacy.html', 'cookies.html', 'terms.html', 'protection.ht
 assert.ok(textOf(path.join(root, 'protection.html')).includes('Financial protection details coming soon'));
 
 assert.ok(config.includes('showPlaceholderBlocks: false'));
+assert.ok(config.includes('showAiDisclosure: false'));
+assert.ok(config.includes("You'll chat with our AI travel assistant first"));
 assert.ok(config.includes('showContactHours: false'));
 assert.ok(config.includes('instalmentTermsConfirmed: false'));
 assert.ok(config.includes("askForQuote: 'Ask for a current quote'"));
@@ -156,6 +158,9 @@ for (const file of html) {
   if (legalPages.has(base)) continue;
   const visible = visibleMarkup(text);
   assert.ok(!token.test(visible), `${base} renders a placeholder token:\n${visible.match(/.{0,80}\{\{(?:PLACEHOLDER|VERIFY).{0,80}/) || visible.slice(0, 240)}`);
+  assert.ok(!/AI travel assistant/i.test(text), `${base} still has the AI-assistant sentence in the page`);
+  assert.ok(!/a person/i.test(visible), `${base} says a person replies`);
+  assert.ok(!/A travel adviser will reply/i.test(visible), `${base} says a travel adviser will reply`);
 }
 
 const consentLine = 'I agree to Trip N Travel contacting me about this enquiry (see <a href="privacy.html">Privacy Policy</a>)';

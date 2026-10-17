@@ -56,6 +56,7 @@ assert.ok(faith.includes('Budget: £400–£700'));
 assert.ok(faith.includes('Extras: Halal food, Private pool'));
 assert.ok(faith.includes('Ref: instagram/ramadan'));
 assert.ok(!faith.includes('A travel adviser will reply to you'));
+assert.ok(!faith.includes('Chat to Trip N Travel on WhatsApp'));
 
 const other = L.buildQuoteMessage({
   tripType: 'Budget adventure',
@@ -71,7 +72,8 @@ const other = L.buildQuoteMessage({
   flightOnly: false
 }, {});
 assert.ok(other.startsWith('Hi Trip N Travel 👋'));
-assert.ok(other.includes('A travel adviser will reply to you'));
+assert.ok(!other.includes('A travel adviser will reply to you'));
+assert.ok(other.includes('Chat to Trip N Travel on WhatsApp'));
 assert.ok(other.includes('Ref: direct/none'));
 const href = L.waHref('447752340248', other);
 assert.ok(href.startsWith('https://wa.me/447752340248?text='));

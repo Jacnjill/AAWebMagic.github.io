@@ -55,7 +55,7 @@
       'Extras: ' + extras
     ];
     if (a.flightOnly) lines.push('Flights only: Yes');
-    if (needsAdviser(a.destination, a.flightOnly)) lines.push('A travel adviser will reply to you');
+    if (needsAdviser(a.destination, a.flightOnly)) lines.push('Chat to Trip N Travel on WhatsApp');
     var src = utm && utm.source ? utm.source : 'direct';
     var camp = utm && utm.campaign ? utm.campaign : 'none';
     lines.push('Ref: ' + src + '/' + camp);

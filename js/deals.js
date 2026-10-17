@@ -5,7 +5,7 @@
       '<h3>Ask for a current quote</h3>' +
       '<p>Tell us what you want and we will reply on WhatsApp. Nothing is booked until you agree.</p>' +
       '<p><a class="btn btn-wa" data-wa data-location="quote-card" data-wa-interest="' + TNTSite.escapeHtml(label) + '">Ask for a current quote</a></p>' +
-      '<p class="ai-note">' + TNTSite.escapeHtml(TNT.aiDisclosure) + '</p>' +
+      '<p class="ai-note" data-ai-note hidden></p>' +
       '</article>';
   }
 

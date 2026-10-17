@@ -262,6 +262,7 @@
     var heading = document.getElementById('mm-q') || document.getElementById('mm-confirm-title');
     if (shouldFocus !== false && heading) heading.focus();
     if (step === 6) bindConfirm();
+    TNTSite.refresh(body);
   }
 
   function confirmation() {
@@ -269,7 +270,7 @@
     var message = TNTLogic.buildQuoteMessage(a, TNTSite.utm());
     var adviser = TNTLogic.needsAdviser(a.destination, a.flightOnly);
     return '<h3 id="mm-confirm-title" tabindex="-1">Your enquiry</h3>' +
-      (adviser ? '<p><strong>A travel adviser will reply to you.</strong></p>' : '<p>Send this on WhatsApp and we will come back with a quote.</p>') +
+      (adviser ? '<p><strong>Chat to Trip N Travel on WhatsApp.</strong></p>' : '<p>Send this on WhatsApp and we will come back with a quote.</p>') +
       '<dl class="summary">' +
       '<div><dt>Trip type</dt><dd>' + TNTSite.escapeHtml(a.tripType) + '</dd></div>' +
       '<div><dt>Destination</dt><dd>' + TNTSite.escapeHtml(a.destination === 'Other' ? a.destinationOther : a.destination) + '</dd></div>' +
@@ -279,7 +280,7 @@
       '<div><dt>Budget</dt><dd>' + TNTSite.escapeHtml(a.budget) + '</dd></div>' +
       '<div><dt>Extras</dt><dd>' + TNTSite.escapeHtml(a.extras.length ? a.extras.join(', ') : 'None') + '</dd></div>' +
       '</dl>' +
-      '<p class="ai-note">' + TNTSite.escapeHtml(TNT.aiDisclosure) + '</p>' +
+      '<p class="ai-note" data-ai-note hidden></p>' +
       '<p><a class="btn btn-wa" id="mm-send" data-location="matchmaker" target="_blank" rel="noopener noreferrer" href="' + TNTLogic.waHref(TNT.whatsapp, message) + '">Send to us on WhatsApp</a></p>' +
       (TNT.hubspotEnabled
         ? '<p><button type="button" class="linkish" id="mm-email-toggle">Prefer email?</button></p>' +

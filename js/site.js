@@ -59,6 +59,18 @@
     scope.querySelectorAll('[data-placeholder-block]').forEach(function (el) {
       el.hidden = !TNT.showPlaceholderBlocks;
     });
+    scope.querySelectorAll('[data-ai-note]').forEach(function (el) {
+      if (TNT.showAiDisclosure && TNT.aiDisclosure) {
+        el.hidden = false;
+        el.textContent = TNT.aiDisclosure;
+      } else if (el.hasAttribute('data-ai-fallback')) {
+        el.hidden = false;
+        el.textContent = el.getAttribute('data-ai-fallback');
+      } else {
+        el.hidden = true;
+        el.textContent = '';
+      }
+    });
     scope.querySelectorAll('[data-email]').forEach(function (el) {
       var token = /\{\{/.test(String(TNT.email || ''));
       var row = el.closest('[data-email-row]') || el;
