@@ -187,7 +187,7 @@
 
   function linkPrivacyNotice() {
     var url = TNT.privacyUrl || '';
-    if (!TNTLogic.isRealId(url) || !/^https?:\/\//.test(url)) return;
+    if (!TNTLogic.isRealId(url) || !/^(https?:\/\/|\/)?[A-Za-z0-9._~/-]+$/.test(url)) return;
     document.querySelectorAll('[data-privacy-notice]').forEach(function (node) {
       var text = node.textContent || '';
       var phrase = 'Privacy Notice';

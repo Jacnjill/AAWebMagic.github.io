@@ -41,12 +41,12 @@ const TNT = {
   /* Value stored on the published form for the hidden source field. */
   hubspotConsentSource: 'website',
   hubspotConsentVersion: 'WA-MKT-v1',
-  /* Live privacy notice URL. Empty keeps the words Privacy Notice as plain text. */
-  privacyUrl: '',
+  /* Privacy Notice link used above enquiry submit buttons. Relative on this draft. */
+  privacyUrl: 'privacy.html',
   /* Draft legal pages still show highlighted placeholders. A release check fails if this is true while any remain. */
   legalPagesFinal: false,
-  /* The Advisor has not supplied the enquiry-form privacy line. Leave this false until they do. */
-  privacyLineFinal: false,
+  /* The Advisor supplied the enquiry privacy line. It is on every enquiry form. */
+  privacyLineFinal: true,
   showAtolWording: false,
   showPtsLine: false,
   extraDestinations: [],

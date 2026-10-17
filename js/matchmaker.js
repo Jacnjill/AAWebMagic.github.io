@@ -290,6 +290,7 @@
           '<label>Email <input name="email" type="email" required></label>' +
           '<label class="choice"><input type="checkbox" name="offersEmail"> I\'d like to receive holiday offers by email. I can unsubscribe at any time.</label>' +
           '<p><a href="privacy.html">Read the privacy policy</a></p>' +
+          '<p data-privacy-notice>Trip N Travel (TRIPNTRAVEL PRIVATE LTD) will use your details to reply to your enquiry and send you quotes by WhatsApp, phone or email. Find out more in our <a href="privacy.html">Privacy Notice</a>.</p>' +
           '<button class="btn btn-accent" type="submit">Send the enquiry</button>' +
           '<p id="mm-email-status" role="status"></p>' +
           '</form>'

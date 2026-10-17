@@ -68,9 +68,9 @@ const config = textOf(path.join(root, 'js/config.js'));
 assert.ok(config.includes('showAtolWording: false'));
 assert.ok(config.includes('showPtsLine: false'));
 assert.ok(config.includes('hubspotEnabled: false'));
-assert.ok(config.includes("privacyUrl: ''"));
+assert.ok(config.includes("privacyUrl: 'privacy.html'"));
 assert.ok(config.includes('legalPagesFinal: false'));
-assert.ok(config.includes('privacyLineFinal: false'));
+assert.ok(config.includes('privacyLineFinal: true'));
 assert.ok(config.includes("hubspotRegion: 'eu1'"));
 assert.ok(config.includes("hubspotPortalId: '146832569'"));
 assert.ok(config.includes("hubspotFormId: 'd9794649-3539-41a5-8373-9df3b876c38f'"));
@@ -191,7 +191,7 @@ assert.ok(enquiryHtml.includes('name="firstname"'), 'enquiry form needs a first 
 assert.ok(enquiryHtml.includes('name="lastname"'), 'enquiry form needs a last name');
 assert.ok(enquiryHtml.includes('name="tnt_marketing_consent"'), 'enquiry form needs the marketing consent field');
 assert.ok(!/tnt_marketing_consent"[^>]*checked/.test(enquiryHtml), 'marketing consent must start unticked');
-assert.ok(enquiryHtml.includes('Find out more in our Privacy Notice.'), 'enquiry form keeps the privacy notice as text');
+assert.ok(enquiryHtml.includes('Find out more in our <a href="privacy.html">Privacy Notice</a>.'), 'enquiry form privacy line must link to the notice');
 assert.ok(!enquiryHtml.includes('js-eu1.hsforms.net'), 'enquiry page must not embed the HubSpot script');
 assert.ok(!enquiryHtml.includes('hs-form-frame'), 'enquiry page must not embed a HubSpot frame');
 for (const file of html) {
@@ -314,18 +314,21 @@ for (const file of html) {
 }
 
 const suppliedFormLine = 'By sending this form you agree we may use your details to reply to your enquiry, as explained in our Privacy Notice.';
-assert.ok(!enquiryHtml.includes(suppliedFormLine), 'the Advisor has not supplied that form line');
+assert.ok(!enquiryHtml.includes(suppliedFormLine));
 assert.ok(!textOf(path.join(root, 'contact.html')).includes(suppliedFormLine));
-if (/privacyLineFinal:\s*true/.test(config)) {
-  assert.fail('privacyLineFinal is true, but the Advisor still has to supply the enquiry form privacy line');
+const privacyAboveButton = 'Trip N Travel (TRIPNTRAVEL PRIVATE LTD) will use your details to reply to your enquiry and send you quotes by WhatsApp, phone or email. Find out more in our <a href="privacy.html">Privacy Notice</a>.';
+for (const name of ['enquiry.html', 'contact.html']) {
+  const page = textOf(path.join(root, name));
+  const at = page.indexOf(privacyAboveButton);
+  const button = page.indexOf('type="submit"', at);
+  assert.ok(at !== -1, name + ' is missing the enquiry privacy line');
+  assert.ok(button > at, name + ' privacy line must sit above the submit button');
 }
+assert.ok(textOf(path.join(root, 'js/matchmaker.js')).includes(privacyAboveButton), 'matchmaker enquiry form needs the privacy line');
 
 const expectedPlaceholders = {
   'privacy.html': ['[DATE OF PUBLICATION]'],
-  'cookies.html': [
-    '[DATE OF PUBLICATION]',
-    '[ADVISOR TO CONFIRM: advertising section wording to be adjusted because no advertising tags are live]'
-  ],
+  'cookies.html': ['[DATE OF PUBLICATION]'],
   'complaints.html': [
     '[DATE OF PUBLICATION]',
     '[WHATSAPP NUMBER: not recorded, to be added]',
@@ -354,6 +357,10 @@ assert.ok(textOf(path.join(root, 'cookies.html')).includes('No expiry is set. It
 assert.ok(textOf(path.join(root, 'cookies.html')).includes('>_ga</td>'));
 assert.ok(textOf(path.join(root, 'cookies.html')).includes('>_ga_T3VGVEDZ7V</td>'));
 assert.ok(!textOf(path.join(root, 'cookies.html')).includes('To be confirmed'));
+assert.ok(textOf(path.join(root, 'cookies.html')).includes("We don't currently use advertising cookies. If that changes, we will ask for your consent first and update this page."));
+assert.ok(!textOf(path.join(root, 'cookies.html')).includes('ADVISOR TO CONFIRM'));
+assert.ok(!textOf(path.join(root, 'cookies.html')).includes('information collected by advertising tags goes to Meta and Google'));
+assert.ok(!textOf(path.join(root, 'cookies.html')).includes('On Facebook, Instagram and Google'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('<a href="cookies.html">Cookie Notice</a>'));
 for (const file of html) {
   const base = path.basename(file);

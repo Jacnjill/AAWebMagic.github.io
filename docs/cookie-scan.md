@@ -33,7 +33,7 @@ No Google Ads tag is in the build. There is no conversion id and no `googleadser
 
 HubSpot's embed script is not on any page. `js/forms.js` can POST an enquiry to the EU Forms API only when `hubspotEnabled` is true and marketing cookies are on. `hubspotEnabled` is false. That POST does not send a tracking cookie, and the page does not set a HubSpot cookie.
 
-The two "To be confirmed" advertising rows are not in the cookie table. A highlighted note above the Advertising subsection asks the Advisor to adjust that subsection. The subsection text itself is unchanged.
+The two "To be confirmed" advertising rows are not in the cookie table. The Advertising subsection now says the site does not currently use advertising cookies, and that consent will be asked before that changes.
 
 ## Embedded content
 
@@ -55,4 +55,4 @@ The site code does not delete cookies that are already set. After Reject all, an
 
 ## Flags
 
-`legalPagesFinal` is false. The draft notices still show highlighted placeholders. `privacyLineFinal` is false. The enquiry form does not carry a new privacy sentence, because the Advisor has not supplied one.
+`legalPagesFinal` is false. The draft notices still show the publication-date placeholder, and the complaints page still shows the three "not recorded" placeholders. `privacyLineFinal` is true. The enquiry, contact and matchmaker enquiry forms carry the supplied privacy line, with Privacy Notice linking to privacy.html.

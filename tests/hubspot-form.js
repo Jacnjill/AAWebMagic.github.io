@@ -64,13 +64,14 @@ async function main() {
         frame: !!document.querySelector('.hs-form-frame'),
         noticeText: notice ? notice.textContent : '',
         noticeLink: !!(notice && notice.querySelector('a')),
+        noticeHref: notice && notice.querySelector('a') ? notice.querySelector('a').getAttribute('href') : '',
         marketingChecked: document.querySelector('#en-marketing').checked,
         flag: TNT.hubspotEnabled
       };
     });
     if (code.flag !== false) fail('hubspotEnabled is not off in config');
     if (code.scripts.length || code.frame) fail('HubSpot code is on the page while the flag is off');
-    if (code.noticeLink) fail('Privacy Notice is a link while privacyUrl is empty');
+    if (!code.noticeLink || code.noticeHref !== 'privacy.html') fail('Privacy Notice should link to privacy.html');
     if (!code.noticeText.includes('Privacy Notice')) fail('privacy notice text missing');
     if (code.marketingChecked) fail('marketing consent starts ticked');
     await fill(off, true);
