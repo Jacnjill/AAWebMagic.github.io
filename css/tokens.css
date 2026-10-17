@@ -1,8 +1,9 @@
-/* Brand accent #0060C0 is the logo blue sampled from images/logo.png
-   (cluster around #0060C0 / #0050C0). Logo gold #F0C000 is decorative only:
-   white text on gold fails WCAG. WhatsApp green stays #128C7E; button labels
-   on it are bold and at least 19px so they meet WCAG AA for large text
-   (white on #128C7E is about 4.14:1, under 4.5:1 for small text). */
+/* Palette: ink #0F1B2D, warm off-white #FAF7F2, deep teal #0E5A57.
+   Gold #F2C230 is for small details only. White on gold is about 1.7:1,
+   so gold is never used for text on a light background.
+   WhatsApp green stays #128C7E. Text labels on it are bold and at least
+   19px (white on #128C7E is about 4.14:1). Icon-only buttons meet the
+   3:1 non-text contrast bar. */
 @font-face {
   font-family: "Fraunces";
   font-style: normal;
@@ -31,25 +32,30 @@
 }
 
 :root {
-  --bg: #ffffff;
-  --text: #111827;
-  --muted: #374151;
-  --accent: #0060c0;
-  --accent-dark: #004e9a;
-  --gold: #f0c000;
-  --line: #e5e7eb;
-  --soft: #f4f7fb;
+  --bg: #faf7f2;
+  --text: #0f1b2d;
+  --ink: #0f1b2d;
+  --muted: #3e4c61;
+  --accent: #0e5a57;
+  --accent-dark: #0a4543;
+  --gold: #f2c230;
+  --line: #e6dfd4;
+  --soft: #f3efe8;
   --wa: #128c7e;
   --wa-text: #0c6b60;
   --danger: #991b1b;
   --serif: "Fraunces", "Palatino Linotype", Palatino, Georgia, serif;
   --sans: "Source Sans 3", "Segoe UI", sans-serif;
-  --size: 17px;
+  --size: 18px;
   --lh: 1.6;
+  --h1: clamp(2.5rem, 4vw + 1rem, 4.5rem);
+  --h2: clamp(2rem, 1.6vw + 1.55rem, 2.75rem);
+  --eyebrow: 0.75rem;
   --gutter: 16px;
-  --max: 1080px;
-  --radius: 14px;
-  --header: 72px;
+  --max: 1200px;
+  --radius: 16px;
+  --header: 76px;
+  --section-y: 3.5rem;
 }
 
 *,

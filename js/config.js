@@ -59,6 +59,6 @@ const TNT = {
   atolWording: 'Flight-inclusive holidays are ATOL protected by the tour operator.',
   atolDealLine: 'ATOL protected by the tour operator',
   aiDisclosure: "You'll chat with our AI travel assistant first; a travel adviser can take over whenever you like.",
-  heroHeadline: 'Holidays planned for you, on WhatsApp.',
+  heroHeadline: 'Holidays planned for you, on WhatsApp',
   heroSub: 'Budget adventures, faith and heritage trips, and romantic escapes. Tell us what you want and we will put together options.'
 };

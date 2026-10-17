@@ -39,7 +39,9 @@
       }
       el.target = '_blank';
       el.rel = 'noopener noreferrer';
-      if (el.hasAttribute('data-wa-full') || !el.textContent.trim()) el.textContent = 'WhatsApp us on ' + TNT.whatsappDisplay;
+      if (el.hasAttribute('data-wa-icon')) {
+        if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'WhatsApp us');
+      } else if (el.hasAttribute('data-wa-full') || !el.textContent.trim()) el.textContent = 'WhatsApp us on ' + TNT.whatsappDisplay;
     });
     var company = TNT.legalName + ' (trading as ' + TNT.tradingName + '). Registered in ' + TNT.registeredIn + ', company number ' + TNT.companyNumber + '. Registered office: ' + TNT.registeredOffice + '.';
     scope.querySelectorAll('[data-company]').forEach(function (el) { el.textContent = company; });
@@ -77,6 +79,9 @@
     });
     scope.querySelectorAll('[data-protection-link]').forEach(function (el) {
       el.hidden = !(TNT.showAtolWording || TNT.showPtsLine);
+    });
+    scope.querySelectorAll('[data-instalment-section]').forEach(function (el) {
+      el.hidden = !TNT.instalmentTermsConfirmed;
     });
     scope.querySelectorAll('[data-year]').forEach(function (el) {
       el.textContent = '© ' + new Date().getFullYear() + ' ' + company;

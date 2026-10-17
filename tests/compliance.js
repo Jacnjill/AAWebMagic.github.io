@@ -41,7 +41,7 @@ const banned = [
 ];
 
 for (const file of files) {
-  if (file.endsWith('.woff2') || file.endsWith('.jpg') || file.endsWith('.png') || file.endsWith('.webp')) continue;
+  if (file.endsWith('.woff2') || file.endsWith('.jpg') || file.endsWith('.png') || file.endsWith('.webp') || file.endsWith('.avif')) continue;
   const text = textOf(file);
   for (const rule of banned) {
     assert.ok(!rule.test(text), `${path.relative(root, file)} matched ${rule}`);

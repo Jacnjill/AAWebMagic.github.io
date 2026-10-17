@@ -3,7 +3,7 @@
     var label = interest || document.body.getAttribute('data-wa-interest') || 'Trip N Travel holidays';
     return '<article class="card quote-card">' +
       '<h3>Ask for a current quote</h3>' +
-      '<p>We do not have a price on this page that is fresh enough to show. Tell us what you want and we will reply on WhatsApp. Nothing is booked until you agree.</p>' +
+      '<p>Tell us what you want and we will reply on WhatsApp. Nothing is booked until you agree.</p>' +
       '<p><a class="btn btn-wa" data-wa data-location="quote-card" data-wa-interest="' + TNTSite.escapeHtml(label) + '">Ask for a current quote</a></p>' +
       '<p class="ai-note">' + TNTSite.escapeHtml(TNT.aiDisclosure) + '</p>' +
       '</article>';
@@ -43,11 +43,17 @@
     var niche = host.getAttribute('data-niche');
     var limit = Number(host.getAttribute('data-limit') || 3);
     var rows = deals.filter(function (d) { return !niche || d.niche === niche; }).slice(0, limit);
+    var section = host.closest('[data-deals-section]');
     if (!rows.length) {
+      if (section) {
+        section.hidden = true;
+        return;
+      }
       if (!host.querySelector('.quote-card')) host.innerHTML = quoteCard(host.getAttribute('data-interest'));
       TNTSite.refresh(host);
       return;
     }
+    if (section) section.hidden = false;
     host.innerHTML = rows.map(card).join('');
     TNTSite.refresh(host);
   }
@@ -85,6 +91,11 @@
       })
       .catch(function () {
         hosts.forEach(function (host) {
+          var section = host.closest('[data-deals-section]');
+          if (section) {
+            section.hidden = true;
+            return;
+          }
           if (!host.querySelector('.quote-card')) host.innerHTML = quoteCard(host.getAttribute('data-interest'));
           TNTSite.refresh(host);
         });
