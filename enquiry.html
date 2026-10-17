@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-  <!-- build: f7e79ce -->
-  <meta name="build" content="f7e79ce">
+  <!-- build: 553036a -->
+  <meta name="build" content="553036a">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
@@ -62,19 +62,21 @@
     </div></section>
     <section class="section"><div class="wrap">
       <form class="form-card" data-form="enquiry">
-        <label for="en-name">Name</label>
-        <input id="en-name" name="name" required autocomplete="name">
+        <label for="en-first">First name</label>
+        <input id="en-first" name="firstname" required autocomplete="given-name">
+        <label for="en-last">Last name</label>
+        <input id="en-last" name="lastname" required autocomplete="family-name">
         <label for="en-email">Email</label>
-        <input id="en-email" name="email" type="email" required autocomplete="email">
-        <label for="en-phone">Phone</label>
-        <input id="en-phone" name="phone" autocomplete="tel">
+        <input id="en-email" name="email" type="email" autocomplete="email">
+        <label for="en-phone">Phone number</label>
+        <input id="en-phone" name="phone" required autocomplete="tel">
         <label for="enquiry-destination">Destination</label>
         <select id="enquiry-destination" name="destination" required>
           <option value="">Choose one</option>
           <option value="Spain">Spain</option>
           <option value="Turkey">Turkey</option>
           <option value="Greece">Greece</option>
-          <option value="Surprise me">Surprise me</option>
+          <option value="Not sure">Not sure</option>
           <option value="Other">Other</option>
         </select>
         <label for="en-other">If you chose Other, tell us where</label>
@@ -88,11 +90,11 @@
           <input id="en-consent" name="enquiryConsent" type="checkbox" required>
           <label for="en-consent">I agree to Trip N Travel contacting me about this enquiry (see <a href="privacy.html">Privacy Policy</a>)</label>
         </div>
-        <label class="choice"><input type="checkbox" name="offersEmail"> I'd like to receive holiday offers by email. I can unsubscribe at any time.</label>
-        <label class="choice"><input type="checkbox" name="offersWhatsapp"> I'd like to receive holiday offers by WhatsApp. I can unsubscribe at any time.</label>
+        <label class="choice"><input id="en-marketing" name="tnt_marketing_consent" type="checkbox" value="whatsapp"> Yes, I'd like to receive holiday offers and deals from Trip N Travel by WhatsApp. I can stop these at any time by replying STOP or by telling you.</label>
         <p><a href="privacy.html">Read the privacy policy</a></p>
         <p>What happens next: we open WhatsApp with your message so you can send it. Nothing is booked. We do not add you to a mailing list unless you tick a box.</p>
         <p class="ai-note" data-ai-note hidden></p>
+        <p data-privacy-notice>Trip N Travel (TRIPNTRAVEL PRIVATE LTD) will use your details to reply to your enquiry and send you quotes by WhatsApp, phone or email. Find out more in our Privacy Notice.</p>
         <button class="btn btn-accent" type="submit">Send the enquiry</button>
         <p data-status role="status"></p>
       </form>
@@ -135,7 +137,7 @@
       </nav>
     </div>
     <div class="wrap"><p class="footer-copy" data-year></p></div>
-      <p class="build-mark" data-build hidden>build f7e79ce</p>
+      <p class="build-mark" data-build hidden>build 553036a</p>
   </footer>
   <div class="mobile-bar">
     <a class="btn btn-wa" data-wa data-location="mobile-bar">WhatsApp us</a>

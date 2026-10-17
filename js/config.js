@@ -34,8 +34,15 @@ const TNT = {
   ga4Id: 'G-T3VGVEDZ7V',
   metaPixelId: '{{PLACEHOLDER: Meta Pixel ID}}',
   tiktokPixelId: '{{PLACEHOLDER: TikTok Pixel ID}}',
-  hubspotPortalId: '{{PLACEHOLDER: HubSpot portal ID}}',
-  hubspotFormId: '{{PLACEHOLDER: HubSpot form ID}}',
+  hubspotPortalId: '146832569',
+  hubspotFormId: 'd9794649-3539-41a5-8373-9df3b876c38f',
+  /* EU region. The submission URL is api-eu1.hsforms.com. The embed script is not used. */
+  hubspotRegion: 'eu1',
+  /* Value stored on the published form for the hidden source field. */
+  hubspotConsentSource: 'website',
+  hubspotConsentVersion: 'WA-MKT-v1',
+  /* Live privacy notice URL. Empty keeps the words Privacy Notice as plain text. */
+  privacyUrl: '',
   showAtolWording: false,
   showPtsLine: false,
   extraDestinations: [],

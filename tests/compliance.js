@@ -67,6 +67,12 @@ const config = textOf(path.join(root, 'js/config.js'));
 assert.ok(config.includes('showAtolWording: false'));
 assert.ok(config.includes('showPtsLine: false'));
 assert.ok(config.includes('hubspotEnabled: false'));
+assert.ok(config.includes("privacyUrl: ''"));
+assert.ok(config.includes("hubspotRegion: 'eu1'"));
+assert.ok(config.includes("hubspotPortalId: '146832569'"));
+assert.ok(config.includes("hubspotFormId: 'd9794649-3539-41a5-8373-9df3b876c38f'"));
+assert.ok(config.includes("hubspotConsentVersion: 'WA-MKT-v1'"));
+assert.ok(config.includes("hubspotConsentSource: 'website'"));
 assert.ok(config.includes('extraDestinations: []'));
 assert.ok(config.includes("ga4Id: 'G-T3VGVEDZ7V'"));
 assert.ok(config.includes('priceMaxAgeDays: 7'));
@@ -176,6 +182,19 @@ for (const name of ['enquiry.html', 'contact.html']) {
   assert.ok(text.includes('required'), `${name} consent must be required`);
   assert.ok(text.includes(consentLine), `${name} consent label changed`);
   assert.ok(!/enquiryConsent"[^>]*checked/.test(text), `${name} consent must start unticked`);
+}
+const enquiryHtml = textOf(path.join(root, 'enquiry.html'));
+assert.ok(enquiryHtml.includes('name="firstname"'), 'enquiry form needs a first name');
+assert.ok(enquiryHtml.includes('name="lastname"'), 'enquiry form needs a last name');
+assert.ok(enquiryHtml.includes('name="tnt_marketing_consent"'), 'enquiry form needs the marketing consent field');
+assert.ok(!/tnt_marketing_consent"[^>]*checked/.test(enquiryHtml), 'marketing consent must start unticked');
+assert.ok(enquiryHtml.includes('Find out more in our Privacy Notice.'), 'enquiry form keeps the privacy notice as text');
+assert.ok(!enquiryHtml.includes('js-eu1.hsforms.net'), 'enquiry page must not embed the HubSpot script');
+assert.ok(!enquiryHtml.includes('hs-form-frame'), 'enquiry page must not embed a HubSpot frame');
+for (const file of html) {
+  const text = textOf(file);
+  assert.ok(!text.includes('js-eu1.hsforms.net'), `${path.basename(file)} embeds the HubSpot script`);
+  assert.ok(!text.includes('hs-form-frame'), `${path.basename(file)} embeds a HubSpot frame`);
 }
 
 assert.ok(!textOf(path.join(root, 'sitemap.xml')).includes('my-trip.html'));
@@ -293,6 +312,18 @@ for (const file of html) {
 
 const forms = textOf(path.join(root, 'js/forms.js'));
 assert.ok(forms.includes('enquiryConsent'));
+assert.ok(forms.includes('api-'), 'the form posts to the regional HubSpot host');
+assert.ok(forms.includes('.hsforms.com/submissions/v3/integration/submit/'));
+assert.ok(forms.includes("hubspotField('firstname'"));
+assert.ok(forms.includes("hubspotField('lastname'"));
+assert.ok(forms.includes("hubspotField('phone'"));
+assert.ok(forms.includes("hubspotField('email'"));
+assert.ok(forms.includes("hubspotField('tnt_destination'"));
+assert.ok(forms.includes("hubspotField('tnt_marketing_consent'"));
+assert.ok(forms.includes("hubspotField('tnt_marketing_consent_source'"));
+assert.ok(forms.includes("hubspotField('tnt_consent_wording_version'"));
+assert.ok(forms.includes('marketingCookiesOn'), 'HubSpot waits for marketing cookie consent');
+assert.ok(!forms.includes('hutk'), 'the form must not send a HubSpot tracking cookie');
 const matchmaker = textOf(path.join(root, 'js/matchmaker.js'));
 assert.ok(matchmaker.includes('reply on WhatsApp'));
 assert.ok(matchmaker.includes('hubspotEnabled'));
@@ -307,6 +338,16 @@ if (cookieRun.stdout) process.stdout.write(cookieRun.stdout);
 if (cookieRun.status !== 0) {
   if (cookieRun.stderr) process.stderr.write(cookieRun.stderr);
   throw new Error('cookie banner check failed');
+}
+const hubspotRun = spawnSync(process.execPath, [path.join(__dirname, 'hubspot-form.js')], {
+  encoding: 'utf8',
+  timeout: 120000,
+  env: Object.assign({}, process.env, { NODE_PATH: '/tmp/pw/node_modules' })
+});
+if (hubspotRun.stdout) process.stdout.write(hubspotRun.stdout);
+if (hubspotRun.status !== 0) {
+  if (hubspotRun.stderr) process.stderr.write(hubspotRun.stderr);
+  throw new Error('HubSpot form check failed');
 }
 
 console.log('compliance checks passed', files.length, 'files');

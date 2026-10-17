@@ -14,12 +14,13 @@ function loadPlaywright() {
 const { chromium } = loadPlaywright();
 const root = path.join(__dirname, '..');
 const port = 8795;
-const pages = ['index.html', 'packages.html', 'destinations.html', 'contact.html'];
+const pages = ['index.html', 'packages.html', 'destinations.html', 'contact.html', 'enquiry.html'];
 const widths = [
   { name: '390', width: 390, height: 844 },
   { name: '1280', width: 1280, height: 900 }
 ];
 const tracker = /googletagmanager|google-analytics|googleadservices|doubleclick|facebook\.net|connect\.facebook|tiktok|analytics\.tiktok|hubspot|hs-analytics|hs-scripts|hsforms|hotjar|segment\.io|clarity\.ms/i;
+const hubspotReq = /hubspot|hsforms|hs-analytics|hs-scripts|hs-banner/i;
 const analyticsHost = /googletagmanager|google-analytics|googleadservices|doubleclick/i;
 const nonEssential = /(?:^|_)(?:_ga|_gid|_gat|_fbp|_fbc|_ttp|ttcsid|hubspotutk|__hstc|__hssc|__hssrc)/i;
 
@@ -61,6 +62,10 @@ async function readState(context, page) {
 
 function trackerHits(urls) {
   return urls.filter((url) => tracker.test(url));
+}
+
+function hubspotHits(urls) {
+  return urls.filter((url) => hubspotReq.test(url));
 }
 
 function badCookies(cookies) {
@@ -110,6 +115,11 @@ async function main() {
         const beforeUrls = first.requests.slice();
         const beforeTrackers = trackerHits(beforeUrls);
         if (beforeTrackers.length) fail(file + ' ' + width.name + ' tracker request before a choice: ' + beforeTrackers.join(' '));
+        if (hubspotHits(beforeUrls).length) fail(file + ' ' + width.name + ' HubSpot request before a choice: ' + hubspotHits(beforeUrls).join(' '));
+        const hubspotCode = await first.page.evaluate(() => {
+          return [...document.scripts].some((script) => /hsforms|hubspot/i.test(script.src || '')) || !!document.querySelector('.hs-form-frame');
+        });
+        if (hubspotCode) fail(file + ' ' + width.name + ' HubSpot code is on the page before a choice');
         const beforeState = await readState(first.context, first.page);
         if (beforeState.storage.consent) fail(file + ' ' + width.name + ' stored consent before a choice');
         if (badCookies(beforeState.cookies).length) fail(file + ' ' + width.name + ' non-essential cookie before a choice');
@@ -123,6 +133,7 @@ async function main() {
         const rejectClickRequests = rejected.requests.slice();
         const afterReject = trackerHits(rejectClickRequests);
         if (afterReject.length) fail(file + ' ' + width.name + ' tracker request after Reject all: ' + afterReject.join(' '));
+        if (hubspotHits(rejectClickRequests).length) fail(file + ' ' + width.name + ' HubSpot request after Reject all');
         const rejectState = await readState(rejected.context, rejected.page);
         const choice = JSON.parse(rejectState.storage.consent || 'null');
         if (!choice || choice.analytics !== false || choice.marketing !== false) {
@@ -134,6 +145,7 @@ async function main() {
         await rejected.page.reload({ waitUntil: 'networkidle' });
         if (await rejected.page.locator('#cookie-banner').count()) fail(file + ' ' + width.name + ' banner returned after reload');
         if (trackerHits(rejected.requests).length) fail(file + ' ' + width.name + ' tracker request on reload after Reject all');
+        if (hubspotHits(rejected.requests).length) fail(file + ' ' + width.name + ' HubSpot request on reload after Reject all');
         await rejected.page.click('[data-manage-cookies]');
         await wait(200);
         if (!(await rejected.page.locator('#cookie-banner').isVisible())) fail(file + ' ' + width.name + ' Manage cookies did not reopen the banner');
@@ -147,6 +159,7 @@ async function main() {
         const afterAccept = trackerHits(accepted.requests);
         const unexpected = afterAccept.filter((item) => !analyticsHost.test(item));
         if (unexpected.length) fail(file + ' ' + width.name + ' unexpected tracker after Accept all: ' + unexpected.join(' '));
+        if (hubspotHits(accepted.requests).length) fail(file + ' ' + width.name + ' HubSpot request after Accept all while the form switch is off');
         const acceptState = await readState(accepted.context, accepted.page);
         const acceptChoice = JSON.parse(acceptState.storage.consent || 'null');
         if (!acceptChoice || acceptChoice.analytics !== true || acceptChoice.marketing !== true) {
@@ -158,6 +171,7 @@ async function main() {
         if (await accepted.page.locator('#cookie-banner').count()) fail(file + ' ' + width.name + ' banner returned after Accept all reload');
         const reloadAccept = trackerHits(accepted.requests).filter((item) => !analyticsHost.test(item));
         if (reloadAccept.length) fail(file + ' ' + width.name + ' non-analytics tracker after Accept reload: ' + reloadAccept.join(' '));
+        if (hubspotHits(accepted.requests).length) fail(file + ' ' + width.name + ' HubSpot request after Accept reload while the form switch is off');
         await accepted.context.close();
 
         rows.push({
