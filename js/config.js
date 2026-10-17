@@ -25,6 +25,8 @@ const TNT = {
   founderName: 'Raja Ali',
   founderBase: 'Bristol',
   founderPhoto: '',
+  /* About founder card stays the role line only until Raja supplies a bio and a location line. */
+  showFounderBio: false,
   contactHours: 'Messages answered 9am–8pm, 7 days',
   /* Unverified opening hours stay off the public pages until confirmed. */
   showContactHours: false,

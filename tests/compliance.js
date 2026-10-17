@@ -96,6 +96,7 @@ for (const name of ['privacy.html', 'cookies.html', 'terms.html', 'protection.ht
 assert.ok(textOf(path.join(root, 'protection.html')).includes('Financial protection details coming soon'));
 
 assert.ok(config.includes('showPlaceholderBlocks: false'));
+assert.ok(config.includes('showFounderBio: false'));
 assert.ok(config.includes('showAiDisclosure: false'));
 assert.ok(config.includes("You'll chat with our AI travel assistant first"));
 assert.ok(config.includes('showContactHours: false'));
@@ -219,6 +220,22 @@ assert.ok(consentJs.includes('if (!choice) render(false);\n    else apply(choice
 const siteCss = textOf(path.join(root, 'css/site.css'));
 assert.ok(siteCss.includes('.cookie-actions { display: flex; flex-wrap: nowrap;'), 'cookie choices stay on one row');
 assert.ok(siteCss.includes('.cookie-actions .btn { flex: 1 1 0;'), 'Accept all and Reject all share one button size');
+
+const aboutHtml = textOf(path.join(root, 'about.html'));
+const cardStart = aboutHtml.indexOf('<aside class="brand-panel"');
+const cardEnd = aboutHtml.indexOf('</aside>', cardStart);
+assert.ok(cardStart !== -1 && cardEnd > cardStart, 'about page needs the founder card');
+const founderCard = aboutHtml.slice(cardStart, cardEnd);
+assert.ok(/data-founder-bio[^>]*hidden/.test(founderCard), 'founder bio slot must be hidden in the markup');
+assert.ok(founderCard.includes('{{PLACEHOLDER: founder bio, wording approved by Raja}}'), 'founder bio slot must wait for Raja');
+assert.ok(founderCard.includes('{{PLACEHOLDER: founder location, wording approved by Raja}}'), 'founder location slot must wait for Raja');
+const founderVisible = visibleMarkup(founderCard);
+assert.ok(founderVisible.includes('Founder, Trip N Travel'), 'founder card keeps the role line');
+assert.ok(!/bristol|based in|location/i.test(founderVisible), 'founder card must not show a location while the bio flag is off');
+assert.ok(!/\b(years?|experience|expert|award)\b/i.test(founderVisible), 'founder card must not show an experience claim while the bio flag is off');
+assert.ok(!/Raja Ali, founder\./.test(visibleMarkup(aboutHtml)), 'the duplicate Raja Ali team line must stay off the about page');
+assert.ok(siteJs.includes("el.hidden = !(TNT.showFounderBio && !/\\{\\{/.test(el.textContent || ''))"), 'founder bio stays hidden until the flag is on and the wording has no placeholder');
+assert.ok(siteCss.includes('.about-side { position: sticky;'), 'founder card column stays sticky');
 
 for (const file of html) {
   const base = path.basename(file);

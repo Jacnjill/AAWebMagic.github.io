@@ -171,6 +171,9 @@
         }
       }
     }
+    scope.querySelectorAll('[data-founder-bio]').forEach(function (el) {
+      el.hidden = !(TNT.showFounderBio && !/\{\{/.test(el.textContent || ''));
+    });
     scope.querySelectorAll('[data-founder-slot]').forEach(function (el) {
       if (usablePhoto) {
         el.hidden = false;
