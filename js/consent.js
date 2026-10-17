@@ -137,8 +137,8 @@
     el.innerHTML =
       '<p>Analytics and marketing stay off unless you allow them.</p>' +
       '<div class="cookie-actions">' +
-      '<button type="button" class="btn" data-cookie="accept">Accept</button>' +
-      '<button type="button" class="btn" data-cookie="reject">Reject</button>' +
+      '<button type="button" class="btn" data-cookie="accept">Accept all</button>' +
+      '<button type="button" class="btn" data-cookie="reject">Reject all</button>' +
       '<button type="button" class="btn" data-cookie="settings">Settings</button>' +
       '</div>' +
       '<div id="cookie-settings"' + (openSettings ? '' : ' hidden') + '>' +

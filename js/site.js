@@ -43,13 +43,12 @@
         if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'WhatsApp us');
       } else if (el.hasAttribute('data-wa-full') || !el.textContent.trim()) el.textContent = 'WhatsApp us on ' + TNT.whatsappDisplay;
     });
-    var office = String(TNT.registeredOffice || '');
-    var tail = 'Kent, BR1 3QD';
-    var officeHtml = office.indexOf(tail) === -1
-      ? escapeHtml(office)
-      : escapeHtml(office.slice(0, office.indexOf(tail))) + '<span class="nowrap">' + escapeHtml(tail) + '</span>';
-    var companyHtml = escapeHtml(TNT.legalName + ' (trading as ' + TNT.tradingName + '). Registered in ' + TNT.registeredIn + ', company number ' + TNT.companyNumber + '. Registered office: ') + officeHtml + '.';
-    scope.querySelectorAll('[data-company]').forEach(function (el) { el.innerHTML = companyHtml; });
+    var legalLine = TNT.legalFooterLine;
+    var tail = 'Kent BR1 3QD';
+    var legalHtml = legalLine.indexOf(tail) === -1
+      ? escapeHtml(legalLine)
+      : escapeHtml(legalLine.slice(0, legalLine.indexOf(tail))) + '<span class="nowrap">' + escapeHtml(tail) + '</span>';
+    scope.querySelectorAll('[data-company]').forEach(function (el) { el.innerHTML = legalHtml; });
     scope.querySelectorAll('[data-registered]').forEach(function (el) {
       el.textContent = 'Registered in ' + TNT.registeredIn + ' ' + TNT.companyNumber;
     });

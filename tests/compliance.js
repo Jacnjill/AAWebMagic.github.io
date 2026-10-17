@@ -90,7 +90,7 @@ assert.ok(inquiry.includes('http-equiv="refresh"'));
 assert.ok(inquiry.includes('enquiry.html'));
 assert.ok(inquiry.includes('rel="canonical" href="https://tripntravel.co.uk/enquiry.html"'));
 
-for (const name of ['privacy.html', 'cookies.html', 'terms.html', 'protection.html']) {
+for (const name of ['privacy.html', 'cookies.html', 'terms.html', 'protection.html', 'complaints.html']) {
   assert.ok(textOf(path.join(root, name)).includes('DRAFT — requires review before publishing'));
 }
 assert.ok(textOf(path.join(root, 'protection.html')).includes('Financial protection details coming soon'));
@@ -108,7 +108,7 @@ assert.ok(config.includes('instalmentTermsConfirmed: false'));
 assert.ok(config.includes("askForQuote: 'Ask for a current quote'"));
 assert.ok(config.includes("instalmentPublicLine: 'Spread the cost with a deposit and instalments'"));
 
-const legalPages = new Set(['privacy.html', 'cookies.html', 'terms.html', 'protection.html']);
+const legalPages = new Set(['privacy.html', 'cookies.html', 'terms.html', 'protection.html', 'complaints.html']);
 const token = /\{\{(?:PLACEHOLDER|VERIFY)\b/;
 const voidEls = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr']);
 
@@ -200,6 +200,41 @@ assert.ok(netlify.includes('context.deploy-preview.headers'));
 assert.ok(netlify.includes('context.branch-deploy.headers'));
 assert.ok(netlify.includes('X-Robots-Tag = "noindex"'));
 assert.ok(!/context\.production/.test(netlify), 'production context must stay free of preview headers');
+
+const legalLine = 'TRIPNTRAVEL PRIVATE LTD, company number 16525641, registered in England and Wales, registered office 36 Scotts Road, Bromley, Kent BR1 3QD';
+assert.ok(config.includes(legalLine), 'config must keep the full company line');
+assert.ok(siteJs.includes('legalFooterLine'), 'footer company line must be filled from config');
+assert.ok(siteJs.includes("el.innerHTML = legalHtml"), 'the company line must be written into the page');
+const consentJs = textOf(path.join(root, 'js/consent.js'));
+const actionRow = consentJs.slice(consentJs.indexOf('<div class="cookie-actions">'), consentJs.indexOf('cookie-settings'));
+assert.ok(actionRow.includes('class="btn" data-cookie="accept">Accept all</button>'), 'Accept all must be a first-row button');
+assert.ok(actionRow.includes('class="btn" data-cookie="reject">Reject all</button>'), 'Reject all must be a first-row button');
+assert.ok(!actionRow.includes('hidden'), 'Accept all and Reject all must not sit in a hidden step');
+assert.ok(consentJs.includes('analytics: false, marketing: false'), 'Reject all must leave analytics and marketing off');
+const applyFn = consentJs.slice(consentJs.indexOf('function apply'), consentJs.indexOf('function event'));
+assert.ok(applyFn.includes('if (choice.analytics) loadGa()'), 'analytics pixels stay off until accepted');
+assert.ok(applyFn.includes('if (choice.marketing)'), 'marketing pixels stay off until accepted');
+assert.ok(applyFn.includes('loadMeta()') && applyFn.includes('loadTikTok()'));
+assert.ok(consentJs.includes('if (!choice) render(false);\n    else apply(choice);'), 'pixels must not load before a choice');
+const siteCss = textOf(path.join(root, 'css/site.css'));
+assert.ok(siteCss.includes('.cookie-actions { display: flex; flex-wrap: nowrap;'), 'cookie choices stay on one row');
+assert.ok(siteCss.includes('.cookie-actions .btn { flex: 1 1 0;'), 'Accept all and Reject all share one button size');
+
+for (const file of html) {
+  const base = path.basename(file);
+  if (base === 'inquiry.html') continue;
+  const text = textOf(file);
+  const footerStart = text.indexOf('<footer');
+  const footerEnd = text.lastIndexOf('</footer>');
+  assert.ok(footerStart !== -1 && footerEnd > footerStart, `${base} needs a footer`);
+  const footer = text.slice(footerStart, footerEnd);
+  assert.ok(footer.includes('data-company') && !/data-company[^>]*hidden/.test(footer), `${base} must show the company line`);
+  const rootPrefix = base === '404.html' ? '/' : '';
+  assert.ok(footer.includes(`href="${rootPrefix}privacy.html"`), `${base} footer needs the privacy link`);
+  assert.ok(footer.includes(`href="${rootPrefix}cookies.html"`), `${base} footer needs the cookie link`);
+  assert.ok(footer.includes(`href="${rootPrefix}complaints.html"`), `${base} footer needs the complaints link`);
+  assert.ok(footer.includes('>Complaints</a>'), `${base} complaints link must be visible`);
+}
 
 const forms = textOf(path.join(root, 'js/forms.js'));
 assert.ok(forms.includes('enquiryConsent'));

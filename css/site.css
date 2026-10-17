@@ -481,7 +481,7 @@ body.has-cookie { padding-bottom: 96px; }
 body.cookie-expanded { padding-bottom: 18rem; }
 body.has-cookie .mobile-bar { display: none; }
 .cookie-actions { display: flex; flex-wrap: nowrap; gap: 8px; width: 100%; }
-.cookie-actions .btn { flex: 1 1 0; font-size: 0.85rem; min-height: 32px; padding: 0.15rem 0.4rem; background: #fff; color: var(--text); border-color: var(--text); }
+.cookie-actions .btn { flex: 1 1 0; min-width: 0; font-size: 0.85rem; min-height: 32px; padding: 0.15rem 0.4rem; background: #fff; color: var(--text); border-color: var(--text); white-space: nowrap; }
 .cookie-actions .btn:hover { background: var(--soft); color: var(--text); }
 #cookie-settings { flex: 1 1 100%; }
 
@@ -597,8 +597,8 @@ body.has-cookie .mobile-bar { display: none; }
     padding: 0 20px;
   }
   .cookie p { flex: 1 1 auto; font-size: 0.95rem; white-space: normal; overflow: hidden; }
-  .cookie-actions { width: auto; }
-  .cookie-actions .btn { flex: 0 0 auto; min-height: 40px; }
+  .cookie-actions { width: 24rem; max-width: 46%; }
+  .cookie-actions .btn { flex: 1 1 0; min-width: 0; min-height: 40px; }
   .cookie.is-expanded { height: auto; flex-wrap: wrap; padding-top: 12px; padding-bottom: 12px; }
   .cookie.is-expanded p { white-space: normal; }
   body.has-cookie .wa-float { bottom: calc(64px + 24px); right: 20px; left: auto; }
