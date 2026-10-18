@@ -59,12 +59,8 @@ const TNT = {
   },
   googleRating: null,
   priceMaxAgeDays: 7,
-  standardDepositLabel: '{{PLACEHOLDER: standard deposit}}',
-  balanceDueWeeksLabel: '{{PLACEHOLDER: balance due weeks, default 10}}',
-  balanceDueWeeksDefault: 10,
   instalmentPublicLine: 'Spread the cost with a deposit and instalments',
   askForQuote: 'Ask for a current quote',
-  instalmentVerify: '{{VERIFY: instalment terms in writing}}',
   /* Shown only when showPtsLine is true. */
   ptsLine: 'Member of Protected Trust Services, membership 6393.',
   /* Shown only when showAtolWording is true. No logo and no ATOL number. */
