@@ -118,7 +118,7 @@ AI assistants. When you first contact us, our AI assistant may reply to you on W
 
 7. Sending information outside the UK
 
-Some of our providers are based in the US or process data outside the UK. Where that happens, we rely on UK-approved safeguards, such as the UK-US data bridge or standard contractual clauses with the UK Addendum, and we only use providers that offer them. Please contact us if you would like more information. One of these is Anthropic, the AI provider that helps us write replies (see section 6). It is based in the US. We are confirming the safeguard we use for this transfer. Please contact us if you would like more information.
+Some of our providers are based in the US or process data outside the UK. Where that happens, we rely on UK-approved safeguards, such as the UK-US data bridge or standard contractual clauses with the UK Addendum, and we only use providers that offer them. Please contact us if you would like more information. One of these is Anthropic, the AI provider that helps us write replies (see section 6). It processes data in the US. We rely on standard contractual clauses and the UK Addendum approved by the ICO for this transfer. Please contact us if you would like a copy.
 
 8. How long we keep your information
 
