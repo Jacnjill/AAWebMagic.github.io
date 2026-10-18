@@ -96,6 +96,7 @@
     });
     var instalmentText = TNT.instalmentTermsConfirmed ? TNT.instalmentPublicLine : TNT.askForQuote;
     scope.querySelectorAll('[data-instalment]').forEach(function (el) {
+      if (el.tagName === 'A' && el.getAttribute('href')) return;
       el.textContent = instalmentText;
     });
     scope.querySelectorAll('[data-protection-link]').forEach(function (el) {

@@ -145,7 +145,11 @@ assert.ok(!indexHtml.includes('guide-name') && !indexHtml.includes('Request the 
 assert.ok(!/#guide\b/.test(indexHtml), 'index.html must not link to a guide anchor');
 assert.ok(indexHtml.includes('<h2>Spread the cost</h2>'), 'Spread the cost heading stays');
 assert.ok(indexHtml.includes("Ask us about paying by deposit and instalments. Your quote shows the deposit and the date and amount of each payment. There is no interest or fee for using a plan, and your final payment is always due before the organiser's balance date."), 'approved instalment wording');
-assert.ok(indexHtml.includes('<p data-instalment>Ask for a current quote</p>'), 'Ask for a current quote stays');
+const spreadStart = indexHtml.indexOf('<h2>Spread the cost</h2>');
+const spreadEnd = indexHtml.indexOf('</section>', spreadStart);
+const spreadSection = indexHtml.slice(spreadStart, spreadEnd);
+assert.ok(spreadStart !== -1 && spreadEnd > spreadStart, 'homepage needs a Spread the cost section');
+assert.ok(spreadSection.includes('<a class="btn btn-accent" data-instalment href="enquiry.html">Ask for a current quote</a>'), 'Spread the cost section must link to enquiry.html');
 assert.ok(indexHtml.includes("I'm Raja Ali, founder of Trip N Travel. Tell us who is travelling, when you want to go and roughly what you would like to spend, and we will come back to you on WhatsApp or by phone with a quote. Our AI assistant may reply first, and our team can take over at any time."), 'approved Meet Raja wording');
 assert.ok(!indexHtml.includes('how Raja started the agency'), 'the Raja placeholder paragraph must be gone');
 assert.ok(!fs.existsSync(path.join(root, 'js/calculator.js')), 'calculator.js should be removed');
