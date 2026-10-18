@@ -49,10 +49,11 @@
       }
     });
     var legalLine = TNT.legalFooterLine;
-    var tail = 'Kent BR1 3QD';
-    var legalHtml = legalLine.indexOf(tail) === -1
-      ? escapeHtml(legalLine)
-      : escapeHtml(legalLine.slice(0, legalLine.indexOf(tail))) + '<span class="nowrap">' + escapeHtml(tail) + '</span>';
+    var legalHtml = escapeHtml(legalLine);
+    ['BR1 3QD', 'info@tripntravel.co.uk'].forEach(function (token) {
+      var safe = escapeHtml(token);
+      legalHtml = legalHtml.split(safe).join('<span class="nowrap">' + safe + '</span>');
+    });
     scope.querySelectorAll('[data-company]').forEach(function (el) { el.innerHTML = legalHtml; });
     scope.querySelectorAll('[data-registered]').forEach(function (el) {
       el.textContent = 'Registered in ' + TNT.registeredIn + ' ' + TNT.companyNumber;

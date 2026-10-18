@@ -53,8 +53,8 @@
       TNTSite.refresh(host);
       return;
     }
-    if (section) section.hidden = false;
     host.innerHTML = rows.map(card).join('');
+    if (section) section.hidden = !host.querySelector('article');
     TNTSite.refresh(host);
   }
 
