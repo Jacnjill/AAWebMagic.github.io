@@ -50,10 +50,10 @@
     });
     var legalLine = TNT.legalFooterLine;
     var legalHtml = escapeHtml(legalLine);
-    ['BR1 3QD', 'info@tripntravel.co.uk'].forEach(function (token) {
-      var safe = escapeHtml(token);
-      legalHtml = legalHtml.split(safe).join('<span class="nowrap">' + safe + '</span>');
-    });
+    var safePostcode = escapeHtml('BR1 3QD');
+    var safeEmail = escapeHtml('info@tripntravel.co.uk');
+    legalHtml = legalHtml.split(safePostcode).join('<span class="nowrap">' + safePostcode + '</span>');
+    legalHtml = legalHtml.split(safeEmail).join('<span class="nowrap"><a href="mailto:' + safeEmail + '">' + safeEmail + '</a></span>');
     scope.querySelectorAll('[data-company]').forEach(function (el) { el.innerHTML = legalHtml; });
     scope.querySelectorAll('[data-registered]').forEach(function (el) {
       el.textContent = 'Registered in ' + TNT.registeredIn + ' ' + TNT.companyNumber;
