@@ -127,6 +127,34 @@ assert.ok(textOf(path.join(root, 'netlify.toml')).includes('from = "/topdeals"')
 assert.ok(config.includes('instalmentTermsConfirmed: false'));
 assert.ok(config.includes("askForQuote: 'Ask for a current quote'"));
 assert.ok(config.includes("instalmentPublicLine: 'Spread the cost with a deposit and instalments'"));
+assert.ok(!config.includes('standardDepositLabel'), 'the unused deposit label should be gone');
+assert.ok(!config.includes('balanceDueWeeksLabel'), 'the unused balance-due label should be gone');
+assert.ok(!config.includes('balanceDueWeeksDefault'), 'the unused balance-due weeks key should be gone');
+assert.ok(!config.includes('instalmentVerify'), 'the unused instalment verify key should be gone');
+
+const indexHtml = textOf(path.join(root, 'index.html'));
+assert.ok(!indexHtml.includes('{{'), 'index.html must contain no {{');
+assert.ok(!indexHtml.includes('calculator.js'), 'index.html must not load the instalment calculator');
+assert.ok(!indexHtml.includes('id="calculator"'), 'index.html must not keep the calculator section');
+assert.ok(!indexHtml.includes('cost-form'), 'index.html must not contain the instalment calculator form');
+assert.ok(!indexHtml.includes('Show the illustration'), 'index.html must not contain the calculator button');
+assert.ok(!indexHtml.includes('Balance due weeks'), 'index.html must not contain the balance-due line');
+assert.ok(!indexHtml.includes('cost-result'), 'index.html must not contain the calculator result');
+assert.ok(!indexHtml.includes('data-form="guide"'), 'index.html must not contain the guide form');
+assert.ok(!indexHtml.includes('guide-name') && !indexHtml.includes('Request the guide') && !indexHtml.includes('Turkey on a Budget'), 'index.html must not collect guide details');
+assert.ok(!/#guide\b/.test(indexHtml), 'index.html must not link to a guide anchor');
+assert.ok(indexHtml.includes('<h2>Spread the cost</h2>'), 'Spread the cost heading stays');
+assert.ok(indexHtml.includes("Ask us about paying by deposit and instalments. Your quote shows the deposit and the date and amount of each payment. There is no interest or fee for using a plan, and your final payment is always due before the organiser's balance date."), 'approved instalment wording');
+assert.ok(indexHtml.includes('<p data-instalment>Ask for a current quote</p>'), 'Ask for a current quote stays');
+assert.ok(indexHtml.includes("I'm Raja Ali, founder of Trip N Travel. Tell us who is travelling, when you want to go and roughly what you would like to spend, and we will come back to you on WhatsApp or by phone with a quote. Our AI assistant may reply first, and our team can take over at any time."), 'approved Meet Raja wording');
+assert.ok(!indexHtml.includes('how Raja started the agency'), 'the Raja placeholder paragraph must be gone');
+assert.ok(!fs.existsSync(path.join(root, 'js/calculator.js')), 'calculator.js should be removed');
+for (const file of html) {
+  const page = textOf(file);
+  const baseName = path.basename(file);
+  assert.ok(!page.includes('#guide'), baseName + ' still links to #guide');
+  assert.ok(!page.includes('data-form="guide"'), baseName + ' still has a guide form');
+}
 
 const legalPages = new Set(['privacy.html', 'cookies.html', 'terms.html', 'complaints.html']);
 const token = /\{\{(?:PLACEHOLDER|VERIFY)\b/;
@@ -436,6 +464,10 @@ for (const file of html) {
 
 const forms = textOf(path.join(root, 'js/forms.js'));
 assert.ok(forms.includes('enquiryConsent'));
+assert.ok(forms.includes("kind === 'enquiry'"), 'the enquiry form handler stays');
+assert.ok(!forms.includes("kind === 'guide'"), 'the guide form handler should be gone');
+assert.ok(!forms.includes('guide_download'), 'the guide download event should be gone');
+assert.ok(!forms.includes('Turkey on a Budget'), 'forms.js must not collect guide details');
 assert.ok(forms.includes("headers: { 'Content-Type': 'application/json' }"));
 assert.ok(forms.includes('whatsapp_marketing_consent'));
 assert.ok(forms.includes('company_website'));

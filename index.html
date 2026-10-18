@@ -167,8 +167,7 @@
         <img data-founder-photo alt="" width="320" height="320">
         <div>
           <h2>Meet Raja</h2>
-          <p>I'm Raja Ali, founder of Trip N Travel. I plan trips personally, and you can reach me on WhatsApp while we put your holiday together. Tell me who is travelling, when you want to go, and what you would like to spend. I will come back to you on WhatsApp with a quote that fits.</p>
-          <p data-placeholder-block hidden>{{PLACEHOLDER: how Raja started the agency}} {{PLACEHOLDER: a short note in Raja's own words}}</p>
+          <p>I'm Raja Ali, founder of Trip N Travel. Tell us who is travelling, when you want to go and roughly what you would like to spend, and we will come back to you on WhatsApp or by phone with a quote. Our AI assistant may reply first, and our team can take over at any time.</p>
         </div>
       </div>
     </section>
@@ -183,53 +182,17 @@
         </ol>
       </div>
     </section>
-    <section class="section section-soft" id="calculator" data-instalment-section hidden>
+    <section class="section section-soft">
       <div class="wrap">
         <h2>Spread the cost</h2>
+        <p>Ask us about paying by deposit and instalments. Your quote shows the deposit and the date and amount of each payment. There is no interest or fee for using a plan, and your final payment is always due before the organiser's balance date.</p>
         <p data-instalment>Ask for a current quote</p>
-        <div data-placeholder-block hidden>
-          <p>{{VERIFY: instalment terms in writing}}</p>
-          <p class="disclaimer">Illustrative only. Exact deposit and payment dates are confirmed in your quote.</p>
-          <p data-flag-trust-note hidden></p>
-          <form id="cost-form" class="form-card">
-            <label for="price">Total price</label>
-            <input id="price" name="price" inputmode="decimal" required>
-            <label for="deposit">Deposit <span class="muted">Default: {{PLACEHOLDER: standard deposit}}</span></label>
-            <input id="deposit" name="deposit" inputmode="decimal" required placeholder="{{PLACEHOLDER: standard deposit}}">
-            <label for="departure">Departure month</label>
-            <input id="departure" name="departure" type="month" required>
-            <p class="muted">Balance due weeks: {{PLACEHOLDER: balance due weeks, default 10}}. This illustration uses 10 weeks, counted back from the 1st of the departure month, until that number is confirmed.</p>
-            <button class="btn btn-accent" type="submit">Show the illustration</button>
-            <p id="cost-result" class="result" aria-live="polite"></p>
-          </form>
-        </div>
       </div>
     </section>
     <section id="proof" class="section" hidden>
       <div class="wrap">
         <h2>Real trips</h2>
         <div class="cards" id="proof-list"></div>
-      </div>
-    </section>
-    <section class="section section-soft" data-placeholder-block hidden>
-      <div class="wrap">
-        <h2>Free guide: Turkey on a Budget 2027</h2>
-        <p>The PDF is not on the site yet. {{PLACEHOLDER: Turkey on a Budget 2027 PDF}}</p>
-        <form class="form-card" data-form="guide">
-          <label for="guide-name">Name</label>
-          <input id="guide-name" name="name" required autocomplete="name">
-          <label for="guide-email">Email</label>
-          <input id="guide-email" name="email" type="email" autocomplete="email">
-          <label for="guide-phone">WhatsApp number</label>
-          <input id="guide-phone" name="phone" autocomplete="tel">
-          <label class="choice"><input type="checkbox" name="guideConsent" required> Please send me the Turkey on a Budget 2027 guide when it is available.</label>
-          <label class="choice"><input type="checkbox" name="offersEmail"> I'd like to receive holiday offers by email. I can unsubscribe at any time.</label>
-          <label class="choice"><input type="checkbox" name="offersWhatsapp"> I'd like to receive holiday offers by WhatsApp. I can unsubscribe at any time.</label>
-          <p><a href="privacy.html">Read the privacy policy</a></p>
-          <p>We'll reply by WhatsApp, phone or email, usually within office hours (9am to 8pm). Nothing is booked yet.</p>
-          <button class="btn btn-accent" type="submit">Request the guide</button>
-          <p data-status role="status"></p>
-        </form>
       </div>
     </section>
     <section class="cta-band">
@@ -295,6 +258,5 @@
   <script src="js/forms.js"></script>
   <script src="js/matchmaker.js"></script>
   <script src="js/deals.js"></script>
-  <script src="js/calculator.js"></script>
 </body>
 </html>

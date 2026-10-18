@@ -60,7 +60,6 @@
       status(opts.status, 'WhatsApp should open with your message. Please press send there. We have not stored this on a form tool.');
     }
     TNTConsent.lead({ method: sent ? 'email' : 'whatsapp', trip_type: opts.tripType || '' });
-    if (opts.guide) TNTConsent.event('guide_download', { guide: 'Turkey on a Budget 2027' });
   }
 
   function enquiryMessage(form) {
@@ -97,14 +96,9 @@
       status(box, 'Tick the box to agree to Trip N Travel contacting you about this enquiry.');
       return;
     }
-    if (kind === 'guide' && form.guideConsent && !form.guideConsent.checked) {
-      status(box, 'Tick the box if you want the guide when it is ready.');
-      return;
-    }
     var message = '';
     var fields = [];
     var lead = null;
-    var guide = false;
     if (kind === 'contact') {
       message = [
         "Hi, I'm interested in speaking to Trip N Travel",
@@ -125,24 +119,6 @@
       }
       message = enquiryMessage(form);
       lead = enquiryLead(form);
-    } else if (kind === 'guide') {
-      guide = true;
-      message = [
-        'Hi Trip N Travel 👋',
-        'Please send the Free guide: Turkey on a Budget 2027 when it is ready.',
-        'Name: ' + form.name.value.trim(),
-        'Email: ' + form.email.value.trim(),
-        'WhatsApp: ' + form.phone.value.trim(),
-        'Guide consent: yes',
-        'Holiday offers by email: ' + (form.offersEmail.checked ? 'yes' : 'no'),
-        'Holiday offers by WhatsApp: ' + (form.offersWhatsapp.checked ? 'yes' : 'no')
-      ].join('\n');
-      fields = [
-        { name: 'name', value: form.name.value.trim() },
-        { name: 'email', value: form.email.value.trim() },
-        { name: 'phone', value: form.phone.value.trim() },
-        { name: 'message', value: message }
-      ];
     } else if (kind === 'umrah') {
       message = [
         'Hi Trip N Travel 👋',
@@ -162,7 +138,6 @@
       fields: fields,
       lead: lead,
       status: box,
-      guide: guide,
       tripType: kind
     });
   });
