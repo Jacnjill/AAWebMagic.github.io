@@ -47,6 +47,7 @@ for (const file of files) {
     assert.ok(!rule.test(text), `${path.relative(root, file)} matched ${rule}`);
   }
   assert.ok(!text.includes("href='#'") && !text.includes('href="#"'), `${file} has href=#`);
+  assert.ok(!/open WhatsApp with your message so you can send it/i.test(text), `${path.relative(root, file)} still says the form opens WhatsApp with the message`);
 }
 
 for (const file of html) {
@@ -192,6 +193,7 @@ assert.ok(enquiryHtml.includes('name="tnt_marketing_consent"'), 'enquiry form ne
 assert.ok(!/tnt_marketing_consent"[^>]*checked/.test(enquiryHtml), 'marketing consent must start unticked');
 assert.ok(enquiryHtml.includes('I can stop these at any time by replying STOP or by telling you.'), 'WhatsApp offers need the STOP wording');
 assert.ok(enquiryHtml.includes('Find out more in our <a href="privacy.html">Privacy Notice</a>.'), 'enquiry form privacy line must link to the notice');
+assert.ok(enquiryHtml.includes("We'll reply by WhatsApp, phone or email, usually within office hours (9am to 8pm). Nothing is booked yet."), 'enquiry form should say how we reply');
 assert.ok(!enquiryHtml.includes('js-eu1.hsforms.net'), 'enquiry page must not embed the HubSpot script');
 assert.ok(!enquiryHtml.includes('hs-form-frame'), 'enquiry page must not embed a HubSpot frame');
 for (const file of html) {
