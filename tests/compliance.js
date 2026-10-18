@@ -521,7 +521,8 @@ assert.ok(textOf(path.join(root, 'privacy.html')).includes("We don't currently r
 assert.ok(!textOf(path.join(root, 'privacy.html')).includes('Who looks after the recordings for us: we handle calls through our phone system provider, 3CX, and Twilio, which carries our calls, records and stores them on our behalf (see sections 6 and 7).'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('They act on our instructions, apart from limited purposes of their own, such as security and keeping their services running, which they explain in their own privacy notices:'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('Meta: its WhatsApp Business platform, which we use to send and receive our WhatsApp messages, and Facebook and Instagram lead forms and adverts'));
-assert.ok(textOf(path.join(root, 'privacy.html')).includes('3CX and Twilio: 3CX is our phone system provider. Twilio carries our phone calls, and records and stores our call recordings for us'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes("3CX and Twilio: 3CX is our phone system provider. Twilio carries our phone calls. We don't currently record calls."));
+assert.ok(!textOf(path.join(root, 'privacy.html')).includes('3CX and Twilio: 3CX is our phone system provider. Twilio carries our phone calls, and records and stores our call recordings for us'));
 assert.ok(!textOf(path.join(root, 'privacy.html')).includes('Calls with Trip N Travel advisers are recorded for training, quality and complaint-handling purposes.'));
 assert.ok(!textOf(path.join(root, 'privacy.html')).includes('Calls with our advisers are recorded. We tell you at the start of every call.'));
 assert.ok(!textOf(path.join(root, 'privacy.html')).includes('Call recordings: 12 months from the call, unless a complaint or dispute means we need to keep a recording for longer'));

@@ -109,7 +109,7 @@ The service providers who help us run our business. They act on our instructions
 
 - HubSpot: our customer records system (CRM). Your data is held in an EU data centre, but HubSpot is part of a US-owned group.
 - Meta: its WhatsApp Business platform, which we use to send and receive our WhatsApp messages, and Facebook and Instagram lead forms and adverts
-- 3CX and Twilio: 3CX is our phone system provider. Twilio carries our phone calls, and records and stores our call recordings for us
+- 3CX and Twilio: 3CX is our phone system provider. Twilio carries our phone calls. We don't currently record calls.
 - Supabase and Netlify: hosting for our sales app and our website
 - Google (Workspace, Drive and email) and Microsoft (email): our office and email tools
 - Anthropic: our AI provider. It processes your enquiry messages and trip details (such as your first name, destination, dates, party size, budget, the occasion and your message) to help write replies and quotes. When our advisers use AI tools, it can also see names, phone numbers and recent messages for that enquiry. It acts under our instructions. It is based in the US (see section 7). Our systems try to pass messages about health, accessibility, children, visas, complaints or refunds to a person instead of the AI, but they cannot catch everything. Please don't put health or other sensitive details in the chat. Ask for a team member instead.
