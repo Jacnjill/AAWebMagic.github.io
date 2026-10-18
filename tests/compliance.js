@@ -112,6 +112,49 @@ for (const name of ['privacy.html', 'cookies.html', 'terms.html', 'complaints.ht
     assert.ok(!/\(draft\)/i.test(title), name + ' title still says (draft): ' + title);
   }
 }
+
+const termsHtml = textOf(path.join(root, 'terms.html'));
+assert.ok(termsHtml.includes('<title>Booking Terms | Trip N Travel</title>'), 'terms title must be Booking Terms | Trip N Travel');
+assert.ok(!termsHtml.includes('{{'), 'terms.html must contain no {{');
+assert.ok(!termsHtml.includes('draft'), 'terms.html must contain no draft');
+assert.ok(!termsHtml.includes('This is a draft for review'), 'the draft review sentence must be gone');
+assert.ok(termsHtml.includes('<h1>Booking terms</h1>'), 'terms h1 must stay Booking terms');
+const termsHeadings = [
+  ['We act as an agent', '<h2>We act as an agent</h2>'],
+  ['Before you pay', '<h2>Before you pay</h2>'],
+  ['Payments', '<h2>Payments</h2>'],
+  ['Instalments', '<h2>Instalments</h2>'],
+  ['Financial protection', '<h2>Financial protection</h2>'],
+  ['Changes and cancellations', '<h2>Changes and cancellations</h2>'],
+  ['Complaints', '<h2 id="complaints">Complaints</h2>'],
+  ['Law', '<h2>Law</h2>']
+];
+for (const [heading, tag] of termsHeadings) {
+  assert.ok(termsHtml.includes(tag), 'terms.html missing heading ' + heading);
+}
+const termsCopy = [
+  "Trip N Travel, a name used by TRIPNTRAVEL PRIVATE LTD (company no. 16525641, 36 Scotts Road, Bromley BR1 3QD), arranges holidays as an agent. The organiser's booking conditions apply to your holiday, flights and accommodation, and your contract for the travel services is with the organiser once a booking is made. We send you the organiser's booking conditions with your quote.",
+  'We need the passenger details the organiser asks for before payment is taken. Please check that names match passports exactly.',
+  'You pay only through the secure payment link we send you. We never ask you to pay any other way. Your quote shows the total price and when each payment is due.',
+  "If you pay by instalments, each payment is a payment towards the holiday price, made before you travel. Your quote sets out the dates and amounts. There is no interest or fee for using an instalment plan, and the final payment is always due before the organiser's balance date.",
+  'Details of the financial protection that applies to your booking are given with your confirmation.',
+  "Changes and cancellations follow the organiser's conditions. Any fee the organiser charges, and any fee we charge, will be set out in your quote before you pay.",
+  'See <a href="/complaints.html">our Complaints page</a>. If we can\'t settle a complaint, we will tell you whether we agree to use an alternative dispute resolution provider.',
+  'These terms are governed by the law of England and Wales. If you live in Scotland or Northern Ireland you may also bring proceedings in your local courts.'
+];
+for (const paragraph of termsCopy) {
+  assert.ok(termsHtml.includes(paragraph), 'terms.html is missing approved wording');
+}
+const termsMain = termsHtml.slice(termsHtml.indexOf('<main'), termsHtml.indexOf('</main>'));
+assert.ok(!termsMain.includes('data-company'), 'terms main must not carry data-company');
+assert.ok(!termsMain.includes('data-payment-note'), 'terms main must not carry data-payment-note');
+assert.ok(!termsMain.includes('data-instalment'), 'terms main must not carry data-instalment');
+assert.ok(!termsHtml.includes('data-payment-note'), 'terms.html must not carry data-payment-note');
+assert.ok(!termsHtml.includes('data-instalment'), 'terms.html must not carry data-instalment');
+assert.ok(termsHtml.includes('data-crumbs'), 'terms breadcrumb must keep data-crumbs');
+assert.ok(termsHtml.slice(termsHtml.indexOf('<footer')).includes('data-company'), 'terms footer must keep the company line');
+assert.ok(!/\bprotected\b/i.test(termsHtml), 'terms.html must not say protected');
+assert.ok(!/trust-account/i.test(termsHtml), 'terms.html must not say trust-account');
 assert.ok(!fs.existsSync(path.join(root, 'protection.html')), 'protection.html must not be published');
 
 assert.ok(config.includes('showPlaceholderBlocks: false'));
