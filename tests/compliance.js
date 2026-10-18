@@ -67,11 +67,11 @@ for (const file of html) {
 const config = textOf(path.join(root, 'js/config.js'));
 assert.ok(config.includes('showAtolWording: false'));
 assert.ok(config.includes('showPtsLine: false'));
-assert.ok(config.includes('hubspotEnabled: false'));
+assert.ok(config.includes('hubspotEnabled: true'));
 assert.ok(config.includes("privacyUrl: 'privacy.html'"));
 assert.ok(config.includes('legalPagesFinal: true'));
 assert.ok(config.includes('privacyLineFinal: true'));
-assert.ok(config.includes("leadEndpoint: ''"));
+assert.ok(config.includes("leadEndpoint: 'https://tntsalesai.netlify.app/.netlify/functions/website-lead'"));
 assert.ok(!config.includes('hubspotPortalId'), 'HubSpot portal id should be gone from the website route');
 assert.ok(!config.includes('hubspotFormId'), 'HubSpot form id should be gone from the website route');
 assert.ok(!config.includes('hsforms.com'), 'config must not name the HubSpot Forms API');
@@ -190,6 +190,7 @@ assert.ok(enquiryHtml.includes('name="firstname"'), 'enquiry form needs a first 
 assert.ok(enquiryHtml.includes('name="lastname"'), 'enquiry form needs a last name');
 assert.ok(enquiryHtml.includes('name="tnt_marketing_consent"'), 'enquiry form needs the marketing consent field');
 assert.ok(!/tnt_marketing_consent"[^>]*checked/.test(enquiryHtml), 'marketing consent must start unticked');
+assert.ok(enquiryHtml.includes('I can stop these at any time by replying STOP or by telling you.'), 'WhatsApp offers need the STOP wording');
 assert.ok(enquiryHtml.includes('Find out more in our <a href="privacy.html">Privacy Notice</a>.'), 'enquiry form privacy line must link to the notice');
 assert.ok(!enquiryHtml.includes('js-eu1.hsforms.net'), 'enquiry page must not embed the HubSpot script');
 assert.ok(!enquiryHtml.includes('hs-form-frame'), 'enquiry page must not embed a HubSpot frame');

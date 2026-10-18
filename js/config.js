@@ -43,11 +43,11 @@ const TNT = {
   showAtolWording: false,
   showPtsLine: false,
   extraDestinations: [],
-  /* Full URL of our own enquiry function. Empty until go-live. Do not guess a URL. */
-  leadEndpoint: '',
-  /* Master switch for posting the enquiry form to leadEndpoint. Stays false.
+  /* Production enquiry function. HubSpot only, rate limited, and origin allow-listed. */
+  leadEndpoint: 'https://tntsalesai.netlify.app/.netlify/functions/website-lead',
+  /* Master switch for posting the enquiry form to leadEndpoint.
      This route sets no cookie and loads no HubSpot script, so it does not wait for a marketing-cookie choice. */
-  hubspotEnabled: false,
+  hubspotEnabled: true,
   /* Internal preview only. Public pages keep {{PLACEHOLDER}} and {{VERIFY}} blocks hidden. */
   showPlaceholderBlocks: false,
   /* Public instalment wording stays the quote line until terms are confirmed in writing. */

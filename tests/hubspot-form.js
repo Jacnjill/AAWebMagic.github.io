@@ -1,4 +1,4 @@
-/* Website enquiry submission. The site flag and endpoint stay off in config. Fetch is mocked. */
+/* Website enquiry submission. The site flag and endpoint are on in config. Fetch is mocked. */
 const { spawn } = require('child_process');
 const path = require('path');
 
@@ -42,7 +42,10 @@ async function fill(page, marketing) {
   await page.selectOption('#enquiry-destination', 'Spain');
   await page.check('#en-consent');
   if (marketing) await page.check('#en-marketing');
-  await page.evaluate(() => { window.open = function () { return null; }; });
+  await page.evaluate(() => {
+    window.__opened = 0;
+    window.open = function () { window.__opened += 1; return null; };
+  });
 }
 
 async function armLogs(page) {
@@ -87,6 +90,8 @@ async function main() {
         noticeLink: !!(notice && notice.querySelector('a')),
         noticeHref: notice && notice.querySelector('a') ? notice.querySelector('a').getAttribute('href') : '',
         marketingChecked: document.querySelector('#en-marketing').checked,
+        marketingText: document.querySelector('#en-marketing').closest('label').textContent,
+        consentRequired: document.querySelector('#en-consent').required,
         emailRequired: document.querySelector('#en-email').required,
         flag: TNT.hubspotEnabled,
         endpoint: TNT.leadEndpoint,
@@ -101,12 +106,14 @@ async function main() {
         } : null
       };
     });
-    if (code.flag !== false) fail('hubspotEnabled is not off in config');
-    if (code.endpoint !== '') fail('leadEndpoint is not empty in config');
-    if (code.scripts.length || code.frame) fail('HubSpot code is on the page while the flag is off');
+    if (code.flag !== true) fail('hubspotEnabled is not on in config');
+    if (code.endpoint !== 'https://tntsalesai.netlify.app/.netlify/functions/website-lead') fail('leadEndpoint is not the production website-lead function');
+    if (code.scripts.length || code.frame) fail('HubSpot code is on the page');
+    if (!code.consentRequired) fail('consent box is not required');
     if (!code.noticeLink || code.noticeHref !== 'privacy.html') fail('Privacy Notice should link to privacy.html');
     if (!code.noticeText.includes('Privacy Notice')) fail('privacy notice text missing');
     if (code.marketingChecked) fail('marketing consent starts ticked');
+    if (!code.marketingText.includes('replying STOP')) fail('STOP wording missing');
     if (code.emailRequired) fail('email should stay optional');
     if (!code.honeypot) fail('honeypot missing');
     if (code.honeypot.tabIndex !== -1) fail('honeypot tabindex is ' + code.honeypot.tabIndex);
@@ -115,7 +122,7 @@ async function main() {
     if (!(code.honeypot.left < 0 && code.honeypot.width <= 1 && code.honeypot.height <= 1)) {
       fail('honeypot is not visually hidden ' + JSON.stringify(code.honeypot));
     }
-    await off.evaluate((url) => { TNT.leadEndpoint = url; }, endpoint);
+    await off.evaluate((url) => { TNT.hubspotEnabled = false; TNT.leadEndpoint = url; }, endpoint);
     await fill(off, false);
     await off.click('button[type="submit"]');
     await wait(400);
@@ -187,6 +194,9 @@ async function main() {
     if (logs.some((line) => line.includes('07700900123') || line.includes('raja@example.com'))) fail('personal data was logged');
     const okStatus = await accepted.locator('[data-status]').innerText();
     if (!okStatus.includes('Your enquiry has been sent')) fail('success state missing: ' + okStatus);
+    const openedOnSuccess = await accepted.evaluate(() => window.__opened || 0);
+    if (openedOnSuccess !== 0) fail('the form opened a message after the enquiry was sent');
+    if (captured && Object.prototype.hasOwnProperty.call(JSON.parse(captured.body), 'message')) fail('the form sent the message field');
     await accepted.close();
 
     const unticked = await browser.newPage();
