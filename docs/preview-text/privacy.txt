@@ -114,7 +114,7 @@ The service providers who help us run our business. They act on our instructions
 - Google (Workspace, Drive and email) and Microsoft (email): our office and email tools
 - Anthropic: our AI provider. It processes your enquiry messages and trip details (such as your first name, destination, dates, party size, budget, the occasion and your message) to help write replies and quotes. When our advisers use AI tools, it can also see names, phone numbers and recent messages for that enquiry. It acts under our instructions. It is based in the US (see section 7). Our systems try to pass messages about health, accessibility, children, visas, complaints or refunds to a person instead of the AI, but they cannot catch everything. Please don't put health or other sensitive details in the chat. Ask for a team member instead.
 
-AI assistants. We use AI tools to help draft replies and summarise enquiries. A TripNTravel adviser can take over the conversation at any time, just ask, and sensitive topics are always handled by a person. We don't make decisions about you that have a legal effect using only automated tools.
+AI assistants. When you first contact us, our AI assistant may reply to you on WhatsApp. It uses a first name and tells you it is an AI assistant. It can collect your trip details, send quotes and payment information, and send up to two reminders if you haven't replied. You can ask for a team member at any time. A person deals with complaints, refunds, health, accessibility, children's needs and visas. We don't make decisions about you that have a legal effect using only automated tools.
 
 7. Sending information outside the UK
 
