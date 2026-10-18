@@ -100,7 +100,17 @@ assert.ok(inquiry.includes('enquiry.html'));
 assert.ok(inquiry.includes('rel="canonical" href="https://tripntravel.co.uk/enquiry.html"'));
 
 for (const name of ['privacy.html', 'cookies.html', 'terms.html', 'complaints.html']) {
-  assert.ok(textOf(path.join(root, name)).includes('DRAFT — requires review before publishing'));
+  const text = textOf(path.join(root, name));
+  assert.ok(!text.includes('DRAFT — requires review before publishing'), name + ' still shows the draft banner');
+  const titles = [
+    ...text.matchAll(/<title>([^<]*)<\/title>/g),
+    ...text.matchAll(/<meta property="og:title" content="([^"]*)"/g),
+    ...text.matchAll(/<meta name="twitter:title" content="([^"]*)"/g)
+  ].map((match) => match[1]);
+  assert.strictEqual(titles.length, 3, name + ' should have a title, og:title and twitter:title');
+  for (const title of titles) {
+    assert.ok(!/\(draft\)/i.test(title), name + ' title still says (draft): ' + title);
+  }
 }
 assert.ok(!fs.existsSync(path.join(root, 'protection.html')), 'protection.html must not be published');
 
