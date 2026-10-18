@@ -516,7 +516,9 @@ assert.ok(textOf(path.join(root, 'cookies.html')).includes('how to use them: <a 
 assert.ok(textOf(path.join(root, 'cookies.html')).includes('2 years by default. Chrome may limit it to 400 days, and Safari to 7 days, if you do not visit again.'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('our separate <a href="cookies.html">Cookie Notice</a>.'));
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('covered in our <a href="privacy.html">Privacy Notice</a>.'));
-assert.ok(textOf(path.join(root, 'complaints.html')).includes('as explained in our <a href="privacy.html">Privacy Notice</a>.'));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes("If you complain by phone, we'll note the details in writing. We don't currently record calls."));
+assert.ok(!textOf(path.join(root, 'complaints.html')).includes('the call may be recorded'));
+assert.ok(!textOf(path.join(root, 'complaints.html')).includes('as explained in our <a href="privacy.html">Privacy Notice</a>.'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes("We don't currently record calls. If we start, we'll tell you at the start of every call."));
 assert.ok(!textOf(path.join(root, 'privacy.html')).includes('Who looks after the recordings for us: we handle calls through our phone system provider, 3CX, and Twilio, which carries our calls, records and stores them on our behalf (see sections 6 and 7).'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('They act on our instructions, apart from limited purposes of their own, such as security and keeping their services running, which they explain in their own privacy notices:'));
