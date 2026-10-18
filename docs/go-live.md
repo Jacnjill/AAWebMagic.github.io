@@ -16,10 +16,18 @@ To put the preview back out of search, run `node scripts/set-indexing.js off`.
 
 ## Go-live: website enquiry form
 
-The enquiry form does not post anywhere on this preview. Do not turn this on until Raja says the function is ready.
+The enquiry form is live. Raja approved this at 09:19 UK time on 18 October 2026. An enquiry is posted to HubSpot only, through our own function. The function is rate limited and origin allow-listed. Turning the form on does not load a HubSpot script and does not set a cookie. The form does not wait for a marketing-cookie choice.
 
-1. In `js/config.js`, set `hubspotEnabled` to `true`. That is the master switch. It stays `false` here. Turning it on does not load a HubSpot script and does not set a cookie.
-2. In `js/config.js`, set `leadEndpoint` to the full URL of our own function. It stays `''` here. Do not guess the URL.
-3. On the function, `WEBSITE_LEAD_ENABLED` must be on, and `WEBSITE_LEAD_ALLOWED_ORIGINS` must include the exact site origin `https://tripntravel.co.uk`.
+In `js/config.js`:
 
-The form posts only when both site settings are set. It does not wait for a marketing-cookie choice.
+- `hubspotEnabled` is `true`. That is the master switch.
+- `leadEndpoint` is `https://tntsalesai.netlify.app/.netlify/functions/website-lead`.
+
+The function on the tntsalesai Netlify project uses these environment variables:
+
+- `WEBSITE_LEAD_ENABLED` must be on.
+- `WEBSITE_LEAD_ALLOWED_ORIGINS` must include the exact site origin `https://tripntravel.co.uk`.
+
+The form posts only when `hubspotEnabled` is true and `leadEndpoint` is set.
+
+To roll this back, set `WEBSITE_LEAD_ENABLED` to `false` in Netlify for the tntsalesai project. The function then returns 503 and the form falls back to opening WhatsApp. Reverting this change is the other rollback: the site stops calling the function, and the form opens WhatsApp.
