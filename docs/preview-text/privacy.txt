@@ -140,7 +140,7 @@ You have the right to:
 - Ask us to delete your information (erasure)
 - Ask us to limit how we use it (restriction)
 - Ask for your information in a format you can take elsewhere (portability)
-- Object to how we use it, including for marketing and call recording (objection)
+- Object to how we use it, including for marketing (objection)
 - Withdraw your consent at any time, where we rely on consent
 
 Some rights only apply in certain situations, and we may sometimes need to keep information for legal reasons. If so, we'll explain why.

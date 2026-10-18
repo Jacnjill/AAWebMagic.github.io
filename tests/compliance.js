@@ -534,6 +534,8 @@ assert.ok(!textOf(path.join(root, 'complaints.html')).includes('3CX'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('It processes your enquiry messages and trip details (such as your first name, destination, dates, party size, budget, the occasion and your message) to help write replies and quotes. When our advisers use AI tools, it can also see names, phone numbers and recent messages for that enquiry. It acts under our instructions.'));
 assert.ok(!textOf(path.join(root, 'privacy.html')).includes('only to help write replies to you, and acts under our instructions'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes("It is based in the US (see section 7). Our systems try to pass messages about health, accessibility, children, visas, complaints or refunds to a person instead of the AI, but they cannot catch everything. Please don't put health or other sensitive details in the chat. Ask for a team member instead."));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('Object to how we use it, including for marketing (objection)'));
+assert.ok(!textOf(path.join(root, 'privacy.html')).includes('including for marketing and call recording (objection)'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('training our team and handling complaints and disputes'));
 assert.ok(!textOf(path.join(root, 'privacy.html')).includes('training our team, recording calls and handling complaints and disputes'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('It processes data in the US. We rely on standard contractual clauses and the UK Addendum approved by the ICO for this transfer. Please contact us if you would like a copy.'));
