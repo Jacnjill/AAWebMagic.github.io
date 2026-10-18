@@ -9,7 +9,7 @@ The short version
 - We share booking details with the holiday companies and airlines whose products we sell, so they can provide your trip.
 - We do not sell your personal data, and we do not pass it to other companies for their own marketing.
 - We only send you holiday news and offers if you've said yes. You can change your mind at any time.
-- Calls with our advisers are recorded. We tell you at the start of every call.
+- We don't currently record calls. If we start, we'll tell you at the start of every call.
 - You pay through a secure payment link. We never take your card details by WhatsApp or phone.
 - You have rights over your information, including seeing it, correcting it and complaining to the ICO.
 
@@ -68,15 +68,7 @@ Payments. You pay through a secure payment link produced on the PTS system, and 
 
 Calls with our advisers
 
-We record calls with our advisers, whether you phone us or we phone you.
-
-- Why: for training, quality, and to help us deal with complaints and disputes. Our legal reason is our legitimate interests in running a good business and resolving problems fairly (see section 4).
-- We tell you first. Before the call connects, and before recording starts, you'll hear: "Calls with Trip N Travel advisers are recorded for training, quality and complaint-handling purposes."
-- What we keep: the recording of the call, and a simple log of the call (the date, the phone numbers and how long it lasted).
-- How long: 12 months from the call. If a complaint or dispute means we need the recording for longer, we keep it until that is resolved, then delete it.
-- Who can listen: only authorised staff.
-- Who looks after the recordings for us: we handle calls through our phone system provider, 3CX, and Twilio, which carries our calls, records and stores them on our behalf (see sections 6 and 7).
-- Your choice: you can object to a call being recorded. Tell the adviser, or contact us afterwards, and we will consider your request. Please don't give card details on a call: we never need them.
+We don't currently record calls. If we start, we'll tell you at the start of every call.
 
 4. Why we use your information (and our legal reasons)
 
@@ -135,7 +127,6 @@ We only keep your information for as long as we need it:
 - Enquiries that don't lead to a booking: 12 months
 - Booking and accounting records: 6 years, the usual UK standard
 - Records of your marketing choices: until you withdraw your consent, and after that we keep a note that you opted out, so that we don't contact you again
-- Call recordings: 12 months from the call, unless a complaint or dispute means we need to keep a recording for longer
 
 After that, we delete it or make it anonymous.
 
