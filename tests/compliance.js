@@ -357,11 +357,32 @@ assert.ok(!sitemap.includes('protection.html'), 'sitemap must not list protectio
 assert.ok(!textOf(path.join(root, 'netlify.toml')).includes('protection.html'), 'redirects must not publish protection.html');
 
 const legalLine = 'Trip N Travel is a name used by TRIPNTRAVEL PRIVATE LTD, registered in England and Wales, company no. 16525641, registered office 36 Scotts Road, Bromley BR1 3QD. Email: info@tripntravel.co.uk.';
+const officeAddress = '36 Scotts Road, Bromley BR1 3QD';
 assert.ok(config.includes(`legalFooterLine: '${legalLine}'`), 'config must keep the exact company line');
-assert.ok(!config.includes('Kent BR1 3QD'), 'the footer company line must not keep the old Kent wording');
+assert.ok(config.includes(`registeredOffice: '${officeAddress}'`), 'registered office must use the same address form as the footer');
+assert.ok(!config.includes('Kent'), 'config must not say Kent in the office address');
 assert.ok(siteJs.includes('legalFooterLine'), 'footer company line must be filled from config');
 assert.ok(siteJs.includes("el.innerHTML = legalHtml"), 'the company line must be written into the page');
-assert.ok(!siteJs.includes('Kent BR1 3QD'), 'site.js must not rewrite the company line with the old Kent wording');
+assert.ok(!siteJs.includes('Kent'), 'site.js must not rewrite the company line with Kent');
+assert.ok(
+  siteJs.includes("'<span class=\"nowrap\"><a href=\"mailto:' + safeEmail + '\">' + safeEmail + '</a></span>'"),
+  'site.js must render the company-line email as a mailto anchor inside the nowrap span'
+);
+function escapeCompanyHtml(value) {
+  return String(value).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+}
+let renderedCompany = escapeCompanyHtml(legalLine);
+const safePostcode = escapeCompanyHtml('BR1 3QD');
+const safeEmail = escapeCompanyHtml('info@tripntravel.co.uk');
+renderedCompany = renderedCompany.split(safePostcode).join('<span class="nowrap">' + safePostcode + '</span>');
+renderedCompany = renderedCompany.split(safeEmail).join('<span class="nowrap"><a href="mailto:' + safeEmail + '">' + safeEmail + '</a></span>');
+assert.strictEqual(renderedCompany.replace(/<[^>]+>/g, ''), legalLine, 'the mailto markup must keep the company line visible text');
+assert.ok(renderedCompany.includes('href="mailto:info@tripntravel.co.uk"'), 'the company line email href must be mailto:info@tripntravel.co.uk');
+assert.strictEqual((renderedCompany.match(/href="mailto:info@tripntravel.co.uk"/g) || []).length, 1, 'the company line has one email link');
+for (const file of files) {
+  if (/\.(woff2|jpg|png|webp|avif)$/.test(file)) continue;
+  assert.ok(!textOf(file).includes('Kent'), path.relative(root, file) + ' still says Kent');
+}
 const consentJs = textOf(path.join(root, 'js/consent.js'));
 const actionRow = consentJs.slice(consentJs.indexOf('<div class="cookie-actions">'), consentJs.indexOf('cookie-settings'));
 assert.ok(actionRow.includes('class="btn" data-cookie="accept">Accept all</button>'), 'Accept all must be a first-row button');
@@ -376,6 +397,8 @@ assert.ok(consentJs.includes('if (!choice) render(false);\n    else apply(choice
 const siteCss = textOf(path.join(root, 'css/site.css'));
 assert.ok(siteCss.includes('.cookie-actions { display: flex; flex-wrap: nowrap;'), 'cookie choices stay on one row');
 assert.ok(siteCss.includes('.cookie-actions .btn { flex: 1 1 0;'), 'Accept all and Reject all share one button size');
+assert.ok(siteCss.includes('.site-footer [data-company] a {'), 'the company-line email keeps its own link colour and underline');
+assert.ok(siteCss.includes('.site-footer [data-company] a:focus-visible {'), 'the company-line email keeps a visible focus style');
 
 const aboutHtml = textOf(path.join(root, 'about.html'));
 assert.ok(!aboutHtml.includes('brand-panel'), 'about page must not ship the founder card');
@@ -385,6 +408,16 @@ const bioTag = aboutHtml.slice(Math.max(0, bioStart - 80), bioStart + 40);
 assert.ok(/data-founder-bio[^>]*hidden/.test(bioTag) || /hidden[^>]*data-founder-bio/.test(bioTag), 'founder bio slot must be hidden in the markup');
 assert.ok(aboutHtml.includes('{{PLACEHOLDER: founder bio, wording approved by Raja}}'), 'founder bio slot must wait for Raja');
 assert.ok(aboutHtml.includes('{{PLACEHOLDER: founder location, wording approved by Raja}}'), 'founder location slot must wait for Raja');
+assert.ok(aboutHtml.includes('id="meet-raja"'), 'Meet Raja stays so the script can remove it when there is no founder photo');
+assert.ok(!aboutHtml.includes('{{PLACEHOLDER: how the agency started}}'), 'the hidden agency-start placeholder is gone from about');
+assert.ok(!aboutHtml.includes('{{PLACEHOLDER: confirm team}}'), 'the hidden team placeholder is gone from about');
+assert.ok(!aboutHtml.includes('{{PLACEHOLDER: how Raja started the agency}}'), 'the hidden Meet Raja note is gone from about');
+const contactHtml = textOf(path.join(root, 'contact.html'));
+assert.ok(contactHtml.includes('data-email-row'), 'the contact email row stays, because the script fills it from TNT.email');
+assert.ok(contactHtml.includes('data-email'), 'the contact email row stays, because the script fills it from TNT.email');
+assert.ok(contactHtml.includes('data-hours'), 'the contact hours row stays for the script');
+assert.ok(!contactHtml.includes("{{PLACEHOLDER: Raja's own photograph}}"), 'the hidden photograph placeholder is gone from contact');
+assert.ok(!contactHtml.includes('{{PLACEHOLDER: opening hours}}'), 'the hidden opening-hours placeholder is gone from contact');
 const aboutVisible = visibleMarkup(aboutHtml).replace(/<[^>]+>/g, ' ');
 const staffPlace = joined(['Bris', 'tol']);
 const staffPlace2 = joined(['Bradley', ' ', 'Stoke']);

@@ -694,6 +694,24 @@ body.has-cookie .mobile-bar { display: none; }
   .section-how { padding-top: 96px; }
 }
 
+.site-footer [data-company] a {
+  display: inline;
+  padding: 0;
+  color: var(--accent);
+  font-weight: 400;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+.site-footer [data-company] a:hover,
+.site-footer [data-company] a:focus-visible {
+  color: var(--accent-dark);
+  text-decoration: underline;
+}
+.site-footer [data-company] a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {

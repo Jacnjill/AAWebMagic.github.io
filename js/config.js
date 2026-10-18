@@ -6,13 +6,12 @@ const TNT = {
   tradingName: 'Trip N Travel',
   companyNumber: '16525641',
   registeredIn: 'England and Wales',
-  registeredOffice: '36 Scotts Road, Bromley, Kent, BR1 3QD',
+  registeredOffice: '36 Scotts Road, Bromley BR1 3QD',
   /* Visible on every page. The short copyright line does not replace this. */
   legalFooterLine: 'Trip N Travel is a name used by TRIPNTRAVEL PRIVATE LTD, registered in England and Wales, company no. 16525641, registered office 36 Scotts Road, Bromley BR1 3QD. Email: info@tripntravel.co.uk.',
   address: {
     streetAddress: '36 Scotts Road',
     addressLocality: 'Bromley',
-    addressRegion: 'Kent',
     postalCode: 'BR1 3QD',
     addressCountry: 'GB'
   },

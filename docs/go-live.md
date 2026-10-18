@@ -31,3 +31,9 @@ The function on the tntsalesai Netlify project uses these environment variables:
 The form posts only when `hubspotEnabled` is true and `leadEndpoint` is set.
 
 To roll this back, set `WEBSITE_LEAD_ENABLED` to `false` in Netlify for the tntsalesai project. The function then returns 503 and the form falls back to opening WhatsApp. Reverting this change is the other rollback: the site stops calling the function, and the form opens WhatsApp.
+
+## Company details on the site
+
+The registered office is written as 36 Scotts Road, Bromley BR1 3QD in the privacy notice, the cookie notice, the complaints page, and `registeredOffice` in `js/config.js`. The footer company line is unchanged. `js/site.js` turns the email in that line into a link to `mailto:info@tripntravel.co.uk`. The visible words stay the same.
+
+Hidden placeholder blocks have been taken out of `contact.html` and `about.html` where no script reads them. These stay, because the scripts still use them: the founder biography slot on About, the Meet Raja section (removed when there is no founder photograph), and the contact email row (filled from `TNT.email`).
