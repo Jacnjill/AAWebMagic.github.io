@@ -719,3 +719,34 @@ body.has-cookie .mobile-bar { display: none; }
     transition: none !important;
   }
 }
+
+/* Financial protection page (atol.html). Card from the Chief Designer's
+   spec of 29 October 2026: white card, 1px line border, 4px gold left edge
+   (gold is never text), 12px radius, 24px padding, teal shield icon,
+   teal focus ring. No ATOL logo. */
+.atol-cards { display: grid; gap: 24px; margin: 24px 0; }
+@media (min-width: 900px) {
+  .atol-cards { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+}
+.atol-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--gold);
+  border-radius: 12px;
+  padding: 24px;
+}
+.legal-copy .atol-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  font-family: var(--serif);
+  font-weight: 600;
+}
+.atol-card h3 svg { flex: none; color: var(--accent); }
+.atol-facts { display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px; margin: 0 0 16px; }
+.atol-facts dt { font-weight: 700; }
+.atol-facts dd { margin: 0; }
+.atol-fine { font-size: 16px; color: var(--muted); }
+.atol-quote { margin: 16px 0; padding: 8px 0 8px 16px; border-left: 4px solid var(--line); }
+.atol-page a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
