@@ -45,7 +45,8 @@ const banned = [
 // and only on that page. Every other file keeps the full ban.
 const atolPage = path.join(root, 'atol.html');
 const atolPageSuppliers = new Set([
-  joined(['easy', 'Jet'])
+  joined(['easy', 'Jet']),
+  joined(['Je', 't2'])
 ]);
 
 for (const file of files) {
