@@ -750,3 +750,33 @@ body.has-cookie .mobile-bar { display: none; }
 .atol-fine { font-size: 16px; color: var(--muted); }
 .atol-quote { margin: 16px 0; padding: 8px 0 8px 16px; border-left: 4px solid var(--line); }
 .atol-page a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+/* WhatsApp QR modal (desktop only) */
+body.qr-modal-open { overflow: hidden; }
+.qr-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(15, 27, 45, 0.6);
+}
+.qr-modal__panel {
+  width: min(100%, 26rem);
+  max-height: 100%;
+  overflow: auto;
+  padding: 1.75rem;
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(15, 27, 45, 0.35);
+}
+.qr-modal__panel h2 { margin: 0 0 0.5rem; font-family: var(--serif); font-size: 1.6rem; }
+.qr-modal__panel p { margin: 0 0 0.75rem; color: var(--muted); }
+.qr-modal__qr { margin: 1rem auto; width: 240px; max-width: 100%; border: 1px solid var(--line); border-radius: 8px; background: #fff; line-height: 0; }
+.qr-modal__code { display: block; width: 100%; height: auto; }
+.qr-modal__panel .qr-modal__number { font-weight: 700; font-size: 1.2rem; color: var(--text); }
+.qr-modal__alt { color: var(--wa-text); font-weight: 700; }

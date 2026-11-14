@@ -20,6 +20,7 @@
     extras: []
   };
   var step = 0;
+  var done = -1;
   var lastTrigger = null;
 
   function el(html) {
@@ -110,6 +111,7 @@
 
   function readStep() {
     var root = document.getElementById('mm-step');
+    done = Math.max(done, step);
     if (step === 0) state.tripType = valueOf(root, 'trip') || state.tripType;
     if (step === 1) {
       state.destination = valueOf(root, 'dest');
@@ -281,7 +283,7 @@
       '<div><dt>Extras</dt><dd>' + TNTSite.escapeHtml(a.extras.length ? a.extras.join(', ') : 'None') + '</dd></div>' +
       '</dl>' +
       '<p class="ai-note" data-ai-note hidden></p>' +
-      '<p><a class="btn btn-wa" id="mm-send" data-location="matchmaker" target="_blank" rel="noopener noreferrer" href="' + TNTLogic.waHref(TNT.whatsapp, message) + '">Send to us on WhatsApp</a></p>' +
+      '<p><a class="btn btn-wa" id="mm-send" data-wa-qr data-location="matchmaker" target="_blank" rel="noopener noreferrer" href="' + TNTLogic.waHref(TNT.whatsapp, message) + '">Send to us on WhatsApp</a></p>' +
       (TNT.hubspotEnabled
         ? '<p><button type="button" class="linkish" id="mm-email-toggle">Prefer email?</button></p>' +
           '<form id="mm-email" hidden>' +
@@ -335,6 +337,31 @@
     ev.preventDefault();
     open(btn.getAttribute('data-preset') || '', btn);
   });
+
+  /* Partial answers, only for steps the visitor has completed. */
+  function selections() {
+    var out = {};
+    if (done >= 1) {
+      out.destination = state.destination;
+      out.destinationOther = state.destinationOther;
+      out.flightOnly = state.flightOnly;
+    }
+    if (done >= 2) {
+      out.when = TNTLogic.monthLabel(state.month);
+      out.flexible = state.flexible;
+    }
+    if (done >= 3) {
+      out.from = state.from;
+      out.fromOther = state.fromOther;
+    }
+    if (done >= 4) {
+      out.adults = state.adults;
+      out.children = state.children;
+      out.ages = state.ages;
+    }
+    return out;
+  }
+  if (window.TNTSite && TNTSite.addSelectionSource) TNTSite.addSelectionSource(selections);
 
   window.TNTMatchmaker = { open: open };
 })();
