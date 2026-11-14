@@ -62,6 +62,49 @@
     return lines.join('\n');
   }
 
+  function plural(n, one, many) {
+    return n + ' ' + (n === 1 ? one : many);
+  }
+
+  /* Natural-language WhatsApp opener built from what the visitor has chosen so far.
+     Only fields that are present are used. Returns '' when there is nothing to say,
+     so callers can fall back to their default text. No contact details, no prices. */
+  function buildSelectionMessage(sel) {
+    sel = sel || {};
+    var clean = function (v) { return String(v == null ? '' : v).replace(/\s+/g, ' ').trim(); };
+    var dest = clean(sel.destination);
+    if (dest === 'Other') dest = clean(sel.destinationOther);
+    if (/^(not sure|surprise me)$/i.test(dest)) dest = '';
+    var when = clean(sel.when);
+    var flexible = !!sel.flexible || /flexib/i.test(when);
+    if (/flexib/i.test(when)) when = '';
+    var from = clean(sel.from);
+    if (from === 'Other') from = clean(sel.fromOther);
+    var adults = Number(sel.adults) || 0;
+    var children = Number(sel.children) || 0;
+    var ages = (sel.ages || []).map(clean).filter(function (x) { return x !== ''; });
+    var who = [];
+    if (adults > 0) who.push(plural(adults, 'adult', 'adults'));
+    if (children > 0) {
+      var agePhrase = '';
+      if (ages.length === children) {
+        agePhrase = ' aged ' + (ages.length > 1 ? ages.slice(0, -1).join(', ') + ' and ' + ages[ages.length - 1] : ages[0]);
+      }
+      who.push(plural(children, 'child', 'children') + agePhrase);
+    }
+    var interest = clean(sel.interest);
+    if (!(dest || when || flexible || from || who.length || sel.flightOnly)) return '';
+    var msg = "Hi Trip N Travel, I'd like a quote";
+    if (sel.flightOnly) msg += ' for flights only' + (dest ? ' to ' + dest : '');
+    else if (dest) msg += ' for ' + dest;
+    else if (interest) msg += ' for the ' + interest;
+    if (when) msg += ' in ' + when + (flexible ? ' (dates flexible)' : '');
+    else if (flexible) msg += ' with flexible dates';
+    if (from) msg += ' flying from ' + from;
+    if (who.length) msg += ' for ' + who.join(' and ');
+    return msg + '.';
+  }
+
   function waHref(number, text) {
     return 'https://wa.me/' + number + '?text=' + encodeURIComponent(text);
   }
@@ -170,6 +213,7 @@
     formatTravellers: formatTravellers,
     buildQuoteMessage: buildQuoteMessage,
     waHref: waHref,
+    buildSelectionMessage: buildSelectionMessage,
     daysBetweenDates: daysBetweenDates,
     isDealShowable: isDealShowable,
     formatGBP: formatGBP,

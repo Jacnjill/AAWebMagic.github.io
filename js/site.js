@@ -244,6 +244,139 @@
     });
   }
 
+  var selectionSources = [];
+
+  function addSelectionSource(fn) { selectionSources.push(fn); }
+
+  /* The enquiry form's current choices. Free-text message, name, email and phone are never read. */
+  function enquirySelections() {
+    var form = document.querySelector('[data-form="enquiry"]');
+    if (!form || !form.destination) return {};
+    return {
+      destination: form.destination.value,
+      destinationOther: form.destinationOther ? form.destinationOther.value : '',
+      when: form.when ? form.when.value : '',
+      flightOnly: !!(form.flightOnly && form.flightOnly.checked)
+    };
+  }
+
+  function currentSelections() {
+    var merged = {};
+    [enquirySelections].concat(selectionSources).forEach(function (src) {
+      var got = {};
+      try { got = src() || {}; } catch (e) {}
+      Object.keys(got).forEach(function (k) {
+        if (got[k] !== '' && got[k] != null && got[k] !== false) merged[k] = got[k];
+      });
+    });
+    return merged;
+  }
+
+  /* Rebuild a contact link's href from the visitor's current choices, at the moment of use. */
+  function syncWaHref(el) {
+    if (el.hasAttribute('data-wa-share') || el.hasAttribute('data-wa-text') || !el.hasAttribute('data-wa')) return;
+    var sel = currentSelections();
+    sel.interest = interestFor(el);
+    var text = TNTLogic.buildSelectionMessage(sel)
+      || ("Hi, I'm interested in the " + interestFor(el));
+    el.href = TNTLogic.waHref(TNT.whatsapp, text);
+  }
+
+  function initWaFresh() {
+    ['click', 'auxclick', 'contextmenu', 'focusin'].forEach(function (type) {
+      document.addEventListener(type, function (ev) {
+        var wa = ev.target.closest && ev.target.closest('[data-wa]');
+        if (wa) syncWaHref(wa);
+      }, true);
+    });
+  }
+
+  function qrDesktop() {
+    return !!(window.matchMedia
+      && window.matchMedia('(hover: hover) and (pointer: fine)').matches
+      && window.matchMedia('(min-width: 900px)').matches);
+  }
+
+  function qrSvg(url) {
+    var qr = qrcode(0, 'M');
+    qr.addData(url, 'Byte');
+    qr.make();
+    var n = qr.getModuleCount();
+    var quiet = 4;
+    var size = n + quiet * 2;
+    var d = '';
+    for (var r = 0; r < n; r++) {
+      for (var c = 0; c < n; c++) {
+        if (qr.isDark(r, c)) d += 'M' + (c + quiet) + ' ' + (r + quiet) + 'h1v1h-1z';
+      }
+    }
+    return '<svg xmlns="http://www.w3.org/2000/svg" class="qr-modal__code" width="240" height="240" viewBox="0 0 ' + size + ' ' + size + '" shape-rendering="crispEdges" role="img" aria-label="QR code for opening WhatsApp">'
+      + '<rect width="' + size + '" height="' + size + '" fill="#fff"/><path d="' + d + '" fill="#0f1b2d"/></svg>';
+  }
+
+  function openQrModal(href, opener) {
+    var wrap = document.createElement('div');
+    wrap.className = 'qr-modal';
+    wrap.innerHTML = '<div class="qr-modal__panel" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title" aria-describedby="qr-modal-text">'
+      + '<h2 id="qr-modal-title">Chat with us on your phone</h2>'
+      + '<p id="qr-modal-text">Scan this code with your phone camera. WhatsApp will open with our number and a message ready to send.</p>'
+      + '<div class="qr-modal__qr"></div>'
+      + '<p class="qr-modal__number">' + escapeHtml(TNT.whatsappDisplay) + '</p>'
+      + '<p><a class="qr-modal__alt" target="_blank" rel="noopener noreferrer">Or open WhatsApp on this computer</a></p>'
+      + '<button type="button" class="btn btn-ghost qr-modal__close">Close</button>'
+      + '</div>';
+    var panel = wrap.firstChild;
+    wrap.querySelector('.qr-modal__qr').innerHTML = qrSvg(href);
+    wrap.querySelector('.qr-modal__alt').href = href;
+    var closeBtn = wrap.querySelector('.qr-modal__close');
+    function close() {
+      document.removeEventListener('keydown', onKey, true);
+      wrap.remove();
+      document.body.classList.remove('qr-modal-open');
+      if (opener && opener.focus) opener.focus();
+    }
+    function onKey(ev) {
+      if (ev.key === 'Escape') {
+        ev.preventDefault();
+        close();
+      } else if (ev.key === 'Tab') {
+        var f = panel.querySelectorAll('a[href], button');
+        var first = f[0];
+        var last = f[f.length - 1];
+        if (!panel.contains(document.activeElement)) {
+          ev.preventDefault();
+          first.focus();
+        } else if (ev.shiftKey && document.activeElement === first) {
+          ev.preventDefault();
+          last.focus();
+        } else if (!ev.shiftKey && document.activeElement === last) {
+          ev.preventDefault();
+          first.focus();
+        }
+      }
+    }
+    wrap.addEventListener('click', function (ev) {
+      if (ev.target === wrap) close();
+    });
+    closeBtn.addEventListener('click', close);
+    document.addEventListener('keydown', onKey, true);
+    document.body.classList.add('qr-modal-open');
+    document.body.appendChild(wrap);
+    closeBtn.focus();
+  }
+
+  function initQr() {
+    if (typeof qrcode !== 'function') return;
+    document.addEventListener('click', function (ev) {
+      if (ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+      var wa = ev.target.closest('[data-wa], [data-wa-qr]');
+      var href = wa && wa.getAttribute('href');
+      if (!wa || wa.hasAttribute('data-wa-share') || !href || !qrDesktop()) return;
+      ev.preventDefault();
+      openQrModal(href, wa);
+    });
+  }
+
   function initTracking() {
     document.addEventListener('click', function (ev) {
       var wa = ev.target.closest('[data-wa]');
@@ -384,11 +517,13 @@
     refresh(document);
     initNav();
     initTracking();
+    initWaFresh();
+    initQr();
     initSchema();
     loadProof();
     loadDealsNav();
   }
 
-  window.TNTSite = { refresh: refresh, utm: utm, escapeHtml: escapeHtml };
+  window.TNTSite = { addSelectionSource: addSelectionSource,refresh: refresh, utm: utm, escapeHtml: escapeHtml };
   init();
 })();

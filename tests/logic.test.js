@@ -100,4 +100,33 @@ const soon = L.balancePlan({
 });
 assert.strictEqual(soon.kind, 'soon');
 
+/* Selection-aware WhatsApp opener */
+assert.strictEqual(
+  L.buildSelectionMessage({ destination: 'Turkey', when: 'June', adults: 2, children: 2 }),
+  "Hi Trip N Travel, I'd like a quote for Turkey in June for 2 adults and 2 children."
+);
+assert.strictEqual(
+  L.buildSelectionMessage({ destination: 'Spain', adults: 1, children: 1, ages: ['7'] }),
+  "Hi Trip N Travel, I'd like a quote for Spain for 1 adult and 1 child aged 7."
+);
+assert.strictEqual(
+  L.buildSelectionMessage({ destination: 'Other', destinationOther: 'Portugal', when: 'Flexible' }),
+  "Hi Trip N Travel, I'd like a quote for Portugal with flexible dates."
+);
+assert.strictEqual(
+  L.buildSelectionMessage({ destination: 'Greece', flightOnly: true, from: 'Cardiff' }),
+  "Hi Trip N Travel, I'd like a quote for flights only to Greece flying from Cardiff."
+);
+assert.strictEqual(L.buildSelectionMessage({ destination: 'Not sure', when: '  ' }), '');
+assert.strictEqual(L.buildSelectionMessage({ interest: 'holiday packages' }), '');
+assert.strictEqual(
+  L.buildSelectionMessage({ adults: 2, interest: 'holiday packages' }),
+  "Hi Trip N Travel, I'd like a quote for the holiday packages for 2 adults."
+);
+/* Personal details and prices are never used, even if passed in */
+const leaky = L.buildSelectionMessage({
+  destination: 'Turkey', email: 'a@b.co', phone: '07700900123', name: 'Sam', budget: '£400–£700', message: 'secret'
+});
+assert.ok(!/@|07700|Sam|£|secret/.test(leaky));
+
 console.log('logic tests passed');
