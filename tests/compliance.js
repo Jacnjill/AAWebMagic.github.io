@@ -40,10 +40,20 @@ const banned = [
   new RegExp('\\b' + joined(['Ay', 'at']) + '\\b')
 ];
 
+// atol.html is the one page that names the ATOL holders we sell for as agent
+// (Raja, 30 October 2026). Only the supplier names listed here are allowed,
+// and only on that page. Every other file keeps the full ban.
+const atolPage = path.join(root, 'atol.html');
+const atolPageSuppliers = new Set([
+  joined(['easy', 'Jet']),
+  joined(['Je', 't2'])
+]);
+
 for (const file of files) {
   if (file.endsWith('.woff2') || file.endsWith('.jpg') || file.endsWith('.png') || file.endsWith('.webp') || file.endsWith('.avif')) continue;
   const text = textOf(file);
   for (const rule of banned) {
+    if (file === atolPage && atolPageSuppliers.has(rule.source)) continue;
     assert.ok(!rule.test(text), `${path.relative(root, file)} matched ${rule}`);
   }
   assert.ok(!text.includes("href='#'") && !text.includes('href="#"'), `${file} has href=#`);
@@ -52,7 +62,8 @@ for (const file of files) {
 
 for (const file of html) {
   const text = textOf(file);
-  assert.ok(!/ATOL/i.test(text), `${file} mentions ATOL`);
+  // Other pages may link to atol.html (footer link text: Financial protection), but must not mention ATOL anywhere else.
+  if (file !== atolPage) assert.ok(!/ATOL/i.test(text.replace(/href="\/?atol\.html"/g, '')), `${file} mentions ATOL`);
   const base = path.basename(file);
   const advisorPtsPages = new Set(['privacy.html', 'cookies.html', 'complaints.html']);
   if (!advisorPtsPages.has(base)) {
@@ -63,6 +74,27 @@ for (const file of html) {
   assert.ok(!text.includes('googletagmanager.com'), `${file} has a GA script`);
   assert.ok(text.includes('<h1'), `${file} needs an h1`);
   assert.strictEqual((text.match(/<h1/g) || []).length, 1, `${file} should have one h1`);
+}
+
+// The ATOL page: agent wording, no logo or images, and a CAA check link on every supplier card.
+const atolHtml = textOf(atolPage);
+assert.ok(atolHtml.includes('Trip N Travel acts as agent. ATOL protection comes from the ATOL holder named on your ATOL Certificate.'), 'atol.html needs the agent sentence');
+assert.ok(atolHtml.includes('Not every service is ATOL protected, so please check your ATOL Certificate'), 'atol.html needs the not-every-service line');
+const atolMain = atolHtml.slice(atolHtml.indexOf('<main'), atolHtml.indexOf('</main>'));
+assert.ok(!/<img|<picture|logo/i.test(atolMain), 'atol.html must not show an ATOL logo or image');
+assert.ok(!/£|\bprice|review|finance|instalment|deposit/i.test(atolMain), 'atol.html must not mention prices, reviews or finance');
+const atolCards = atolMain.split('<article class="atol-card">').slice(1);
+assert.ok(atolCards.length >= 1, 'atol.html needs at least one supplier card');
+for (const card of atolCards) {
+  assert.ok(/<dt>ATOL number<\/dt><dd>\d+<\/dd>/.test(card), 'each ATOL card needs its number');
+  assert.ok(card.includes('href="https://www.caa.co.uk/atol-protection/check-an-atol/search-atol-holders/"'), 'each ATOL card needs the CAA check link');
+}
+for (const file of html) {
+  if (file === atolPage) continue;
+  const text = textOf(file);
+  const footer = text.slice(text.indexOf('<footer'), text.lastIndexOf('</footer>'));
+  if (path.basename(file) === 'inquiry.html') continue;
+  assert.ok(/href="\/?atol\.html">Financial protection<\/a>/.test(footer), `${path.basename(file)} footer needs the Financial protection link`);
 }
 
 const config = textOf(path.join(root, 'js/config.js'));
