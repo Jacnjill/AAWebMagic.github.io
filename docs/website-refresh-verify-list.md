@@ -114,21 +114,38 @@ The Turkey mockup’s “Speak to our Turkey experts” button had a phone icon.
 
 ## D. Photo credits (preview-only files in `images/preview/`)
 
-All were downloaded 15 Nov 2026 from images.pexels.com and centre-cropped to 900×600 AVIF and WebP. All are Pexels Licence. People are stock models, not TNT customers, staff or Raja. No photo shows the hotel named on its card.
+Visual pass, 15 Nov 2026. All originals were re-downloaded at full resolution from images.pexels.com and exported as AVIF + WebP (hero 1200/2000/2800, cards 800/1600). All are Pexels Licence. People are stock models, not TNT customers, staff or Raja. No photo shows the hotel named on its card. Every photo on the page now carries the label “Photo from supplier portal – to replace” (Raja, 15 Nov: real photos will come from supplier portals). Full credits are in `IMAGE-CREDITS.md`.
 
 | File | Used on | Subject | Source URL | Photographer | Licence |
 | --- | --- | --- | --- | --- | --- |
-| `images/preview/family-beach.*` | Home, card 1 | Two adults swinging a toddler on a beach | https://www.pexels.com/photo/parents-playing-with-their-little-child-on-the-beach-18649778/ | Goda Morgan | Pexels Licence |
-| `images/preview/couple-sea.*` | Home, card 2 | Couple embracing on a shore at sunset (Baku, not Greece) | https://www.pexels.com/photo/hugging-couple-beside-seashore-1463563/ | Ilkin Safterov | Pexels Licence |
-| `images/preview/family-shore.*` | Home, card 3 | Family walking at the water’s edge | https://www.pexels.com/photo/happy-family-on-the-beach-14349632/ | Trần Long | Pexels Licence |
-| `images/preview/couple-selfie.*` | Home, card 4 | Older couple taking a selfie on a beach (Portugal) | https://www.pexels.com/photo/a-couple-taking-a-selfie-in-the-beach-7232973/ | Kampus Production | Pexels Licence |
-| `images/preview/tr-slides-pool.*` | Turkey, card 1 | Pool with colourful water slides, location not stated | https://www.pexels.com/photo/colorful-slide-beside-the-swimming-pool-13760363/ | Quang Nguyen Vinh | Pexels Licence |
-| `images/preview/tr-villa-pool.*` | Turkey, card 2 | Villa with a lit pool at dusk, location not stated | https://www.pexels.com/photo/view-of-a-luxurious-villa-with-a-swimming-pool-in-the-evening-26859048/ | Ahmet ÇÖTÜR | Pexels Licence |
-| `images/preview/tr-beach-loungers.*` | Turkey, card 3 | White sun loungers below mountains, location not stated | https://www.pexels.com/photo/sunbeds-and-umbrellas-on-the-sand-9119716/ | Pavel Danilyuk | Pexels Licence |
-| `images/photos/hero*` (existing) | Home hero | Quiet Mediterranean shore | https://www.pexels.com/photo/scenic-mediterranean-beach-at-sunset-33630394/ | Nihat Küçük | Pexels Licence |
+| `images/preview/hero-resort-*` | Home hero | Aerial island beach resort, turquoise water (Maldives per Pexels) | https://www.pexels.com/photo/aerial-view-of-a-beautiful-island-resort-3601425/ | Asad Photo Maldives | Pexels Licence |
+| `images/preview/family-beach-*` | Home, card 1 | Two adults swinging a toddler on a beach | https://www.pexels.com/photo/parents-playing-with-their-little-child-on-the-beach-18649778/ | Goda Morgan | Pexels Licence |
+| `images/preview/couple-sunset-*` | Home, card 2 | Couple embracing at the water's edge, location not stated | https://www.pexels.com/photo/man-and-woman-near-sea-2833389/ | Emma Bauso | Pexels Licence |
+| `images/preview/family-resort-*` | Home, card 3 | Family walking hand in hand on a hotel lawn, location not stated | https://www.pexels.com/photo/happy-young-family-having-fun-on-vacation-7743570/ | Trần Long | Pexels Licence |
+| `images/preview/couple-selfie-*` | Home, card 4 | Couple taking a selfie by the sea (Portugal per Pexels) | https://www.pexels.com/photo/a-couple-smiling-at-the-camera-8631570/ | Kampus Production | Pexels Licence |
+| `images/preview/tr-slides-pool-*` | Turkey card 1, home Turkey band | Pool with colourful water slides, location not stated | https://www.pexels.com/photo/colorful-slide-beside-the-swimming-pool-13760363/ | Quang Nguyen Vinh | Pexels Licence |
+| `images/preview/tr-villa-pool-*` | Turkey, card 2 | Villa with a lit pool at dusk, location not stated | https://www.pexels.com/photo/view-of-a-luxurious-villa-with-a-swimming-pool-in-the-evening-26859048/ | Ahmet ÇÖTÜR | Pexels Licence |
+| `images/preview/tr-beach-loungers-*` | Turkey, card 3 | White sun loungers below mountains, location not stated | https://www.pexels.com/photo/sunbeds-and-umbrellas-on-the-sand-9119716/ | Pavel Danilyuk | Pexels Licence |
 
-Photographer names and locations were read from each Pexels photo page on 15 Nov 2026. A person should re-open each page before go-live to confirm the licence and that the photo has not been withdrawn. `IMAGE-CREDITS.md` has a matching “Preview only” section.
+Photographer names and locations were read from each Pexels photo page on 15 Nov 2026. A person should re-open each page before go-live to confirm the licence and that the photo has not been withdrawn.
+
+## E. Visual pass changes that affect this list (15 Nov 2026)
+
+- **T2 / T3 done:** 0330 133 0330 and the mockup hours are removed from the Turkey header. Both pages now show WhatsApp +44 20 4538 5838, a second number +44 7752 340248 (`phone2` in `js/config.js`) and office hours 09:00–20:00 UK, 7 days (`officeHours`, shown on the preview pages only; `showContactHours` is unchanged).
+- **H15–H23 / T13–T29:** the long “Stock photo (Pexels)…” overlays are replaced by a small “Photo from supplier portal – to replace” label. The underlying point stands: every photo is a placeholder, people are models, and no photo shows the named place. The Baku photo (H18) and the older Portugal selfie are replaced; the new card 4 selfie is still listed by Pexels as Portugal.
+- **H13:** the kicker “Real holidays, real memories” keeps its TO VERIFY badge. The stock-model concern still applies before go-live.
+- **New wording, to verify:** a price note on both pages says preview prices illustrate live AI-search quotes and that a card without a live price will say “Ask for today’s price on WhatsApp”.
+- **Trust monogram:** the dashed “ATOL – to verify” box is replaced by a plain circular “FP” letter monogram (financial protection). It is not an ATOL logo or lookalike. The ATOL / ABTA / PTS / Trustpilot claims themselves still carry TO VERIFY and still need sign-off (or removal) before go-live.
+- **Turkey hero CTA:** the large green “Plan my Turkey holiday” button is removed from the title band to match mockup 02. WhatsApp CTAs remain in the header pill, the cards, the gold “Speak to our Turkey experts” button, the footer, the floating button and the mobile bar.
 
 ## Pass 2 attribution clarification
 
 The preview helper now always adds a `Ref: source/campaign/content` (direct visits default to website/phase1_preview and the CTA slot), followed by `Website source: website_whatsapp_click`. This is readable prefill context, not a write to the server-controlled `tnt_lead_source` property and not confirmation of a lead. Existing inbound campaign references are preserved by the helper; internal preview links still use demo campaign names and need a live attribution review. The domain tripntravel.co.uk is explicit beside each hero WhatsApp number. No unverified price, claim or badge was approved by these edits.
+
+## F. On-page markers removed (15 Nov 2026, later the same day)
+
+Raja asked for no visible TO VERIFY or validation text, and for the preview to look like a live site. The yellow badges, the PREVIEW ONLY banner, the on-photo “photo from supplier portal – to replace” labels and other on-page review notes have been removed from `index.html` and `turkey-holidays.html`.
+
+This list remains the off-page verification checklist. Every claim, price, review, Trustpilot figure, ATOL/ABTA/PTS line, testimonial and placeholder photograph in sections A–E is still unverified and must be cleared, rewritten or removed before any merge to `main`. The pages stay `noindex, nofollow`. There is still no ATOL logo or lookalike. Prices are in £ only.
+
+Placeholder photography is credited in `IMAGE-CREDITS.md` and will later be replaced with supplier-portal images.

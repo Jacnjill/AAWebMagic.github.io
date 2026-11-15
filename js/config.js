@@ -20,6 +20,12 @@ const TNT = {
   phone: '+44 20 4538 5838',
   whatsapp: '442045385838',
   whatsappDisplay: '+44 20 4538 5838',
+  /* Second contact number (Raja, 15 Nov 2026). Shown on the Phase 1 preview pages. */
+  phone2: '+44 7752 340248',
+  phone2Tel: '+447752340248',
+  /* Office hours shown on the Phase 1 preview pages (Raja, 15 Nov 2026). */
+  officeHours: '09:00–20:00 UK, 7 days',
+  websiteDisplay: 'tripntravel.co.uk',
   email: '{{PLACEHOLDER: contact email}}',
   founderName: 'Raja Ali',
   founderBase: '',

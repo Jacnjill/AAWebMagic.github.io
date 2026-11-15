@@ -43,6 +43,15 @@
     document.querySelectorAll('[data-wa-digits]').forEach(function (el) {
       el.textContent = TNT.whatsappDisplay;
     });
+    if (TNT.phone2) {
+      document.querySelectorAll('[data-phone2]').forEach(function (el) {
+        el.textContent = TNT.phone2;
+        if (el.tagName === 'A') el.setAttribute('href', 'tel:' + (TNT.phone2Tel || TNT.phone2.replace(/\s+/g, '')));
+      });
+    }
+    if (TNT.officeHours) {
+      document.querySelectorAll('[data-pv-hours]').forEach(function (el) { el.textContent = TNT.officeHours; });
+    }
   }
 
   function bannerHeight() {
@@ -93,14 +102,21 @@
       });
       var quote = grid.querySelector('.pv-quote');
       sorted.forEach(function (c) { grid.insertBefore(c, quote); });
+      /* Desktop layout: the testimonial sits under the third visible card (mockup 02). */
+      var visible = sorted.filter(function (c) { return !c.hidden; });
+      cards.forEach(function (c) { c.classList.remove('pv-col3'); });
+      if (visible.length === 3) visible[2].classList.add('pv-col3');
+      grid.classList.toggle('pv-hol-grid--three', visible.length === 3);
       if (empty) empty.hidden = shown !== 0;
-      if (count) count.textContent = shown + (shown === 1 ? ' preview holiday shown' : ' preview holidays shown');
+      if (count) count.textContent = shown + (shown === 1 ? ' holiday shown' : ' holidays shown');
     }
 
     form.addEventListener('change', apply);
     form.addEventListener('submit', function (ev) { ev.preventDefault(); apply(); });
     var reset = document.getElementById('pv-reset');
     if (reset) reset.addEventListener('click', function () { form.reset(); apply(); });
+    var resetTop = document.getElementById('pv-reset-top');
+    if (resetTop) resetTop.addEventListener('click', function () { form.reset(); apply(); });
     if (sort) sort.addEventListener('change', apply);
     apply();
   }
