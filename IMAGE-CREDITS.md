@@ -37,3 +37,19 @@ Greece was cropped and re-exported. Romantic and Flights were replaced. Each of 
 - Flights card: view from an aircraft window over pale blue sky, winglet out of frame (`flights`)
 
 The Meet Raja photograph is not included. `founderPhoto` in `js/config.js` stays empty until Raja provides a real photo file. The About page shows a branded panel, and the photograph space on that panel stays hidden unless a real file is set or `showPlaceholderBlocks` is true. The contact page has a separate marked space for that photograph, also hidden unless `showPlaceholderBlocks` is true.
+
+## Preview only (branch `cursor/website-refresh-plan`, 15 Nov 2026)
+
+These files are used only by the Phase 1 preview pages (`index.html` preview and `turkey-holidays.html`). They are not on the live site. Each was downloaded from images.pexels.com on 15 Nov 2026, centre-cropped to 3:2, resized to 900×600 and saved as AVIF (quality 55) and WebP (quality 78). There is no other edit. All are under the [Pexels Licence](https://www.pexels.com/license/). Before anything goes live, a person must re-check each licence page and confirm the people photos are suitable. **Every person in these photographs is a stock model. None is a Trip N Travel customer, staff member or Raja.** No photo shows the resort, villa or hotel named on the card next to it.
+
+| File | Subject | Source | Photographer | Licence |
+| --- | --- | --- | --- | --- |
+| `images/preview/family-beach.avif`, `.webp` | Two adults swinging a toddler between them on a sandy beach. Location not stated. | https://www.pexels.com/photo/parents-playing-with-their-little-child-on-the-beach-18649778/ | Goda Morgan | Pexels Licence |
+| `images/preview/couple-sea.avif`, `.webp` | A couple embracing on a shore at sunset. Pexels lists the location as Baku, Azerbaijan, **not Greece**. | https://www.pexels.com/photo/hugging-couple-beside-seashore-1463563/ | Ilkin Safterov | Pexels Licence |
+| `images/preview/family-shore.avif`, `.webp` | A family walking at the water's edge on a wide beach. Location not stated. | https://www.pexels.com/photo/happy-family-on-the-beach-14349632/ | Trần Long | Pexels Licence |
+| `images/preview/couple-selfie.avif`, `.webp` | An older couple taking a selfie on a beach. Pexels lists the location as Portugal. | https://www.pexels.com/photo/a-couple-taking-a-selfie-in-the-beach-7232973/ | Kampus Production | Pexels Licence |
+| `images/preview/tr-slides-pool.avif`, `.webp` | A large outdoor pool with colourful water slides. Location not stated, so it is not confirmed as Turkey. | https://www.pexels.com/photo/colorful-slide-beside-the-swimming-pool-13760363/ | Quang Nguyen Vinh | Pexels Licence |
+| `images/preview/tr-villa-pool.avif`, `.webp` | A villa with a lit swimming pool at dusk. Location not stated. | https://www.pexels.com/photo/view-of-a-luxurious-villa-with-a-swimming-pool-in-the-evening-26859048/ | Ahmet ÇÖTÜR | Pexels Licence |
+| `images/preview/tr-beach-loungers.avif`, `.webp` | Rows of white sun loungers and parasols on a beach below mountains. Location not stated. | https://www.pexels.com/photo/sunbeds-and-umbrellas-on-the-sand-9119716/ | Pavel Danilyuk | Pexels Licence |
+
+The preview homepage hero reuses the existing `images/photos/hero*` files (Nihat Küçük, credited above). The mockup's aerial resort hero was not reproduced. That would need a separate licensed photo, and it must not show an identifiable named hotel.

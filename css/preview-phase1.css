@@ -1,0 +1,418 @@
+/* PREVIEW ONLY — Phase 1 website refresh (homepage + Turkey landing).
+   Loaded only by index.html and turkey-holidays.html on branch
+   cursor/website-refresh-plan. Not for merge until
+   docs/website-refresh-verify-list.md is cleared.
+   Uses the existing tokens in css/tokens.css. No new primary palette:
+   ink #0F1B2D, off-white #FAF7F2, teal #0E5A57, gold #F2C230 (small details),
+   WhatsApp green #128C7E. The yellow TO VERIFY badge is a review marker,
+   not part of the brand. */
+
+/* ---------- Review markers ---------- */
+.pv-banner {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: repeating-linear-gradient(-45deg, #ffd400 0 18px, #111 18px 36px);
+  padding: 6px;
+}
+.pv-banner p {
+  margin: 0;
+  background: #ffd400;
+  color: #000;
+  border: 2px solid #000;
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  text-align: center;
+  padding: 0.45rem 0.75rem;
+}
+.pv-banner a { color: #000; }
+
+.tv {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.2em;
+  padding: 0.05em 0.4em;
+  background: #ffd400;
+  color: #000 !important;
+  border: 1.5px solid #000;
+  border-radius: 4px;
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: none;
+}
+.tv-note {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.35;
+}
+.pv-photo-note {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  z-index: 2;
+  max-width: calc(100% - 16px);
+  background: rgba(0, 0, 0, 0.78);
+  color: #fff;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  padding: 0.3rem 0.45rem;
+  border-radius: 4px;
+}
+.pv-photo-note .tv { font-size: 0.6rem; margin-left: 0; }
+
+/* Sticky header sits under the sticky banner. */
+.pv .site-header { top: var(--pv-banner-h, 64px); }
+
+/* ---------- Header (dark, as in the mockups) ---------- */
+.pv .site-header {
+  background: var(--ink);
+  border-bottom: 3px solid var(--gold);
+}
+.pv .brand, .pv .brand:hover { color: #fff; }
+.pv .brand-text { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
+.pv .brand-text strong { font-size: 1.3rem; }
+.pv .brand-tag { font-family: var(--sans); font-weight: 400; font-size: 0.82rem; color: #e9e4da; }
+.pv .brand span { white-space: normal; }
+.pv .nav-toggle { background: transparent; color: #fff; border-color: #fff; }
+.pv #site-nav.is-open { background: var(--ink); }
+.pv #site-nav a { color: #fff; }
+.pv #site-nav a:hover { color: var(--gold); }
+
+.pv-wa-digits {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  order: 3;
+  margin-left: auto;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  background: var(--wa);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.pv-wa-digits:hover { color: #fff; filter: brightness(0.95); }
+.pv-wa-digits svg { flex: none; }
+.pv-wa-digits .pv-wa-label { font-weight: 400; font-size: 0.8rem; opacity: 0.95; }
+
+.pv-header-phone {
+  order: 3;
+  color: #fff;
+  text-align: right;
+  line-height: 1.2;
+  font-size: 0.85rem;
+}
+.pv-header-phone strong { display: block; font-size: 1.25rem; }
+
+@media (max-width: 767px) {
+  .pv .brand-tag { display: none; }
+  .pv-wa-digits .pv-wa-label { display: none; }
+  .pv-wa-digits { font-size: 0.92rem; padding: 0.3rem 0.6rem; }
+  .pv .header-wa { display: none; }
+}
+
+/* ---------- Homepage hero ---------- */
+.pv-hero {
+  position: relative;
+  color: #fff;
+  overflow: hidden;
+  background: var(--ink);
+}
+.pv-hero > picture, .pv-hero > picture img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+}
+.pv-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(15, 27, 45, 0.88) 0%, rgba(15, 27, 45, 0.55) 55%, rgba(15, 27, 45, 0.2) 100%);
+}
+.pv-hero .wrap { position: relative; z-index: 1; padding-top: 3rem; padding-bottom: 2rem; }
+.pv-hero h1 { color: #fff; font-size: clamp(2.4rem, 4.6vw + 1rem, 4.6rem); max-width: 14ch; }
+.pv-hero .pv-sub { font-size: clamp(1.15rem, 1vw + 0.9rem, 1.5rem); font-weight: 700; margin-bottom: 1.2rem; }
+.pv-hero-grid { display: grid; gap: 1.5rem; align-items: end; }
+
+.btn-wa-big {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: var(--wa);
+  color: #fff;
+  font-size: clamp(1.25rem, 1vw + 1rem, 1.6rem);
+  font-weight: 700;
+  padding: 0.85rem 1.6rem;
+  border-radius: 12px;
+  border: 0;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  min-height: 60px;
+}
+.btn-wa-big:hover { color: #fff; filter: brightness(0.95); }
+.btn-wa-big svg { flex: none; }
+.pv-wa-line { margin: 0.8rem 0 0; font-size: 1.05rem; color: #fff; }
+.pv-wa-line strong { font-size: 1.25rem; letter-spacing: 0.02em; }
+
+.pv-float-card {
+  justify-self: end;
+  background: var(--bg);
+  color: var(--ink);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  max-width: 17rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+.pv-float-card p { margin: 0.25rem 0; line-height: 1.3; }
+.pv-stars { color: #b8860b; letter-spacing: 0.08em; font-size: 1.1rem; }
+.pv-hero .pv-stars, .pv-trust .pv-stars, .pv-quote .pv-stars { color: var(--gold); }
+
+/* ---------- Trust bar ---------- */
+.pv-trust {
+  display: grid;
+  gap: 0;
+  margin-top: 1.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 14px;
+  background: rgba(15, 27, 45, 0.82);
+  color: #fff;
+}
+.pv-trust > div {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.pv-trust > div:last-child { border-bottom: 0; }
+.pv-trust p { margin: 0; line-height: 1.3; }
+.pv-trust strong { font-size: 1.1rem; }
+.pv-trust svg { flex: none; }
+.pv-atol-box {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 64px;
+  height: 64px;
+  border: 2px dashed #ffd400;
+  border-radius: 8px;
+  color: #ffd400;
+  font-size: 0.66rem;
+  font-weight: 700;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+.pv-atol-box.on-light { border-color: #000; color: #000; background: #ffd400; }
+
+/* ---------- Homepage cards ---------- */
+.pv-intro { display: grid; gap: 1rem; align-items: end; margin-bottom: 1.6rem; }
+.pv-intro h2 { margin-bottom: 0; }
+.pv-kicker { color: #b4432f; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.85rem; margin-bottom: 0.4rem; }
+.pv-cards { display: grid; gap: 18px; grid-template-columns: 1fr; }
+.pv-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  color: var(--text);
+  text-decoration: none;
+}
+.pv-card:hover { color: var(--text); box-shadow: 0 16px 36px rgba(15, 27, 45, 0.12); }
+.pv-card-media { position: relative; }
+.pv-card-media img { display: block; width: 100%; height: 200px; object-fit: cover; }
+.pv-card-body { padding: 0.9rem 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.3rem; flex: 1; }
+.pv-card-body h3 { font-size: 1.25rem; margin: 0; }
+.pv-card-body p { margin: 0; font-size: 1rem; line-height: 1.4; }
+.pv-price { color: #b4432f; font-weight: 700; margin-top: auto !important; padding-top: 0.4rem; }
+
+.pv-turkey-band {
+  display: grid;
+  gap: 1.2rem;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--accent);
+  border-radius: 14px;
+  padding: 1.4rem;
+}
+.pv-turkey-band h2 { margin-bottom: 0.3rem; }
+
+.pv-cta {
+  background: var(--ink);
+  color: #fff;
+  padding: 3rem 0;
+}
+.pv-cta h2 { color: #fff; }
+.pv-hours { margin-top: 0.8rem; color: #e9e4da; }
+
+/* ---------- Turkey page ---------- */
+.pv-title-band {
+  background: linear-gradient(90deg, var(--ink) 0%, #12304a 60%, var(--accent) 100%);
+  color: #fff;
+  padding: 1.6rem 0;
+}
+.pv-title-grid { display: grid; gap: 1.2rem; align-items: center; }
+.pv-title-main { display: flex; gap: 1rem; align-items: center; }
+.pv-title-icon {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pv-title-band h1 { color: #fff; font-size: clamp(2rem, 2vw + 1.4rem, 3rem); margin: 0; }
+.pv-title-band p { margin: 0.2rem 0 0; }
+.pv-why h2 { color: var(--gold); font-family: var(--sans); font-size: 1.15rem; margin: 0 0 0.2rem; }
+.pv-why p { line-height: 1.35; }
+
+.pv-layout { display: grid; gap: 1.4rem; padding: 1.6rem 0 2.5rem; }
+.pv-filters {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0;
+  align-self: start;
+}
+.pv-filters > h2 {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-family: var(--sans); font-size: 1rem; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--accent); margin: 0; padding: 0.9rem 1rem; border-bottom: 1px solid var(--line);
+}
+.pv-filters fieldset { border: 0; border-bottom: 1px solid var(--line); margin: 0; padding: 0.8rem 1rem; }
+.pv-filters legend {
+  font-weight: 700; font-size: 0.9rem; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--accent); padding: 0; margin-bottom: 0.3rem; float: left; width: 100%;
+}
+.pv-filters legend + * { clear: both; }
+.pv-filters label { display: flex; gap: 0.5rem; align-items: flex-start; font-size: 0.98rem; margin: 0.25rem 0; }
+.pv-filters input[type="checkbox"] { width: 1.1rem; height: 1.1rem; margin-top: 0.25rem; accent-color: var(--accent); }
+.pv-filters small { display: block; color: var(--muted); font-size: 0.82rem; }
+.pv-dates { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.pv-dates label { flex-direction: column; gap: 0.15rem; font-size: 0.82rem; color: var(--muted); }
+.pv-dates input { font: inherit; font-size: 0.95rem; padding: 0.35rem 0.4rem; border: 1px solid var(--line); border-radius: 6px; width: 100%; color: var(--text); }
+.pv-filters .btn { width: calc(100% - 2rem); margin: 1rem; background: var(--gold); color: var(--ink); border-color: var(--gold); }
+.pv-filters .btn:hover { filter: brightness(0.95); }
+
+.pv-results-head { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: flex-end; justify-content: space-between; margin-bottom: 1rem; }
+.pv-results-head h2 { font-family: var(--sans); text-transform: uppercase; font-size: 1.4rem; color: var(--ink); margin: 0; }
+.pv-results-head p { margin: 0.2rem 0 0; font-size: 0.95rem; }
+.pv-results-head select { font: inherit; padding: 0.45rem 0.6rem; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+
+.pv-hol-grid { display: grid; gap: 18px; grid-template-columns: 1fr; }
+.pv-hol {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.pv-hol-media { position: relative; }
+.pv-hol-media img { display: block; width: 100%; height: 190px; object-fit: cover; }
+.pv-pill {
+  position: absolute; top: 10px; left: 10px; z-index: 2;
+  background: var(--ink); color: #fff; font-weight: 700; font-size: 0.78rem;
+  letter-spacing: 0.05em; text-transform: uppercase; padding: 0.25rem 0.65rem; border-radius: 999px;
+}
+.pv-roundel {
+  position: absolute; top: 8px; right: 8px; z-index: 2;
+  width: 76px; height: 76px; border-radius: 999px; background: var(--gold); color: var(--ink);
+  border: 2px solid #fff; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; font-size: 0.66rem; font-weight: 700; line-height: 1.1; text-transform: uppercase;
+}
+.pv-roundel .tv { font-size: 0.5rem; margin: 2px 0 0; padding: 0 0.25em; }
+.pv-hol-body { padding: 0.9rem 1rem 1rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 1; }
+.pv-hol-body h3 { font-family: var(--sans); font-weight: 700; font-size: 1.2rem; color: var(--ink); margin: 0; }
+.pv-hol-body p { margin: 0; font-size: 0.97rem; line-height: 1.4; }
+.pv-loc { color: var(--muted); }
+.pv-amen { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.3rem 0; padding: 0; }
+.pv-amen li { font-size: 0.82rem; background: var(--soft); border-radius: 999px; padding: 0.15rem 0.6rem; }
+.pv-hol-price {
+  margin-top: auto !important;
+  background: #eef4f3;
+  border: 1px solid #cfe1df;
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+}
+.pv-hol-price strong { font-size: 1.5rem; color: var(--ink); }
+.pv-hol .btn { align-self: flex-end; margin-top: 0.5rem; min-height: 44px; }
+.pv-quote {
+  background: var(--ink);
+  color: #fff;
+  border-radius: 12px;
+  padding: 1.1rem 1.2rem;
+}
+.pv-quote blockquote { margin: 0; font-style: italic; font-size: 1.05rem; line-height: 1.45; }
+.pv-quote p { margin: 0.4rem 0 0; }
+.pv-empty { background: #fff; border: 1px dashed var(--line); border-radius: 12px; padding: 1.2rem; }
+
+.pv-trust-strip { background: var(--ink); color: #fff; padding: 1.4rem 0; }
+.pv-trust-strip .wrap { display: grid; gap: 1rem; align-items: center; }
+.pv-trust-strip .pv-ts-item { display: flex; gap: 0.7rem; align-items: center; }
+.pv-trust-strip p { margin: 0; line-height: 1.3; font-size: 0.95rem; }
+.pv-trust-strip strong { text-transform: uppercase; letter-spacing: 0.03em; }
+.pv-trust-strip svg { flex: none; color: var(--gold); }
+
+@media (min-width: 768px) {
+  .pv-hero .wrap { padding-top: 4.5rem; padding-bottom: 2.4rem; }
+  .pv-hero-grid { grid-template-columns: 1.6fr 1fr; }
+  .pv-trust { grid-template-columns: repeat(3, 1fr); }
+  .pv-trust > div { border-bottom: 0; border-right: 1px solid rgba(255, 255, 255, 0.2); }
+  .pv-trust > div:last-child { border-right: 0; }
+  .pv-intro { grid-template-columns: 1.3fr 1fr; }
+  .pv-cards { grid-template-columns: repeat(2, 1fr); }
+  .pv-turkey-band { grid-template-columns: 1fr auto; }
+  .pv-title-grid { grid-template-columns: 1.4fr 1fr; }
+  .pv-hol-grid { grid-template-columns: repeat(2, 1fr); }
+  .pv-trust-strip .wrap { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1000px) {
+  .pv-cards { grid-template-columns: repeat(4, 1fr); }
+  .pv-layout { grid-template-columns: 270px 1fr; }
+  .pv-hol-grid { grid-template-columns: repeat(3, 1fr); }
+  .pv-trust-strip .wrap { grid-template-columns: repeat(4, 1fr) auto; }
+}
+
+/* Footer keeps the light legal footer. */
+.pv .site-footer .brand, .pv .site-footer .brand:hover { color: var(--text); }
+
+/* Header fit: brand never overlaps the nav; Turkey header phone wraps to its own row on narrower screens. */
+.pv .header-inner { flex-wrap: wrap; column-gap: 14px; }
+.pv .brand { flex: 0 1 auto; }
+@media (min-width: 768px) {
+  .pv #site-nav { flex: 1 1 auto; }
+  .pv #site-nav a { padding: 0.4rem 0.45rem; font-size: 1rem; }
+}
+@media all { /* phone row always sits under the main header row */
+  .pv-header-phone {
+    display: block;
+    order: 6;
+    flex: 1 0 100%;
+    text-align: left;
+    padding: 0.3rem 0 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .pv-header-phone strong { display: inline; font-size: 1.05rem; margin-right: 0.6rem; }
+}
