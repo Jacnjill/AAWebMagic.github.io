@@ -2,7 +2,7 @@
 
 ## Who's working now
 
-Owner: Claude (cloud session) — started 15 November 2026, 14:37 UK
+Owner: Free
 
 ### Turn rules
 
@@ -11,7 +11,7 @@ Owner: Claude (cloud session) — started 15 November 2026, 14:37 UK
 - Set Owner to yourself (for example `Owner: Claude (Grok's computer) — started 15 Nov 2026, 14:17 UK`) and push that change before you edit anything else.
 - When you finish, update What's done and What's left, set `Owner: Free`, commit and push.
 
-Last turn: Claude (Grok's computer), 15 November 2026, 14:02–14:22 UK (Europe/London). Visual refresh of the homepage and Turkey page to match the mockups, high-res imagery, live-looking cleanup (no on-page TO VERIFY badges), this handover file and the compressed mockups in `docs/mockups/`.
+Last turn: Claude (cloud session), 15 November 2026, 14:37–14:45 UK. Verification pass only, no page edits. Both pages have `noindex, nofollow`, no visible TO VERIFY or PREVIEW text, no 0330 number, and both phone numbers present. **Open flag for Raja:** visible trust-bar copy still says "ATOL Protected / Your holiday is 100% protected." (`index.html` line 87) and "ABTA & ATOL protected / Your holiday is fully protected" (`turkey-holidays.html` line 240). This conflicts with the hard rule that TNT must never imply it holds ATOL or ABTA (verify list H7, H8). Left unchanged because the brief says to ignore compliance stripping for the preview; it must be reworded before go-live.
 
 Use this file if you are continuing from the Claude or ChatGPT phone app. Those apps can see this GitHub repository; they cannot see the review box. Read this first, then look at the mockups in [`docs/mockups/`](docs/mockups/).
 
