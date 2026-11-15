@@ -11,7 +11,7 @@ Owner: Free
 - Set Owner to yourself (for example `Owner: Claude (Grok's computer) — started 15 Nov 2026, 14:17 UK`) and push that change before you edit anything else.
 - When you finish, update What's done and What's left, set `Owner: Free`, commit and push.
 
-Last turn: Claude (Grok's computer), 15 November 2026, 14:02–14:20 UK (Europe/London). Visual refresh of the homepage and Turkey page to match the mockups, high-res imagery, live-looking cleanup (no on-page TO VERIFY badges), this handover file and the compressed mockups in `docs/mockups/`.
+Last turn: Claude (Grok's computer), 15 November 2026, 14:02–14:22 UK (Europe/London). Visual refresh of the homepage and Turkey page to match the mockups, high-res imagery, live-looking cleanup (no on-page TO VERIFY badges), this handover file and the compressed mockups in `docs/mockups/`.
 
 Use this file if you are continuing from the Claude or ChatGPT phone app. Those apps can see this GitHub repository; they cannot see the review box. Read this first, then look at the mockups in [`docs/mockups/`](docs/mockups/).
 
@@ -92,11 +92,13 @@ Section F of the verify list records that on-page markers were removed.
 
 ## How to check the Netlify deploy preview
 
-After a push to this branch, Netlify builds a deploy preview for PR #20 (the site is configured to preview pull requests). The usual URL is:
+The usual deploy-preview URL is:
 
 **https://deploy-preview-20--tnt-site-preview.netlify.app**
 
 The deploy preview is **password-protected**. Raja is setting a new visitor-access password on the Netlify site `tnt-site-preview` (Deploy Preview visibility). The live site at https://tripntravel.co.uk stays public and is not updated by this branch.
+
+Important: Netlify's build settings currently allow automatic builds from `main` only (`allowed_branches: main`). The last automatic deploy preview was built from `6f8db22` when this PR still targeted `main`. After the PR was retargeted to `pre-prod`, later pushes on this branch may not start a new preview until Netlify is set to preview this branch, or someone triggers a preview deploy. **Do not merge to `main` and do not publish a production deploy just to get a preview.** Until a new preview is built, compare against the local screenshots of the current head (see What's done) or serve the branch locally.
 
 To confirm the build without the password, from a machine with the Netlify CLI logged in:
 
