@@ -2,7 +2,7 @@
 
 ## Who's working now
 
-Owner: Free
+Owner: Claude (cloud session) — started 15 November 2026, 14:37 UK
 
 ### Turn rules
 
