@@ -341,7 +341,6 @@ h2 .tv { font-size: clamp(0.6rem, 0.3vw + 0.5rem, 0.68rem); }
 .pv-trust-stars { display: inline-flex; color: var(--pv-star); flex: none; }
 .pv-stars-sm { color: var(--pv-star); }
 
-/* Plain typographic monogram (letters only). Not an ATOL logo or lookalike. */
 .pv-mono {
   flex: none;
   display: grid;
@@ -689,14 +688,12 @@ h2 .tv { font-size: clamp(0.6rem, 0.3vw + 0.5rem, 0.68rem); }
       linear-gradient(90deg, rgba(11, 31, 58, 0.86) 0%, rgba(11, 31, 58, 0.62) 30%, rgba(11, 31, 58, 0.18) 55%, rgba(11, 31, 58, 0) 72%),
       linear-gradient(180deg, rgba(11, 31, 58, 0) 60%, rgba(11, 31, 58, 0.55) 100%);
   }
-  .pv-hero-grid { grid-template-columns: 1fr 17rem; }
   .pv-trust { grid-template-columns: repeat(3, 1fr); }
   .pv-trust > div { border-bottom: 0; border-right: 1px solid rgba(255, 255, 255, 0.16); }
   .pv-trust > div:last-child { border-right: 0; }
   .pv-intro { grid-template-columns: 1.4fr 1fr; gap: 2.5rem; }
   .pv-cards { grid-template-columns: repeat(2, 1fr); }
   .pv-turkey-band { grid-template-columns: 1.05fr 1fr; }
-  .pv-title-grid { grid-template-columns: 1.4fr 1fr; }
   .pv-hol-grid { grid-template-columns: repeat(2, 1fr); }
   .pv-trust-strip .wrap { grid-template-columns: repeat(2, 1fr); }
   .pv-section { padding: 5.5rem 0; }
@@ -771,3 +768,5 @@ h2 .tv { font-size: clamp(0.6rem, 0.3vw + 0.5rem, 0.68rem); }
   .pv-title-icon svg { width: 30px; height: 30px; }
   .pv-title-band p { font-size: 1.05rem; }
 }
+
+.pv-symbols { position: absolute; }

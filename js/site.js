@@ -101,7 +101,7 @@
       el.textContent = instalmentText;
     });
     scope.querySelectorAll('[data-protection-link]').forEach(function (el) {
-      el.hidden = !(TNT.showAtolWording || TNT.showPtsLine);
+      el.hidden = !TNT.showPtsLine;
     });
     scope.querySelectorAll('[data-instalment-section]').forEach(function (el) {
       el.hidden = !TNT.instalmentTermsConfirmed;
@@ -117,26 +117,12 @@
         el.remove();
       }
     });
-    scope.querySelectorAll('[data-flag-flight]').forEach(function (el) {
-      if (TNT.showAtolWording) {
-        el.hidden = false;
-        el.textContent = TNT.atolWording;
-      } else {
-        el.remove();
-      }
-    });
     var trust = document.getElementById('trust-list');
     if (trust && TNT.showPtsLine && !trust.querySelector('[data-pts-live]')) {
       var pts = document.createElement('li');
       pts.setAttribute('data-pts-live', '');
       pts.textContent = TNT.ptsLine;
       trust.appendChild(pts);
-    }
-    if (trust && TNT.showAtolWording && !trust.querySelector('[data-atol-live]')) {
-      var atol = document.createElement('li');
-      atol.setAttribute('data-atol-live', '');
-      atol.textContent = TNT.atolWording;
-      trust.appendChild(atol);
     }
     if (trust && TNT.googleRating != null && TNT.googleRating !== '' && !trust.querySelector('[data-rating-live]')) {
       var rating = document.createElement('li');
@@ -196,10 +182,6 @@
       if (TNT.showPtsLine) {
         bits.push('<p>' + escapeHtml(TNT.ptsLine) + ' {{VERIFY WITH PTS}}</p>');
         bits.push('<p>Payments are made to our PTS trust account. {{VERIFY WITH PTS}}</p>');
-      }
-      if (TNT.showAtolWording) {
-        bits.push('<p>' + escapeHtml(TNT.atolWording) + ' {{VERIFY WITH PTS}}</p>');
-        bits.push('<p>' + escapeHtml(TNT.atolDealLine) + ' applies only where a holiday includes flights and the tour operator provides that protection. {{VERIFY WITH PTS}}</p>');
       }
       if (bits.length) protection.innerHTML = bits.join('');
       protection.dataset.ready = '1';
@@ -474,36 +456,6 @@
       .catch(function () { section.remove(); });
   }
 
-  function dealsPageUrl(file) {
-    var script = document.querySelector('script[src$="site.js"]');
-    if (script && script.src) return script.src.replace(/js\/site\.js(?:\?.*)?$/, file);
-    return file;
-  }
-
-  function loadDealsNav() {
-    var url = dealsPageUrl('data/deals.json');
-    fetch(url)
-      .then(function (r) { return r.json(); })
-      .then(function (rows) {
-        var today = new Date();
-        var any = (rows || []).some(function (d) {
-          return TNTLogic.isDealShowable(d, today, TNT.priceMaxAgeDays);
-        });
-        if (!any) {
-          if (document.body.hasAttribute('data-deals-page')) location.replace(dealsPageUrl('packages.html'));
-          return;
-        }
-        document.querySelectorAll('[data-nav-deals]').forEach(function (el) { el.hidden = false; });
-        if (document.body.hasAttribute('data-deals-page')) {
-          var robots = document.querySelector('meta[name="robots"]');
-          if (robots && /noindex/i.test(robots.getAttribute('content') || '')) robots.remove();
-        }
-      })
-      .catch(function () {
-        if (document.body.hasAttribute('data-deals-page')) location.replace(dealsPageUrl('packages.html'));
-      });
-  }
-
   function showBuildMarker() {
     var on = false;
     try { on = new URLSearchParams(location.search).get('build') === '1'; } catch (e) { on = false; }
@@ -521,7 +473,6 @@
     initQr();
     initSchema();
     loadProof();
-    loadDealsNav();
   }
 
   window.TNTSite = { addSelectionSource: addSelectionSource,refresh: refresh, utm: utm, escapeHtml: escapeHtml };
