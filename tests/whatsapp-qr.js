@@ -25,7 +25,16 @@ async function ctx(browser, desktop) {
     ? { viewport: { width: 1280, height: 900 } }
     : { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
   const external = [];
-  context.on('request', (r) => { if (!r.url().startsWith(base) && !r.url().startsWith('data:')) external.push(r.url()); });
+  await context.route('https://tntsalesai.netlify.app/.netlify/functions/website-content', (route) => {
+    assert.equal(route.request().method(), 'GET');
+    assert.ok(!route.request().headers().cookie);
+    return route.fulfill({ json: { enabled: true, packages: [] } });
+  });
+  context.on('request', (r) => {
+    const url = r.url();
+    if (!url.startsWith(base) && !url.startsWith('data:')
+      && url !== 'https://tntsalesai.netlify.app/.netlify/functions/website-content') external.push(url);
+  });
   await context.addInitScript(() => {
     localStorage.setItem('tnt-consent', JSON.stringify({ analytics: false, marketing: false }));
   });

@@ -1,13 +1,4 @@
-/* PREVIEW ONLY — Phase 1 website refresh (homepage + Turkey landing).
-   Loaded only by index.html and turkey-holidays.html on branch
-   cursor/website-refresh-plan. Not for merge until
-   docs/website-refresh-verify-list.md is cleared.
-
-   Visual pass 15 Nov 2026: colours sampled from mockups 01 and 02.
-   All new colours are scoped under .pv (homepage climate) and
-   .pv.pv-turkey (Turkey climate). css/tokens.css is untouched, so legacy
-   pages keep their look. The yellow TO VERIFY badge is a review marker,
-   not part of the brand. */
+/* Trip N Travel homepage and Turkey landing page. */
 
 /* ---------- Scoped palette ---------- */
 .pv {
@@ -147,7 +138,7 @@ h2 .tv { font-size: clamp(0.6rem, 0.3vw + 0.5rem, 0.68rem); }
   padding: 0.45rem 1rem 0.45rem 0.8rem;
   border-radius: 999px;
   background: var(--pv-green, #25B84A);
-  color: #fff;
+  color: var(--pv-navy);
   font-weight: 700;
   font-size: 1.15rem;
   letter-spacing: 0.01em;
@@ -155,7 +146,7 @@ h2 .tv { font-size: clamp(0.6rem, 0.3vw + 0.5rem, 0.68rem); }
   white-space: nowrap;
   box-shadow: 0 6px 18px rgba(37, 184, 74, 0.35), inset 0 -2px 0 rgba(0, 0, 0, 0.12);
 }
-.pv-wa-digits:hover { color: #fff; background: var(--pv-green-2, #1FA43F); }
+.pv-wa-digits:hover { color: var(--pv-navy); background: var(--pv-green-2, #1FA43F); }
 .pv-wa-digits svg { flex: none; }
 .pv-wa-digits .pv-wa-label { font-weight: 600; font-size: 0.85rem; opacity: 0.95; }
 .pv-wa-lg { font-size: 1.35rem; padding: 0.6rem 1.3rem 0.6rem 1rem; }
@@ -198,7 +189,7 @@ h2 .tv { font-size: clamp(0.6rem, 0.3vw + 0.5rem, 0.68rem); }
   align-items: center;
   gap: 0.75rem;
   background: var(--pv-green, #25B84A);
-  color: #fff;
+  color: var(--pv-navy);
   font-size: clamp(1.3rem, 0.8vw + 1.05rem, 1.7rem);
   font-weight: 700;
   padding: 0.9rem 2rem 0.9rem 1.5rem;
@@ -209,7 +200,7 @@ h2 .tv { font-size: clamp(0.6rem, 0.3vw + 0.5rem, 0.68rem); }
   min-height: 64px;
   transition: transform 0.15s ease, background 0.15s ease;
 }
-.btn-wa-big:hover { color: #fff; background: var(--pv-green-2, #1FA43F); transform: translateY(-1px); }
+.btn-wa-big:hover { color: var(--pv-navy); background: var(--pv-green-2, #1FA43F); transform: translateY(-1px); }
 .btn-wa-big svg { flex: none; }
 
 .pv-btn-navy {
@@ -742,9 +733,9 @@ h2 .tv { font-size: clamp(0.6rem, 0.3vw + 0.5rem, 0.68rem); }
 .pv-turkey-band-media { display: block; position: relative; min-height: 260px; }
 .pv-turkey-band-media img { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 0; }
 
-/* Bright WhatsApp green for the shared floating button and mobile bar on preview pages. */
-.pv .btn-wa, .pv .wa-float { background: var(--pv-green); border-color: var(--pv-green); color: #fff; }
-.pv .btn-wa:hover, .pv .wa-float:hover { background: var(--pv-green-2); border-color: var(--pv-green-2); color: #fff; }
+/* Bright WhatsApp green for the shared floating button and mobile bar on the homepage and Turkey page. */
+.pv .btn-wa, .pv .wa-float { background: var(--pv-green); border-color: var(--pv-green); color: var(--pv-navy); }
+.pv .btn-wa:hover, .pv .wa-float:hover { background: var(--pv-green-2); border-color: var(--pv-green-2); color: var(--pv-navy); }
 .pv .wa-float { box-shadow: 0 10px 24px rgba(18, 120, 45, 0.4); }
 .pv .mobile-bar { background: var(--pv-navy); border-top: 0; box-shadow: 0 -6px 20px rgba(5, 15, 30, 0.25); }
 .pv .mobile-bar .btn-ghost { background: transparent; color: #fff; border-color: rgba(255, 255, 255, 0.8); }
