@@ -57,7 +57,7 @@ async function ctx(browser, desktop) {
     await page.goto(base + 'index.html');
     const link = page.locator('a[data-wa][data-location="hero"]');
     const href = await link.getAttribute('href');
-    assert.ok(href.startsWith('https://wa.me/447752340248?text='));
+    assert.ok(href.startsWith('https://wa.me/442045385838?text='));
     await link.click();
     const dialog = page.locator('[role="dialog"]');
     await dialog.waitFor();
@@ -66,7 +66,7 @@ async function ctx(browser, desktop) {
     const text = await dialog.innerText();
     assert.ok(text.includes('Chat with us on your phone'));
     assert.ok(text.includes('Scan this code with your phone camera. WhatsApp will open with our number and a message ready to send.'));
-    assert.ok(text.includes('+44 7752 340248'));
+    assert.ok(text.includes('020 4538 5838'));
     assert.strictEqual(await dialog.locator('a', { hasText: 'Or open WhatsApp on this computer' }).getAttribute('href'), href);
     assert.strictEqual(await dialog.locator('a', { hasText: 'Or open WhatsApp on this computer' }).getAttribute('target'), '_blank');
     const box = await dialog.locator('svg').boundingBox();
@@ -92,12 +92,14 @@ async function ctx(browser, desktop) {
     assert.deepStrictEqual(external, [], 'no external requests: ' + external.join(', '));
     await context.close();
 
-    /* Share links are untouched */
+    /* The pre-filled share link goes to the AI number and opens directly */
     ({ context } = await ctx(browser, true));
     page = await context.newPage();
     await page.goto(base + 'my-trip.html');
     const share = page.locator('a[data-wa-share]');
-    assert.ok((await share.getAttribute('href')).startsWith('https://wa.me/?text='));
+    const shareUrl = new URL(await share.getAttribute('href'));
+    assert.strictEqual(shareUrl.origin + shareUrl.pathname, 'https://wa.me/442045385838');
+    assert.strictEqual(shareUrl.searchParams.get('text'), 'Have a look at Trip N Travel: https://tripntravel.co.uk');
     await page.evaluate(() => document.addEventListener('click', (e) => e.preventDefault()));
     await share.click();
     assert.strictEqual(await page.locator('[role="dialog"]').count(), 0);
