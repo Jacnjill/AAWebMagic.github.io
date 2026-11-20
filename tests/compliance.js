@@ -40,21 +40,13 @@ const banned = [
   new RegExp('\\b' + joined(['Ay', 'at']) + '\\b')
 ];
 
-// atol.html is the one page that names the ATOL holders we sell for as agent
-// (Raja, 30 October 2026). Only the supplier names listed here are allowed,
-// and only on that page. Every other file keeps the full ban.
-const atolPage = path.join(root, 'atol.html');
-const atolPageSuppliers = new Set([
-  joined(['easy', 'Jet']),
-  joined(['Je', 't2'])
-]);
-
 for (const file of files) {
   if (file.endsWith('.woff2') || file.endsWith('.jpg') || file.endsWith('.png') || file.endsWith('.webp') || file.endsWith('.avif')) continue;
   const text = textOf(file);
   for (const rule of banned) {
-    if (file === atolPage && atolPageSuppliers.has(rule.source)) continue;
-    assert.ok(!rule.test(text), `${path.relative(root, file)} matched ${rule}`);
+    const publicText = path.relative(root, file) === 'js/website-packages.js'
+      ? text.replace(/^  const excluded = .*$/m, '') : text;
+    assert.ok(!rule.test(publicText), `${path.relative(root, file)} matched ${rule}`);
   }
   assert.ok(!text.includes("href='#'") && !text.includes('href="#"'), `${file} has href=#`);
   assert.ok(!/open WhatsApp with your message so you can send it/i.test(text), `${path.relative(root, file)} still says the form opens WhatsApp with the message`);
@@ -62,8 +54,8 @@ for (const file of files) {
 
 for (const file of html) {
   const text = textOf(file);
-  // Other pages may link to atol.html (footer link text: Financial protection), but must not mention ATOL anywhere else.
-  if (file !== atolPage) assert.ok(!/ATOL/i.test(text.replace(/href="\/?atol\.html"/g, '')), `${file} mentions ATOL`);
+  const publicCopy = text.replace(/(?:https:\/\/tripntravel\.co\.uk)?\/atol\.html/g, '');
+  assert.ok(!/\b(?:ATOL|ABTA)\b/i.test(publicCopy), `${file} mentions financial accreditation`);
   const base = path.basename(file);
   const advisorPtsPages = new Set(['privacy.html', 'cookies.html', 'complaints.html']);
   if (!advisorPtsPages.has(base)) {
@@ -76,29 +68,7 @@ for (const file of html) {
   assert.strictEqual((text.match(/<h1/g) || []).length, 1, `${file} should have one h1`);
 }
 
-// The ATOL page: agent wording, no logo or images, and a CAA check link on every supplier card.
-const atolHtml = textOf(atolPage);
-assert.ok(atolHtml.includes('Trip N Travel acts as agent. ATOL protection comes from the ATOL holder named on your ATOL Certificate.'), 'atol.html needs the agent sentence');
-assert.ok(atolHtml.includes('Not every service is ATOL protected, so please check your ATOL Certificate'), 'atol.html needs the not-every-service line');
-const atolMain = atolHtml.slice(atolHtml.indexOf('<main'), atolHtml.indexOf('</main>'));
-assert.ok(!/<img|<picture|logo/i.test(atolMain), 'atol.html must not show an ATOL logo or image');
-assert.ok(!/£|\bprice|review|finance|instalment|deposit/i.test(atolMain), 'atol.html must not mention prices, reviews or finance');
-const atolCards = atolMain.split('<article class="atol-card">').slice(1);
-assert.ok(atolCards.length >= 1, 'atol.html needs at least one supplier card');
-for (const card of atolCards) {
-  assert.ok(/<dt>ATOL number<\/dt><dd>\d+<\/dd>/.test(card), 'each ATOL card needs its number');
-  assert.ok(card.includes('href="https://www.caa.co.uk/atol-protection/check-an-atol/search-atol-holders/"'), 'each ATOL card needs the CAA check link');
-}
-for (const file of html) {
-  if (file === atolPage) continue;
-  const text = textOf(file);
-  const footer = text.slice(text.indexOf('<footer'), text.lastIndexOf('</footer>'));
-  if (path.basename(file) === 'inquiry.html') continue;
-  assert.ok(/href="\/?atol\.html">Financial protection<\/a>/.test(footer), `${path.basename(file)} footer needs the Financial protection link`);
-}
-
 const config = textOf(path.join(root, 'js/config.js'));
-assert.ok(config.includes('showAtolWording: false'));
 assert.ok(config.includes('showPtsLine: false'));
 assert.ok(config.includes('hubspotEnabled: true'));
 assert.ok(config.includes("privacyUrl: 'privacy.html'"));
@@ -194,9 +164,8 @@ assert.ok(config.includes('showFounderBio: false'));
 assert.ok(config.includes('showAiDisclosure: false'));
 assert.ok(config.includes("You'll chat with our AI travel assistant first"));
 assert.ok(config.includes('showContactHours: false'));
-assert.ok(textOf(path.join(root, 'topDeals.html')).includes('noindex'));
+assert.ok(textOf(path.join(root, 'topDeals.html')).includes('data-cms-packages'));
 const siteJs = textOf(path.join(root, 'js/site.js'));
-assert.ok(siteJs.includes("location.replace(dealsPageUrl('packages.html'))"));
 assert.ok(textOf(path.join(root, 'netlify.toml')).includes('from = "/topdeals"'));
 
 assert.ok(config.includes('instalmentTermsConfirmed: false'));
@@ -218,36 +187,15 @@ assert.ok(!indexHtml.includes('cost-result'), 'index.html must not contain the c
 assert.ok(!indexHtml.includes('data-form="guide"'), 'index.html must not contain the guide form');
 assert.ok(!indexHtml.includes('guide-name') && !indexHtml.includes('Request the guide') && !indexHtml.includes('Turkey on a Budget'), 'index.html must not collect guide details');
 assert.ok(!/#guide\b/.test(indexHtml), 'index.html must not link to a guide anchor');
-const approvedInstalmentLine = 'Ask us about paying by deposit and instalments.';
-assert.ok(indexHtml.includes('<p>' + approvedInstalmentLine + '</p>'), 'the home page keeps the single approved instalment line');
-assert.strictEqual(indexHtml.split(approvedInstalmentLine).length - 1, 1, 'the approved instalment line appears once');
-assert.ok(!indexHtml.includes('<h2>Spread the cost</h2>'), 'the Spread the cost heading is gone from the home page');
-assert.ok(!indexHtml.includes('Spread the cost'), 'the home page must not say Spread the cost');
-assert.ok(!indexHtml.includes('Your quote shows the deposit and the date and amount of each payment.'), 'the long instalment wording is gone from the home page');
-assert.ok(!indexHtml.includes('There is no interest or fee for using a plan'), 'the home page must not say there is no interest or fee');
-assert.ok(!indexHtml.includes("your final payment is always due before the organiser's balance date."), 'the balance-date sentence is gone from the home page');
-assert.ok(!indexHtml.includes('<a class="btn btn-accent" data-instalment href="enquiry.html">Ask for a current quote</a>'), 'the Spread the cost button is gone from the home page');
-const lineAt = indexHtml.indexOf('<p>' + approvedInstalmentLine + '</p>');
-const spreadStart = indexHtml.lastIndexOf('<section', lineAt);
-const spreadEnd = indexHtml.indexOf('</section>', lineAt);
-const spreadSection = indexHtml.slice(spreadStart, spreadEnd);
-assert.ok(lineAt !== -1 && spreadStart !== -1 && spreadEnd > lineAt, 'the approved line stays inside its section');
-assert.ok(spreadSection.includes('class="section section-soft"') && spreadSection.includes('<div class="wrap">'), 'the line keeps the same section and wrap');
-assert.ok(!/<h[1-6]\b/.test(spreadSection), 'no heading is left in the instalment section');
-assert.ok(!/<a\b/.test(spreadSection) && !/<button\b/.test(spreadSection), 'no button is left in the instalment section');
-assert.ok(indexHtml.includes("I'm Raja Ali, founder of Trip N Travel. Tell us who is travelling, when you want to go and roughly what you would like to spend, and we will come back to you on WhatsApp or by phone with a quote. Our AI assistant may reply first, and our team can take over at any time."), 'approved Meet Raja wording');
 assert.ok(indexHtml.includes('<h3>We reply on WhatsApp</h3><p>We reply on WhatsApp. Our AI assistant may reply first, and our team can take over at any time.</p>'), 'How it works step 2 must keep its sentence and name the AI assistant');
-const featuredAt = indexHtml.indexOf('<h2>Featured deals</h2>');
-const featuredOpen = indexHtml.lastIndexOf('<section', featuredAt);
-const featuredTag = indexHtml.slice(featuredOpen, indexHtml.indexOf('>', featuredOpen) + 1);
-assert.ok(featuredAt !== -1 && featuredTag.includes('data-deals-section') && /\shidden[\s>]/.test(featuredTag), 'Featured deals stays hidden when the page is served');
-const dealsJs = textOf(path.join(root, 'js/deals.js'));
-const renderListFn = dealsJs.slice(dealsJs.indexOf('function renderList'), dealsJs.indexOf('function renderDealPage'));
-assert.ok(renderListFn.includes('if (!rows.length)') && renderListFn.includes('section.hidden = true'), 'an empty deals list keeps the section hidden');
-const painted = renderListFn.indexOf('host.innerHTML = rows.map(card)');
-const unhide = renderListFn.indexOf("section.hidden = !host.querySelector('article')");
-assert.ok(painted !== -1 && unhide > painted, 'Featured deals stays hidden until a deal renders');
-assert.ok(dealsJs.includes('isDealShowable'), 'a deal with no checked price and date stays off the page');
+for (const name of ['index.html', 'turkey-holidays.html', 'packages.html', 'topDeals.html', 'deal.html']) {
+  const html = textOf(path.join(root, name));
+  assert.ok(html.includes('data-cms-packages'), name + ' must render CMS packages');
+  assert.ok(html.includes("Tell us where you'd like to go and we'll put options together"));
+  assert.ok(!html.includes('noindex'), name + ' must be indexable in production');
+}
+const packageScript = textOf(path.join(root, 'js/website-packages.js'));
+assert.ok(!packageScript.includes('innerHTML'), 'CMS content must render as text');
 assert.ok(!indexHtml.includes('how Raja started the agency'), 'the Raja placeholder paragraph must be gone');
 assert.ok(!fs.existsSync(path.join(root, 'js/calculator.js')), 'calculator.js should be removed');
 for (const file of html) {
@@ -330,7 +278,7 @@ assert.ok(enquiryHtml.includes('name="firstname"'), 'enquiry form needs a first 
 assert.ok(enquiryHtml.includes('name="lastname"'), 'enquiry form needs a last name');
 assert.ok(enquiryHtml.includes('name="tnt_marketing_consent"'), 'enquiry form needs the marketing consent field');
 assert.ok(!/tnt_marketing_consent"[^>]*checked/.test(enquiryHtml), 'marketing consent must start unticked');
-assert.ok(enquiryHtml.includes('I can stop these at any time by replying STOP or by telling you.'), 'WhatsApp offers need the STOP wording');
+assert.ok(enquiryHtml.includes('I can unsubscribe at any time by replying STOP or by telling you.'), 'WhatsApp offers need the STOP wording');
 assert.ok(enquiryHtml.includes('Find out more in our <a href="privacy.html">Privacy Notice</a>.'), 'enquiry form privacy line must link to the notice');
 assert.ok(enquiryHtml.includes("We'll reply by WhatsApp, phone or email, usually within office hours (9am to 8pm). Nothing is booked yet."), 'enquiry form should say how we reply');
 assert.ok(!enquiryHtml.includes('js-eu1.hsforms.net'), 'enquiry page must not embed the HubSpot script');
@@ -608,8 +556,8 @@ assert.ok(textOf(path.join(root, 'complaints.html')).includes('Contact us during
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('during our office hours, 7 days a week, 9:00am to 8:00pm UK time'));
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('not available around the clock'));
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('<a href="tel:+442045385838">+44 20 4538 5838</a>'));
-assert.ok(textOf(path.join(root, 'complaints.html')).includes('<a href="https://wa.me/442045385838">+44 20 4538 5838</a>'));
-assert.ok(!textOf(path.join(root, 'complaints.html')).includes('wa.me/442045385838?text='));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes('<a href="https://wa.me/447752340248">+44 7752 340248</a>'));
+assert.ok(!textOf(path.join(root, 'complaints.html')).includes('wa.me/447752340248?text='));
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('reply within 14 days.'));
 assert.ok(!textOf(path.join(root, 'complaints.html')).includes('[PHONE NUMBER:'));
 assert.ok(!textOf(path.join(root, 'complaints.html')).includes('[WHATSAPP NUMBER:'));

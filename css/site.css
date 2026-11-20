@@ -720,36 +720,6 @@ body.has-cookie .mobile-bar { display: none; }
   }
 }
 
-/* Financial protection page (atol.html). Card from the Chief Designer's
-   spec of 29 October 2026: white card, 1px line border, 4px gold left edge
-   (gold is never text), 12px radius, 24px padding, teal shield icon,
-   teal focus ring. No ATOL logo. */
-.atol-cards { display: grid; gap: 24px; margin: 24px 0; }
-@media (min-width: 900px) {
-  .atol-cards { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
-}
-.atol-card {
-  background: #fff;
-  border: 1px solid var(--line);
-  border-left: 4px solid var(--gold);
-  border-radius: 12px;
-  padding: 24px;
-}
-.legal-copy .atol-card h3 {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0 0 16px;
-  font-family: var(--serif);
-  font-weight: 600;
-}
-.atol-card h3 svg { flex: none; color: var(--accent); }
-.atol-facts { display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px; margin: 0 0 16px; }
-.atol-facts dt { font-weight: 700; }
-.atol-facts dd { margin: 0; }
-.atol-fine { font-size: 16px; color: var(--muted); }
-.atol-quote { margin: 16px 0; padding: 8px 0 8px 16px; border-left: 4px solid var(--line); }
-.atol-page a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 
 /* WhatsApp QR modal (desktop only) */
 body.qr-modal-open { overflow: hidden; }
@@ -780,3 +750,47 @@ body.qr-modal-open { overflow: hidden; }
 .qr-modal__code { display: block; width: 100%; height: auto; }
 .qr-modal__panel .qr-modal__number { font-weight: 700; font-size: 1.2rem; color: var(--text); }
 .qr-modal__alt { color: var(--wa-text); font-weight: 700; }
+
+.cms-cards .card {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.site-header .header-brand-name small {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+}
+.header-wa:has(span) {
+  width: auto;
+  gap: 0.35rem;
+  padding-inline: 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+@media (max-width: 400px) {
+  .header-wa:has(span) svg { display: none; }
+  .site-header:has(.header-brand-name) .header-inner { gap: 6px; }
+  .site-header:has(.header-brand-name) .nav-toggle { padding-inline: 0.5rem; }
+  .site-header .header-brand-name { font-size: 0.85rem; }
+  .site-header .brand:has(.header-brand-name) { gap: 4px; }
+  .site-header .brand:has(.header-brand-name) img { width: 36px; height: 36px; }
+}
+.cms-cards .card > .btn { margin-top: auto; }
+[data-cms-status].sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+@media (max-width: 350px) {
+  .site-header:has(.header-brand-name) .header-inner { width: calc(100% - 16px); }
+  .header-wa:has(span) { padding-inline: 0.4rem; font-size: 0.75rem; }
+  .site-header:has(.header-brand-name) .nav-toggle { font-size: 0.875rem; }
+  .site-header .brand:has(.header-brand-name) img { width: 32px; height: 32px; }
+}

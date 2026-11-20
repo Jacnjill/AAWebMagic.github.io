@@ -18,8 +18,9 @@ const TNT = {
   vatRegistered: false,
   ptsMemberId: '6393',
   phone: '+44 20 4538 5838',
-  whatsapp: '442045385838',
-  whatsappDisplay: '+44 20 4538 5838',
+  whatsapp: '447752340248',
+  whatsappDisplay: '+44 7752 340248',
+  websiteDisplay: 'tripntravel.co.uk',
   email: '{{PLACEHOLDER: contact email}}',
   founderName: 'Raja Ali',
   founderBase: '',
@@ -39,10 +40,10 @@ const TNT = {
   legalPagesFinal: true,
   /* The Advisor supplied the enquiry privacy line. It is on every enquiry form. */
   privacyLineFinal: true,
-  showAtolWording: false,
   showPtsLine: false,
   extraDestinations: [],
   /* Production enquiry function. HubSpot only, rate limited, and origin allow-listed. */
+  websiteContentEndpoint: 'https://tntsalesai.netlify.app/.netlify/functions/website-content',
   leadEndpoint: 'https://tntsalesai.netlify.app/.netlify/functions/website-lead',
   /* Master switch for posting the enquiry form to leadEndpoint.
      This route sets no cookie and loads no HubSpot script, so it does not wait for a marketing-cookie choice. */
@@ -62,9 +63,6 @@ const TNT = {
   askForQuote: 'Ask for a current quote',
   /* Shown only when showPtsLine is true. */
   ptsLine: 'Member of Protected Trust Services, membership 6393.',
-  /* Shown only when showAtolWording is true. No logo and no ATOL number. */
-  atolWording: 'Flight-inclusive holidays are ATOL protected by the tour operator.',
-  atolDealLine: 'ATOL protected by the tour operator',
   /* The AI-assistant sentence stays off the public pages until this is true. */
   showAiDisclosure: false,
   aiDisclosure: "You'll chat with our AI travel assistant first; a travel adviser can take over whenever you like.",

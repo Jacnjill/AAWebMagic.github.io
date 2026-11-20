@@ -25,7 +25,16 @@ async function ctx(browser, desktop) {
     ? { viewport: { width: 1280, height: 900 } }
     : { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
   const external = [];
-  context.on('request', (r) => { if (!r.url().startsWith(base) && !r.url().startsWith('data:')) external.push(r.url()); });
+  await context.route('https://tntsalesai.netlify.app/.netlify/functions/website-content', (route) => {
+    assert.equal(route.request().method(), 'GET');
+    assert.ok(!route.request().headers().cookie);
+    return route.fulfill({ json: { enabled: true, packages: [] } });
+  });
+  context.on('request', (r) => {
+    const url = r.url();
+    if (!url.startsWith(base) && !url.startsWith('data:')
+      && url !== 'https://tntsalesai.netlify.app/.netlify/functions/website-content') external.push(url);
+  });
   await context.addInitScript(() => {
     localStorage.setItem('tnt-consent', JSON.stringify({ analytics: false, marketing: false }));
   });
@@ -48,7 +57,7 @@ async function ctx(browser, desktop) {
     await page.goto(base + 'index.html');
     const link = page.locator('a[data-wa][data-location="hero"]');
     const href = await link.getAttribute('href');
-    assert.ok(href.startsWith('https://wa.me/442045385838?text='));
+    assert.ok(href.startsWith('https://wa.me/447752340248?text='));
     await link.click();
     const dialog = page.locator('[role="dialog"]');
     await dialog.waitFor();
@@ -57,7 +66,7 @@ async function ctx(browser, desktop) {
     const text = await dialog.innerText();
     assert.ok(text.includes('Chat with us on your phone'));
     assert.ok(text.includes('Scan this code with your phone camera. WhatsApp will open with our number and a message ready to send.'));
-    assert.ok(text.includes('+44 20 4538 5838'));
+    assert.ok(text.includes('+44 7752 340248'));
     assert.strictEqual(await dialog.locator('a', { hasText: 'Or open WhatsApp on this computer' }).getAttribute('href'), href);
     assert.strictEqual(await dialog.locator('a', { hasText: 'Or open WhatsApp on this computer' }).getAttribute('target'), '_blank');
     const box = await dialog.locator('svg').boundingBox();
