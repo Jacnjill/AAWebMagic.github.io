@@ -269,7 +269,7 @@
 
   function confirmation() {
     var a = answers();
-    var message = TNTLogic.buildQuoteMessage(a, TNTSite.utm());
+    var message = TNTLogic.buildQuoteMessage(a);
     var adviser = TNTLogic.needsAdviser(a.destination, a.flightOnly);
     return '<h3 id="mm-confirm-title" tabindex="-1">Your enquiry</h3>' +
       (adviser ? '<p><strong>Chat to Trip N Travel on WhatsApp.</strong></p>' : '<p>Send this on WhatsApp and we will come back with a quote.</p>') +
@@ -313,7 +313,7 @@
     if (emailForm) emailForm.addEventListener('submit', function (ev) {
       ev.preventDefault();
       var form = ev.currentTarget;
-      var message = TNTLogic.buildQuoteMessage(answers(), TNTSite.utm());
+      var message = TNTLogic.buildQuoteMessage(answers());
       message += '\nName: ' + form.name.value.trim();
       message += '\nEmail: ' + form.email.value.trim();
       message += '\nHoliday offers by email: ' + (form.offersEmail.checked ? 'yes' : 'no');

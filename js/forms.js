@@ -67,8 +67,7 @@
     var other = form.destinationOther ? form.destinationOther.value.trim() : '';
     var flightOnly = form.flightOnly && form.flightOnly.checked;
     var lines = [
-      'Hi Trip N Travel 👋',
-      'Enquiry from the website',
+      TNTLogic.sourcePhrase('W-ENQUIRY-FORM'),
       'Name: ' + form.firstname.value.trim() + ' ' + form.lastname.value.trim(),
       'Email: ' + (form.email ? form.email.value.trim() : ''),
       'Phone: ' + (form.phone ? form.phone.value.trim() : ''),
@@ -81,8 +80,6 @@
     if (flightOnly || TNTLogic.needsAdviser(destination, flightOnly)) {
       lines.push('Chat to Trip N Travel on WhatsApp');
     }
-    var utm = TNTSite.utm();
-    lines.push('Ref: ' + utm.source + '/' + utm.campaign);
     return lines.join('\n');
   }
 
@@ -101,7 +98,7 @@
     var lead = null;
     if (kind === 'contact') {
       message = [
-        "Hi, I'm interested in speaking to Trip N Travel",
+        TNTLogic.sourcePhrase('W-CONTACT-FORM'),
         'Name: ' + form.name.value.trim(),
         'Phone: ' + form.phone.value.trim(),
         'Message: ' + form.message.value.trim(),
@@ -121,7 +118,7 @@
       lead = enquiryLead(form);
     } else if (kind === 'umrah') {
       message = [
-        'Hi Trip N Travel 👋',
+        TNTLogic.sourcePhrase('W-MUSLIM-UMRAH'),
         'Umrah interest only. This is not a booking.',
         'Name: ' + form.name.value.trim(),
         'Phone: ' + form.phone.value.trim(),
