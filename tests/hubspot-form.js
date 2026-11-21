@@ -1,6 +1,7 @@
 /* Website enquiry submission. The site flag and endpoint are on in config. Fetch is mocked. */
 const { spawn } = require('child_process');
 const path = require('path');
+const { sourcePhrase } = require('../js/logic');
 
 function loadPlaywright() {
   const tries = ['playwright-core', 'playwright', '/tmp/pw/node_modules/playwright-core'];
@@ -12,7 +13,7 @@ function loadPlaywright() {
 
 const { chromium } = loadPlaywright();
 const root = path.join(__dirname, '..');
-const port = 8796;
+const port = process.env.TNT_TEST_PORT || 8796;
 const pageUrl = 'http://127.0.0.1:' + port + '/enquiry.html';
 const endpoint = 'https://lead.example.test/website-lead';
 const hubspotUrl = /hsforms\.com|hubspot/i;
@@ -44,7 +45,7 @@ async function fill(page, marketing) {
   if (marketing) await page.check('#en-marketing');
   await page.evaluate(() => {
     window.__opened = 0;
-    window.open = function () { window.__opened += 1; return null; };
+    window.open = function (url) { window.__opened += 1; window.__whatsAppUrl = url; return null; };
   });
 }
 
@@ -230,7 +231,7 @@ async function main() {
     await broken.route(endpoint, (route) => {
       route.fulfill({ status: 502, contentType: 'application/json', body: '{"error":"database password secret-token"}' });
     });
-    await broken.goto(pageUrl, { waitUntil: 'domcontentloaded' });
+    await broken.goto(pageUrl + '?utm_source=facebook&utm_campaign=summer', { waitUntil: 'domcontentloaded' });
     await broken.evaluate((url) => { TNT.hubspotEnabled = true; TNT.leadEndpoint = url; }, endpoint);
     await fill(broken, false);
     await broken.click('button[type="submit"]');
@@ -239,6 +240,11 @@ async function main() {
     if (!errStatus.includes('could not send the form')) fail('error state missing: ' + errStatus);
     if (!errStatus.includes('WhatsApp')) fail('error state does not point to WhatsApp: ' + errStatus);
     if (/secret-token|502|database password/i.test(errStatus)) fail('raw error was shown: ' + errStatus);
+    const fallbackUrl = await broken.evaluate(() => window.__whatsAppUrl);
+    const fallback = fallbackUrl && new URL(fallbackUrl).searchParams.get('text');
+    if (!fallback || fallback.split('\n')[0] !== sourcePhrase('W-ENQUIRY-FORM')
+      || !fallback.includes('Destination: Spain') || !fallback.includes('Name: Raja Ali')
+      || /Ref:|facebook|summer/i.test(fallback)) fail('unexpected WhatsApp fallback message');
     await broken.close();
 
     const offline = await browser.newPage();
