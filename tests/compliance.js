@@ -556,8 +556,8 @@ assert.ok(textOf(path.join(root, 'complaints.html')).includes('Contact us during
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('during our office hours, 7 days a week, 9:00am to 8:00pm UK time'));
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('not available around the clock'));
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('<a href="tel:+442045385838">+44 20 4538 5838</a>'));
-assert.ok(textOf(path.join(root, 'complaints.html')).includes('<a href="https://wa.me/447752340248">+44 7752 340248</a>'));
-assert.ok(!textOf(path.join(root, 'complaints.html')).includes('wa.me/447752340248?text='));
+assert.ok(textOf(path.join(root, 'complaints.html')).includes('<a href="https://wa.me/442045385838">020 4538 5838</a>'));
+assert.ok(!textOf(path.join(root, 'complaints.html')).includes('wa.me/442045385838?text='));
 assert.ok(textOf(path.join(root, 'complaints.html')).includes('reply within 14 days.'));
 assert.ok(!textOf(path.join(root, 'complaints.html')).includes('[PHONE NUMBER:'));
 assert.ok(!textOf(path.join(root, 'complaints.html')).includes('[WHATSAPP NUMBER:'));

@@ -32,20 +32,15 @@
     });
     scope.querySelectorAll('[data-wa]').forEach(function (el) {
       var text = el.getAttribute('data-wa-text') || ("Hi, I'm interested in the " + interestFor(el));
-      if (el.hasAttribute('data-wa-share')) {
-        el.href = 'https://wa.me/?text=' + encodeURIComponent(text);
-      } else {
-        el.href = TNTLogic.waHref(TNT.whatsapp, text);
-      }
+      el.href = TNTLogic.waHref(TNT.whatsapp, text);
       el.target = '_blank';
       el.rel = 'noopener noreferrer';
       if (el.hasAttribute('data-wa-icon')) {
         if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'WhatsApp us');
-      } else if (el.hasAttribute('data-wa-full') || !el.textContent.trim()) {
+      } else if (el.hasAttribute('data-wa-full')) {
+        el.textContent = 'WhatsApp: ' + TNT.whatsappDisplay;
+      } else if (!el.textContent.trim()) {
         el.textContent = 'WhatsApp us';
-        if (el.hasAttribute('data-wa-full') && !el.getAttribute('aria-label')) {
-          el.setAttribute('aria-label', 'WhatsApp us on ' + TNT.whatsappDisplay);
-        }
       }
     });
     var legalLine = TNT.legalFooterLine;

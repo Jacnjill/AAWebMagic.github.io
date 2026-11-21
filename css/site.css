@@ -774,6 +774,7 @@ body.qr-modal-open { overflow: hidden; }
 }
 @media (max-width: 400px) {
   .header-wa:has(span) svg { display: none; }
+  .header-wa-label { display: block; font-size: 0.7rem; }
   .site-header:has(.header-brand-name) .header-inner { gap: 6px; }
   .site-header:has(.header-brand-name) .nav-toggle { padding-inline: 0.5rem; }
   .site-header .header-brand-name { font-size: 0.85rem; }
@@ -794,3 +795,5 @@ body.qr-modal-open { overflow: hidden; }
   .site-header:has(.header-brand-name) .nav-toggle { font-size: 0.875rem; }
   .site-header .brand:has(.header-brand-name) img { width: 32px; height: 32px; }
 }
+
+.site-footer [data-wa-full] { font-weight: 700; }
