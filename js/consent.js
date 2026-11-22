@@ -16,11 +16,30 @@
   }
 
   function write(choice) {
+    var previous = read();
+    /* Withdrawing analytics after Google Analytics has loaded on this page:
+       stop it at once with Google's ga-disable flag and delete its cookies.
+       No reload, so anything the visitor has typed on the page is kept. */
+    if (loaded.analytics && !choice.analytics) window['ga-disable-' + TNT.ga4Id] = true;
+    if (!choice.analytics && (loaded.analytics || (previous && previous.analytics))) clearGaCookies();
     memory = choice;
     try {
       localStorage.setItem(KEY, JSON.stringify(choice));
     } catch (e) {}
     apply(choice);
+  }
+
+  function clearGaCookies() {
+    var parts = location.hostname.split('.');
+    document.cookie.split(';').forEach(function (cookie) {
+      var name = cookie.split('=')[0].trim();
+      if (name !== '_ga' && name.indexOf('_ga_') !== 0) return;
+      var expired = name + '=; Max-Age=0; Path=/';
+      document.cookie = expired;
+      for (var i = 0; i < parts.length - 1; i++) {
+        document.cookie = expired + '; Domain=' + parts.slice(i).join('.');
+      }
+    });
   }
 
   function isReal(id) {
@@ -42,7 +61,11 @@
 
   function apply(choice) {
     if (!choice) return;
-    if (choice.analytics) loadGa();
+    if (choice.analytics) {
+      /* Analytics granted again after a withdrawal on this page. */
+      if (window['ga-disable-' + TNT.ga4Id]) window['ga-disable-' + TNT.ga4Id] = false;
+      loadGa();
+    }
     /* No marketing tags are installed. The marketing choice is still stored so
        a future tag can respect it; add its loader here, gated on choice.marketing. */
   }

@@ -32,8 +32,8 @@ const TNT = {
   showContactHours: false,
   siteUrl: 'https://tripntravel.co.uk',
   ga4Id: 'G-T3VGVEDZ7V',
-  /* Privacy Notice link used above enquiry submit buttons. Relative on this draft. */
-  privacyUrl: 'privacy.html',
+  /* Privacy Notice link used above enquiry submit buttons. Root-relative so it also works on the 404 page for nested paths. */
+  privacyUrl: '/privacy.html',
   /* Draft legal pages still show highlighted placeholders. A release check fails if this is true while any remain. */
   legalPagesFinal: true,
   /* The Advisor supplied the enquiry privacy line. It is on every enquiry form. */
