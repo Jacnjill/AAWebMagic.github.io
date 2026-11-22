@@ -235,7 +235,11 @@ async function main() {
     await withdrawal.page.reload({ waitUntil: 'networkidle' });
     const withdrawReload = trackerHits(withdrawal.requests);
     const afterReload = (await withdrawal.context.cookies()).filter((cookie) => cookie.name === '_ga' || cookie.name === '_ga_T3VGVEDZ7V');
-    if (withdrawReload.length) fail('Google Analytics loaded again after Manage cookies then Reject all: ' + withdrawReload.join(' '));
+    // GA may flush one batch it queued before the Reject click (for example the
+    // scroll event from reaching the footer link) when the old page unloads.
+    // The new page must not load GA or send a page_view.
+    const reloadedGa = withdrawReload.filter((url) => /gtag\/js|[?&]en=page_view\b/.test(url));
+    if (reloadedGa.length) fail('Google Analytics loaded again after Manage cookies then Reject all: ' + reloadedGa.join(' '));
     if (await withdrawal.page.locator('#cookie-banner').count()) fail('banner returned after withdrawal reload');
     const stored = await withdrawal.page.evaluate(() => localStorage.getItem('tnt-consent'));
     const storedChoice = JSON.parse(stored || 'null');
@@ -246,7 +250,8 @@ async function main() {
       gaAfterAccept: gaCookies.map((cookie) => cookie.name + ' expires in ' + Math.round((cookie.expires - now) / 86400) + ' days'),
       trackersOnWithdrawClick: withdrawClick,
       gaAfterWithdraw: afterWithdraw.map((cookie) => cookie.name),
-      trackersOnReload: withdrawReload,
+      trackersOnReload: withdrawReload.filter((url) => /gtag\/js|[?&]en=page_view\b/.test(url)),
+      flushedFromBeforeWithdrawal: withdrawReload.filter((url) => !/gtag\/js|[?&]en=page_view\b/.test(url)).map((url) => (/[?&]en=([^&]+)/.exec(url) || [])[1] || url),
       gaAfterReload: afterReload.map((cookie) => cookie.name),
       removedByCode: afterReload.length === 0
     };

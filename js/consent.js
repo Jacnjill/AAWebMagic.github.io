@@ -18,24 +18,14 @@
   function write(choice) {
     var previous = read();
     /* Withdrawing analytics after Google Analytics has loaded on this page:
-       stop it at once, delete its cookies, then reload once the new choice is
-       stored so the page runs without it. Granting or a first choice never reloads. */
-    var withdraw = loaded.analytics && !choice.analytics;
-    if (withdraw) window['ga-disable-' + TNT.ga4Id] = true;
-    if (!choice.analytics && (withdraw || (previous && previous.analytics))) clearGaCookies();
+       stop it at once with Google's ga-disable flag and delete its cookies.
+       No reload, so anything the visitor has typed on the page is kept. */
+    if (loaded.analytics && !choice.analytics) window['ga-disable-' + TNT.ga4Id] = true;
+    if (!choice.analytics && (loaded.analytics || (previous && previous.analytics))) clearGaCookies();
     memory = choice;
-    var stored = true;
     try {
       localStorage.setItem(KEY, JSON.stringify(choice));
-    } catch (e) {
-      stored = false;
-    }
-    if (withdraw) {
-      /* If the choice could not be stored, a reload would bring back the old
-         one; GA stays disabled for the rest of this page instead. */
-      if (stored) location.reload();
-      return;
-    }
+    } catch (e) {}
     apply(choice);
   }
 
@@ -71,7 +61,11 @@
 
   function apply(choice) {
     if (!choice) return;
-    if (choice.analytics) loadGa();
+    if (choice.analytics) {
+      /* Analytics granted again after a withdrawal on this page. */
+      if (window['ga-disable-' + TNT.ga4Id]) window['ga-disable-' + TNT.ga4Id] = false;
+      loadGa();
+    }
     /* No marketing tags are installed. The marketing choice is still stored so
        a future tag can respect it; add its loader here, gated on choice.marketing. */
   }

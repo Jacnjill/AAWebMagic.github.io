@@ -380,7 +380,7 @@ assert.ok(actionRow.includes('class="btn" data-cookie="reject">Reject all</butto
 assert.ok(!actionRow.includes('hidden'), 'Accept all and Reject all must not sit in a hidden step');
 assert.ok(consentJs.includes('analytics: false, marketing: false'), 'Reject all must leave analytics and marketing off');
 const applyFn = consentJs.slice(consentJs.indexOf('function apply'), consentJs.indexOf('function event'));
-assert.ok(applyFn.includes('if (choice.analytics) loadGa()'), 'analytics pixels stay off until accepted');
+assert.ok(/if \(choice\.analytics\) \{[^}]*loadGa\(\);/.test(applyFn), 'analytics pixels stay off until accepted');
 assert.ok(!/load(?:Meta|TikTok)|fbq|ttq/.test(applyFn), 'no marketing pixel is loaded, with or without consent');
 assert.ok(!/\b(?:fbq|ttq|loadMeta|loadTikTok)\b/.test(consentJs), 'no Meta or TikTok loader ships while no pixel id is set');
 assert.ok(consentJs.includes('if (!choice) render(false);\n    else apply(choice);'), 'pixels must not load before a choice');

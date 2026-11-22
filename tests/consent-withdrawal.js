@@ -1,5 +1,5 @@
-// Withdrawing analytics consent on the same page stops Google Analytics at once,
-// deletes its cookies and reloads once; a first choice or a grant never reloads.
+// Withdrawing analytics consent on the same page stops Google Analytics at once
+// (ga-disable flag) and deletes its cookies, without reloading the page.
 // Run: node tests/consent-withdrawal.js
 const assert = require('assert');
 const fs = require('fs');
@@ -55,11 +55,11 @@ function setup(config = {}) {
     },
     location: {
       hostname: 'www.tripntravel.co.uk',
-      reload() { reloads.push({ choice: JSON.parse(stored), disabled: window[disableKey] }); }
+      reload() { reloads.push(true); }
     }
   });
   return {
-    scripts, expired, reloads,
+    scripts, expired, reloads, window, stored: () => JSON.parse(stored),
     choose(action, analytics = false, marketing = false) {
       window.TNTConsent.open();
       settings['cookie-analytics'].checked = analytics;
@@ -71,18 +71,15 @@ function setup(config = {}) {
 
 const analytics = setup();
 analytics.choose('reject');
-assert.strictEqual(analytics.reloads.length, 0);
-assert.strictEqual(analytics.scripts.length, 0);
-assert.strictEqual(analytics.expired.length, 0);
+assert.strictEqual(analytics.scripts.length, 0, 'a first Reject all loads nothing');
+assert.strictEqual(analytics.expired.length, 0, 'nothing to delete on a first Reject all');
 analytics.choose('accept');
-assert.strictEqual(analytics.reloads.length, 0);
-assert.strictEqual(analytics.scripts.length, 1);
+assert.strictEqual(analytics.scripts.length, 1, 'Accept all loads GA once');
 analytics.choose('save', true, false);
-assert.strictEqual(analytics.reloads.length, 0, 'Keeping analytics on does not reload');
+assert.strictEqual(analytics.window[disableKey], undefined, 'keeping analytics on does not disable GA');
 analytics.choose('save', false, false);
-assert.strictEqual(analytics.reloads.length, 1);
-assert.strictEqual(analytics.reloads[0].disabled, true);
-const { choice } = analytics.reloads[0];
+assert.strictEqual(analytics.window[disableKey], true, 'withdrawal disables GA on this page at once');
+const choice = analytics.stored();
 assert.deepStrictEqual(choice, { necessary: true, analytics: false, marketing: false, updated: choice.updated });
 assert.strictEqual(new Date(choice.updated).toISOString(), choice.updated);
 for (const name of ['_ga', '_ga_OTHER']) {
@@ -91,6 +88,10 @@ for (const name of ['_ga', '_ga_OTHER']) {
   assert.ok(analytics.expired.includes(expiry + '; Domain=www.tripntravel.co.uk'));
   assert.ok(analytics.expired.includes(expiry + '; Domain=tripntravel.co.uk'));
 }
-assert.ok(analytics.expired.every((value) => value.startsWith('_ga')));
+assert.ok(analytics.expired.every((value) => value.startsWith('_ga')), 'only GA cookies are deleted');
+analytics.choose('accept');
+assert.strictEqual(analytics.window[disableKey], false, 'granting again re-enables GA');
+assert.strictEqual(analytics.scripts.length, 1, 'GA is not loaded twice');
+assert.strictEqual(analytics.reloads.length, 0, 'consent changes never reload the page');
 
 console.log('consent withdrawal checks passed');
