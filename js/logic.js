@@ -1,8 +1,10 @@
 (function (root, factory) {
-  var api = factory();
+  var registry = typeof module === 'object' && module.exports
+    ? require('../source-phrases.json') : root.TNTSourcePhrases;
+  var api = factory(registry);
   if (typeof module === 'object' && module.exports) module.exports = api;
   root.TNTLogic = api;
-})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (registry) {
   var CORE = ['Spain', 'Turkey', 'Greece'];
   var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -31,8 +33,35 @@
     return parts.join(', ');
   }
 
-  function buildQuoteMessage(a, utm) {
-    var faith = a.tripType === 'Faith & heritage';
+  function sourcePhrase(id) {
+    return registry.phrases.find(function (row) { return row.id === id; }).phrase;
+  }
+
+  function pagePhrase(path, location) {
+    if (path === '/index.html') path = '/';
+    var rows = registry.phrases.filter(function (row) { return row.kind === 'W' && row.page === path; });
+    var row = rows.find(function (row) { return row.location === location; })
+      || rows.find(function (row) { return row.location === 'header'; });
+    return row ? row.phrase : sourcePhrase('W-404');
+  }
+
+  function phraseKey(text) {
+    return text.normalize('NFKC').toLowerCase().replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
+      .replace(/\s+/g, ' ').trim().replace(/[.!?]$/, '');
+  }
+
+  function packagePhrase(title, destination) {
+    if (typeof title !== 'string' || typeof destination !== 'string') return '';
+    if (/[#\p{Default_Ignorable_Code_Point}\p{Cc}]|\bref\s*:/iu.test((title + ', ' + destination).normalize('NFKC'))) return '';
+    title = title.replace(/\s+/g, ' ').trim();
+    destination = destination.replace(/\s+/g, ' ').trim();
+    if (!title || !destination) return '';
+    var phrase = "Hi, I'm interested in " + title + ', ' + destination + '.';
+    var key = phraseKey(phrase);
+    return registry.phrases.some(function (row) { return phraseKey(row.phrase) === key; }) ? '' : phrase;
+  }
+
+  function buildQuoteMessage(a) {
     var dest = a.destination === 'Other'
       ? ('Other: ' + String(a.destinationOther || '').trim())
       : (a.destination || '');
@@ -45,7 +74,7 @@
       : (a.from || '');
     var extras = a.extras && a.extras.length ? a.extras.join(', ') : 'None';
     var lines = [
-      faith ? 'Assalamu alaikum / Hi Trip N Travel 👋' : 'Hi Trip N Travel 👋',
+      sourcePhrase('W-ENQUIRY-MM'),
       'Trip type: ' + (a.tripType || ''),
       'Destination: ' + dest,
       'When: ' + when,
@@ -56,9 +85,6 @@
     ];
     if (a.flightOnly) lines.push('Flights only: Yes');
     if (needsAdviser(a.destination, a.flightOnly)) lines.push('Chat to Trip N Travel on WhatsApp');
-    var src = utm && utm.source ? utm.source : 'direct';
-    var camp = utm && utm.campaign ? utm.campaign : 'none';
-    lines.push('Ref: ' + src + '/' + camp);
     return lines.join('\n');
   }
 
@@ -213,6 +239,10 @@
     formatTravellers: formatTravellers,
     buildQuoteMessage: buildQuoteMessage,
     waHref: waHref,
+    sourcePhrase: sourcePhrase,
+    pagePhrase: pagePhrase,
+    phraseKey: phraseKey,
+    packagePhrase: packagePhrase,
     buildSelectionMessage: buildSelectionMessage,
     daysBetweenDates: daysBetweenDates,
     isDealShowable: isDealShowable,

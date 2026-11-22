@@ -31,7 +31,7 @@
       if (el.hasAttribute('data-call-full') || !el.textContent.trim()) el.textContent = 'Call us on ' + TNT.phone;
     });
     scope.querySelectorAll('[data-wa]').forEach(function (el) {
-      var text = el.getAttribute('data-wa-text') || ("Hi, I'm interested in the " + interestFor(el));
+      var text = waPhrase(el);
       el.href = TNTLogic.waHref(TNT.whatsapp, text);
       el.target = '_blank';
       el.rel = 'noopener noreferrer';
@@ -249,13 +249,22 @@
     return merged;
   }
 
-  /* Rebuild a contact link's href from the visitor's current choices, at the moment of use. */
+  function waPhrase(el) {
+    var text = el.getAttribute('data-wa-text');
+    if (text) return text;
+    // The canonical path also covers redirects, clean URLs and hosted 404s.
+    var canonical = document.querySelector('link[rel="canonical"]');
+    var page = canonical ? new URL(canonical.href).pathname : location.pathname;
+    return TNTLogic.pagePhrase(page, el.getAttribute('data-location'));
+  }
+
+  /* Keep the source sentence first when adding the visitor's current choices. */
   function syncWaHref(el) {
     if (el.hasAttribute('data-wa-share') || el.hasAttribute('data-wa-text') || !el.hasAttribute('data-wa')) return;
     var sel = currentSelections();
     sel.interest = interestFor(el);
-    var text = TNTLogic.buildSelectionMessage(sel)
-      || ("Hi, I'm interested in the " + interestFor(el));
+    var details = TNTLogic.buildSelectionMessage(sel);
+    var text = waPhrase(el) + (details ? '\n' + details : '');
     el.href = TNTLogic.waHref(TNT.whatsapp, text);
   }
 

@@ -32,6 +32,19 @@ assert.strictEqual(L.needsAdviser('Other', false), true);
 assert.strictEqual(L.needsAdviser('Spain', true), true);
 assert.deepStrictEqual(L.coreDestinations([]).choices, ['Spain', 'Turkey', 'Greece', 'Surprise me', 'Other']);
 
+const registry = require('../source-phrases.json');
+const { phrases } = registry;
+assert.strictEqual(registry.scheme_version, 1);
+assert.strictEqual(new Set(phrases.map(row => row.id)).size, phrases.length);
+assert.strictEqual(new Set(phrases.map(row => L.phraseKey(row.phrase))).size, phrases.length);
+for (const row of phrases) {
+  assert.deepStrictEqual(Object.keys(row), ['id', 'kind', 'phrase', 'meaning', 'page', 'location']);
+  assert.ok(!/[#\p{Cf}]|ref\s*:/iu.test(row.phrase), row.id);
+}
+const wrapper = require('fs').readFileSync(require.resolve('../js/source-phrases.js'), 'utf8');
+assert.strictEqual(wrapper.split('window.TNTSourcePhrases = ')[1].replace(/;\n$/, '\n'),
+  require('fs').readFileSync(require.resolve('../source-phrases.json'), 'utf8'));
+
 const faith = L.buildQuoteMessage({
   tripType: 'Faith & heritage',
   destination: 'Turkey',
@@ -46,7 +59,7 @@ const faith = L.buildQuoteMessage({
   extras: ['Halal food', 'Private pool'],
   flightOnly: false
 }, { source: 'instagram', campaign: 'ramadan' });
-assert.ok(faith.startsWith('Assalamu alaikum / Hi Trip N Travel 👋'));
+assert.ok(faith.startsWith(L.sourcePhrase('W-ENQUIRY-MM') + '\n'));
 assert.ok(faith.includes('Trip type: Faith & heritage'));
 assert.ok(faith.includes('Destination: Turkey'));
 assert.ok(faith.includes('When: June 2027 (flexible)'));
@@ -54,7 +67,7 @@ assert.ok(faith.includes('From: Manchester'));
 assert.ok(faith.includes('Travellers: 2 adults, 1 child aged 7'));
 assert.ok(faith.includes('Budget: £400–£700'));
 assert.ok(faith.includes('Extras: Halal food, Private pool'));
-assert.ok(faith.includes('Ref: instagram/ramadan'));
+assert.ok(!/Ref:|instagram|ramadan/.test(faith));
 assert.ok(!faith.includes('A travel adviser will reply to you'));
 assert.ok(!faith.includes('Chat to Trip N Travel on WhatsApp'));
 
@@ -71,13 +84,13 @@ const other = L.buildQuoteMessage({
   extras: [],
   flightOnly: false
 }, {});
-assert.ok(other.startsWith('Hi Trip N Travel 👋'));
+assert.ok(other.startsWith(L.sourcePhrase('W-ENQUIRY-MM') + '\n'));
 assert.ok(!other.includes('A travel adviser will reply to you'));
 assert.ok(other.includes('Chat to Trip N Travel on WhatsApp'));
-assert.ok(other.includes('Ref: direct/none'));
+assert.ok(!other.includes('Ref:'));
 const href = L.waHref('442045385838', other);
 assert.ok(href.startsWith('https://wa.me/442045385838?text='));
-assert.ok(href.includes(encodeURIComponent('Hi Trip N Travel 👋')));
+assert.ok(href.includes(encodeURIComponent(L.sourcePhrase('W-ENQUIRY-MM'))));
 assert.strictEqual(decodeURIComponent(href.split('text=')[1]), other);
 
 const plan = L.balancePlan({
