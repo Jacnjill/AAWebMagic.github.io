@@ -250,7 +250,7 @@ async function main() {
       gaAfterReload: afterReload.map((cookie) => cookie.name),
       removedByCode: afterReload.length === 0
     };
-    if (afterReload.length === 0) fail('expected the test to record whether GA cookies remain; none were present after reload');
+    if (afterReload.length) fail('Google Analytics cookies remained after Reject all: ' + afterReload.map((cookie) => cookie.name).join(', '));
     console.log('withdrawal ' + JSON.stringify(rows.withdrawal));
     await withdrawal.context.close();
   } finally {

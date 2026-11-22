@@ -16,11 +16,40 @@
   }
 
   function write(choice) {
+    var previous = read();
+    /* Withdrawing analytics after Google Analytics has loaded on this page:
+       stop it at once, delete its cookies, then reload once the new choice is
+       stored so the page runs without it. Granting or a first choice never reloads. */
+    var withdraw = loaded.analytics && !choice.analytics;
+    if (withdraw) window['ga-disable-' + TNT.ga4Id] = true;
+    if (!choice.analytics && (withdraw || (previous && previous.analytics))) clearGaCookies();
     memory = choice;
+    var stored = true;
     try {
       localStorage.setItem(KEY, JSON.stringify(choice));
-    } catch (e) {}
+    } catch (e) {
+      stored = false;
+    }
+    if (withdraw) {
+      /* If the choice could not be stored, a reload would bring back the old
+         one; GA stays disabled for the rest of this page instead. */
+      if (stored) location.reload();
+      return;
+    }
     apply(choice);
+  }
+
+  function clearGaCookies() {
+    var parts = location.hostname.split('.');
+    document.cookie.split(';').forEach(function (cookie) {
+      var name = cookie.split('=')[0].trim();
+      if (name !== '_ga' && name.indexOf('_ga_') !== 0) return;
+      var expired = name + '=; Max-Age=0; Path=/';
+      document.cookie = expired;
+      for (var i = 0; i < parts.length - 1; i++) {
+        document.cookie = expired + '; Domain=' + parts.slice(i).join('.');
+      }
+    });
   }
 
   function isReal(id) {

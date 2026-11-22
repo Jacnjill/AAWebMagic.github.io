@@ -111,7 +111,7 @@ async function main() {
     if (code.endpoint !== 'https://tntsalesai.netlify.app/.netlify/functions/website-lead') fail('leadEndpoint is not the production website-lead function');
     if (code.scripts.length || code.frame) fail('HubSpot code is on the page');
     if (!code.consentRequired) fail('consent box is not required');
-    if (!code.noticeLink || code.noticeHref !== 'privacy.html') fail('Privacy Notice should link to privacy.html');
+    if (!code.noticeLink || code.noticeHref !== '/privacy.html') fail('Privacy Notice should link to /privacy.html');
     if (!code.noticeText.includes('Privacy Notice')) fail('privacy notice text missing');
     if (code.marketingChecked) fail('marketing consent starts ticked');
     if (!code.marketingText.includes('replying STOP')) fail('STOP wording missing');

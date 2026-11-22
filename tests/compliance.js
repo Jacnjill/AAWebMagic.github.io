@@ -71,7 +71,7 @@ for (const file of html) {
 const config = textOf(path.join(root, 'js/config.js'));
 assert.ok(config.includes('showPtsLine: false'));
 assert.ok(config.includes('hubspotEnabled: true'));
-assert.ok(config.includes("privacyUrl: 'privacy.html'"));
+assert.ok(config.includes("privacyUrl: '/privacy.html'"), 'the enquiry privacy link is root-relative so it works on nested 404 paths');
 assert.ok(config.includes('legalPagesFinal: true'));
 assert.ok(config.includes('privacyLineFinal: true'));
 assert.ok(config.includes("leadEndpoint: 'https://tntsalesai.netlify.app/.netlify/functions/website-lead'"));
@@ -461,7 +461,7 @@ for (const name of ['enquiry.html', 'contact.html']) {
   assert.ok(at !== -1, name + ' is missing the enquiry privacy line');
   assert.ok(button > at, name + ' privacy line must sit above the submit button');
 }
-assert.ok(textOf(path.join(root, 'js/matchmaker.js')).includes(privacyAboveButton), 'matchmaker enquiry form needs the privacy line');
+assert.ok(textOf(path.join(root, 'js/matchmaker.js')).includes(privacyAboveButton.replace('href="privacy.html"', 'href="/privacy.html"')), 'matchmaker enquiry form needs the privacy line');
 
 const expectedPlaceholders = {
   'privacy.html': ['[DATE OF PUBLICATION]'],
@@ -597,6 +597,10 @@ assert.ok(enquiryHtml.includes('tabindex="-1"'));
 assert.ok(enquiryHtml.includes('autocomplete="off"'));
 assert.ok(enquiryHtml.includes('class="honeypot"'));
 const matchmaker = textOf(path.join(root, 'js/matchmaker.js'));
+const matchmakerPrivacy = [...matchmaker.matchAll(/href="([^"]*privacy\.html)"/g)].map((m) => m[1]);
+assert.ok(matchmakerPrivacy.length >= 1 && matchmakerPrivacy.every((href) => href === '/privacy.html'), 'quote-modal privacy links are root-relative');
+const notFoundPage = textOf(path.join(root, '404.html'));
+for (const m of notFoundPage.matchAll(/href="([^":#?]+\.html)"/g)) assert.ok(m[1].startsWith('/'), '404 page link must be root-relative: ' + m[1]);
 assert.ok(matchmaker.includes('reply on WhatsApp'));
 assert.ok(matchmaker.includes('hubspotEnabled'));
 
