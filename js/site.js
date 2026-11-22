@@ -125,21 +125,6 @@
       rating.textContent = 'Google rating ' + TNT.googleRating;
       trust.appendChild(rating);
     }
-    var socialHost = scope.querySelector('[data-socials]');
-    if (socialHost && !socialHost.dataset.ready) {
-      var urls = TNT.socialUrls || {};
-      Object.keys(urls).forEach(function (name) {
-        if (!urls[name]) return;
-        var a = document.createElement('a');
-        a.href = urls[name];
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        a.textContent = name.charAt(0).toUpperCase() + name.slice(1);
-        socialHost.appendChild(a);
-      });
-      socialHost.dataset.ready = '1';
-      if (!socialHost.children.length) socialHost.remove();
-    }
     var raja = document.getElementById('meet-raja');
     var photo = TNT.founderPhoto;
     var usablePhoto = photo && !/placeholder|team\.jpg/i.test(photo);
@@ -391,7 +376,6 @@
 
   function initSchema() {
     if (document.body.getAttribute('data-schema') === 'agency') {
-      var sameAs = Object.keys(TNT.socialUrls || {}).map(function (k) { return TNT.socialUrls[k]; }).filter(Boolean);
       jsonLd({
         '@context': 'https://schema.org',
         '@type': 'TravelAgency',
@@ -407,7 +391,7 @@
           postalCode: TNT.address.postalCode,
           addressCountry: TNT.address.addressCountry
         },
-        sameAs: sameAs
+        sameAs: []
       });
     }
     var crumbs = document.querySelector('[data-crumbs]');
