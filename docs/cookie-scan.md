@@ -29,7 +29,7 @@ Before a choice, and after Reject all, there were no third-party requests. The o
 
 No Google Ads tag is in the build. There is no conversion id and no `googleadservices` or `doubleclick` script.
 
-`js/consent.js` contains Meta and TikTok loaders. Both return before adding a script, because the Meta and TikTok ids in `js/config.js` are placeholders. Accept all does not load them.
+There is no Meta or TikTok loader in `js/consent.js`; the dormant loaders were removed. Accept all does not load either.
 
 HubSpot's embed script is not on any page. `js/forms.js` can POST the enquiry as JSON to `leadEndpoint` only when `hubspotEnabled` is true and `leadEndpoint` is a real URL. Both stay off. That route sets no cookie, loads no HubSpot script, and does not wait for marketing-cookie consent.
 
