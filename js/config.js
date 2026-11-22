@@ -32,8 +32,6 @@ const TNT = {
   showContactHours: false,
   siteUrl: 'https://tripntravel.co.uk',
   ga4Id: 'G-T3VGVEDZ7V',
-  metaPixelId: '{{PLACEHOLDER: Meta Pixel ID}}',
-  tiktokPixelId: '{{PLACEHOLDER: TikTok Pixel ID}}',
   /* Privacy Notice link used above enquiry submit buttons. Relative on this draft. */
   privacyUrl: 'privacy.html',
   /* Draft legal pages still show highlighted placeholders. A release check fails if this is true while any remain. */
@@ -52,11 +50,6 @@ const TNT = {
   showPlaceholderBlocks: false,
   /* Public instalment wording stays the quote line until terms are confirmed in writing. */
   instalmentTermsConfirmed: false,
-  socialUrls: {
-    facebook: '',
-    instagram: '',
-    whatsapp: ''
-  },
   googleRating: null,
   priceMaxAgeDays: 7,
   instalmentPublicLine: 'Spread the cost with a deposit and instalments',

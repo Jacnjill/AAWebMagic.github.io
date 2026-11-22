@@ -291,7 +291,7 @@ async function main() {
     ].join(' | ') + ' |');
   }
   lines.push('');
-  lines.push('Accept all may request Google Analytics, because that measurement id is set. Meta, TikTok and HubSpot stay off: their ids are placeholders or the HubSpot switch is off.');
+  lines.push('Accept all may request Google Analytics, because that measurement id is set. No Meta or TikTok loader is in the build, and the HubSpot embed is not on any page.');
   lines.push('');
   lines.push('localStorage before a choice is empty. After Reject all the only new key is `tnt-consent`, with analytics and marketing false. After Accept all the same key has both true. No non-essential cookies were set before a choice or after Reject all. Google Analytics cookies (`_ga`, `_ga_T3VGVEDZ7V`) appear only after Accept all.');
   lines.push('');

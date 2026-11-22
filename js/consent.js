@@ -40,63 +40,11 @@
     window.gtag('config', TNT.ga4Id);
   }
 
-  function loadMeta() {
-    if (!isReal(TNT.metaPixelId) || window.fbq) return;
-    /* Standard Meta pixel loader. Runs only after marketing consent. */
-    !function (f, b, e, v, n, t, s) {
-      if (f.fbq) return;
-      n = f.fbq = function () {
-        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-      };
-      if (!f._fbq) f._fbq = n;
-      n.push = n;
-      n.loaded = true;
-      n.version = '2.0';
-      n.queue = [];
-      t = b.createElement(e);
-      t.async = true;
-      t.src = v;
-      s = b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t, s);
-    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-    window.fbq('init', TNT.metaPixelId);
-    window.fbq('track', 'PageView');
-  }
-
-  function loadTikTok() {
-    if (!isReal(TNT.tiktokPixelId) || window.ttq) return;
-    !function (w, d, t) {
-      w.TiktokAnalyticsObject = t;
-      var ttq = w[t] = w[t] || [];
-      ttq.methods = ['page', 'track', 'identify', 'instances', 'debug', 'on', 'off', 'once', 'ready', 'alias', 'group', 'enableCookie', 'disableCookie'];
-      ttq.setAndDefer = function (obj, method) {
-        obj[method] = function () {
-          obj.push([method].concat(Array.prototype.slice.call(arguments, 0)));
-        };
-      };
-      for (var i = 0; i < ttq.methods.length; i++) ttq.setAndDefer(ttq, ttq.methods[i]);
-      ttq.load = function (id) {
-        var s = d.createElement('script');
-        s.async = true;
-        s.src = 'https://analytics.tiktok.com/i18n/pixel/events.js?sdkid=' + id + '&lib=' + t;
-        var first = d.getElementsByTagName('script')[0];
-        first.parentNode.insertBefore(s, first);
-      };
-      ttq.load(TNT.tiktokPixelId);
-      ttq.page();
-    }(window, document, 'ttq');
-  }
-
   function apply(choice) {
     if (!choice) return;
     if (choice.analytics) loadGa();
-    if (choice.marketing) {
-      if (!loaded.marketing) {
-        loaded.marketing = true;
-        loadMeta();
-        loadTikTok();
-      }
-    }
+    /* No marketing tags are installed. The marketing choice is still stored so
+       a future tag can respect it; add its loader here, gated on choice.marketing. */
   }
 
   function event(name, params) {
@@ -107,10 +55,6 @@
 
   function lead(params) {
     event('generate_lead', params || {});
-    var choice = read();
-    if (choice && choice.marketing && typeof window.fbq === 'function') {
-      window.fbq('track', 'Lead');
-    }
   }
 
   function banner() {
