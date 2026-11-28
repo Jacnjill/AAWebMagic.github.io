@@ -523,7 +523,7 @@ assert.ok(!textOf(path.join(root, 'privacy.html')).includes('They only use your 
 assert.ok(!/3CX stores|stored by 3CX|3CX, which/i.test(textOf(path.join(root, 'privacy.html'))), 'privacy notice must not say 3CX stores calls');
 assert.ok(!textOf(path.join(root, 'cookies.html')).includes('3CX'));
 assert.ok(!textOf(path.join(root, 'complaints.html')).includes('3CX'));
-assert.ok(textOf(path.join(root, 'privacy.html')).includes('It processes your enquiry messages and trip details (such as your first name, destination, dates, party size, budget, the occasion and your message) to help write replies and quotes. When our advisers use AI tools, it can also see names, phone numbers and recent messages for that enquiry. It acts under our instructions.'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes('It processes your enquiry messages and trip details (such as your first name, destination, dates, party size, budget, the occasion and your message). When our advisers use AI tools, it can also see names, phone numbers and recent messages for that enquiry. It acts under our instructions.'));
 assert.ok(!textOf(path.join(root, 'privacy.html')).includes('only to help write replies to you, and acts under our instructions'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes("It is based in the US (see section 7). Our systems try to pass messages about health, accessibility, children, visas, complaints or refunds to a person instead of the AI, but they cannot catch everything. Please don't put health or other sensitive details in the chat. Ask for a team member instead."));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('Object to how we use it, including for marketing (objection)'));
