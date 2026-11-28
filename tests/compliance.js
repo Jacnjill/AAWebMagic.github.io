@@ -530,7 +530,7 @@ assert.ok(textOf(path.join(root, 'privacy.html')).includes('Object to how we use
 assert.ok(!textOf(path.join(root, 'privacy.html')).includes('including for marketing and call recording (objection)'));
 assert.ok(textOf(path.join(root, 'privacy.html')).includes('training our team and handling complaints and disputes'));
 assert.ok(!textOf(path.join(root, 'privacy.html')).includes('training our team, recording calls and handling complaints and disputes'));
-assert.ok(textOf(path.join(root, 'privacy.html')).includes('It processes data in the US. We rely on standard contractual clauses and the UK Addendum approved by the ICO for this transfer. Please contact us if you would like a copy.'));
+assert.ok(textOf(path.join(root, 'privacy.html')).includes("They may process data outside the UK, including in the United States. We rely on the standard contractual clauses approved for the UK together with the ICO's UK Addendum for these transfers, which form part of our contracts with them. Please contact us if you would like a copy."));
 assert.ok(!textOf(path.join(root, 'privacy.html')).includes('It is based in the US. We are confirming the safeguard we use for this transfer. Please contact us if you would like more information.'));
 const privacyHtml = textOf(path.join(root, 'privacy.html'));
 const healthParagraph = 'Health and accessibility needs. Special requirements can sometimes include health or accessibility information, such as a wheelchair request or a medical condition. The law treats this as "special category" data. We only collect and use it where we need it to arrange your travel, with your explicit consent or where the law otherwise allows.';
